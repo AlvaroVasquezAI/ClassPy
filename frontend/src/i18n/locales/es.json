@@ -1,0 +1,32 @@
+{
+  "navbar": {
+    "dashboard": "Tablero",
+    "workspace": "Espacio de trabajo",
+    "classroom": "Classroom",
+    "students": "Estudiantes",
+    "attendance": "Asistencia"
+  },
+  "setupPage": {
+    "title": "C l a s s P y",
+    "subtitle": "Vamos a configurar tu perfil para comenzar.",
+    "uploadButton": "Subir foto",
+    "changeButton": "Cambiar foto",
+    "firstNamePlaceholder": "Nombre",
+    "lastNamePlaceholder": "Apellido",
+    "emailPlaceholder": "Dirección de correo electrónico",
+    "createButton": "Crear perfil",
+    "successAlert": "¡Perfil creado! La aplicación ahora se redirigiría."
+  },
+  "homePage": {
+    "welcome": "Bienvenido de nuevo, {{name}}."
+  },
+  "profileModal": {
+    "title": "Perfil",
+    "nameLabel": "Nombre",
+    "emailLabel": "Correo",
+    "editButton": "Editar perfil",
+    "saveButton": "Guardar",
+    "cancelButton": "Cancelar",
+    "changePhotoButton": "Cambiar foto"
+  }
+}

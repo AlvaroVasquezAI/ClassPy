@@ -1,0 +1,32 @@
+{
+  "navbar": {
+    "dashboard": "Dashboard",
+    "workspace": "Workspace",
+    "classroom": "Classroom",
+    "students": "Students",
+    "attendance": "Attendance"
+  },
+  "setupPage": {
+    "title": "C l a s s P y",
+    "subtitle": "Let's set up your profile to get started.",
+    "uploadButton": "Upload Photo",
+    "changeButton": "Change Photo",
+    "firstNamePlaceholder": "First Name",
+    "lastNamePlaceholder": "Last Name",
+    "emailPlaceholder": "Email Address",
+    "createButton": "Create Profile",
+    "successAlert": "Profile created! App would now redirect."
+  },
+  "homePage": {
+    "welcome": "Welcome back, {{name}}."
+  },
+  "profileModal": {
+    "title": "Profile",
+    "nameLabel": "Name",
+    "emailLabel": "Email",
+    "editButton": "Edit Profile",
+    "saveButton": "Save",
+    "cancelButton": "Cancel",
+    "changePhotoButton": "Change Photo"
+  }
+}

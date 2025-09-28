@@ -1,0 +1,228 @@
+.setup-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100dvh;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.setup-card {
+  position: relative;
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 450px;
+  text-align: center;
+}
+
+.settings-toggles {
+  position: absolute;
+  top: 1.5rem;
+  left: 2.5rem;
+  right: 2.5rem;
+  display: flex;
+  justify-content: space-between; 
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--primary-color);
+  transition: .4s;
+  border-radius: 34px;
+  opacity: 0.8; 
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+.toggle-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  font-size: 12px;
+}
+.toggle-icon.left { left: 7px; }
+.toggle-icon.right { right: 7px; }
+
+
+.setup-title {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  padding-top: 2rem;
+  font-size: 2rem;
+  color: var(--text-color);
+  font-weight: 700;
+}
+
+.setup-subtitle {
+  margin-top: 0;
+  margin-bottom: 2rem;
+  color: var(--text-color-light);
+}
+
+.setup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.profile-pic-uploader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.profile-preview {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-placeholder-icon {
+  font-size: 90px;
+  color: var(--text-color);
+  opacity: 0.25;
+}
+
+.upload-button {
+  background-color: rgba(128, 128, 128, 0.15);
+  color: var(--text-color);
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.input-group {
+  display: flex;
+  gap: 1rem;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.9rem 2.5rem 0.9rem 1rem;
+  border: 1px solid var(--input-border-color);
+  background: var(--input-bg);
+  color: var(--text-color);
+  border-radius: 12px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(116, 146, 128, 0.25);
+}
+
+.validation-icon {
+  position: absolute;
+  right: 14px;
+  font-size: 1.2rem;
+}
+
+.valid-icon { color: var(--success-color); }
+.invalid-icon { color: var(--danger-color); }
+
+.create-profile-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s ease, opacity 0.2s;
+  margin-top: 1rem;
+}
+
+.create-profile-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: var(--danger-color);
+  background-color: rgba(255, 59, 48, 0.15);
+  border: 1px solid rgba(255, 59, 48, 0.2);
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+
+@media (max-width: 600px) {
+  .setup-card {
+    padding: 2.5rem 1.5rem;
+  }
+  
+  .settings-toggles {
+    left: 1.5rem;
+    right: 1.5rem;
+  }
+
+  .setup-title {
+    font-size: 1.8rem;
+  }
+  
+  .input-group {
+    flex-direction: column;
+  }
+}

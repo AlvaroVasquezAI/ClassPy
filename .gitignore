@@ -1,0 +1,47 @@
+# --- Environment ---
+# Ignore all .env files that contain secrets and environment-specific variables
+*.env
+.env.*
+
+# --- Python ---
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Python virtual environments (if used outside of Docker)
+.venv/
+venv/
+env/
+
+# --- Node.js ---
+# Ignore the massive node_modules folder in the frontend
+frontend/node_modules/
+
+# Ignore build artifacts from Vite
+frontend/dist/
+
+# Ignore logs and debug files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# --- User-Generated Content ---
+# Ignore all user-uploaded files, such as profile pictures
+backend/uploads/
+
+# --- IDE / Editor ---
+# Ignore Visual Studio Code settings
+.vscode/
+
+# Ignore PyCharm and other JetBrains IDEs' settings
+.idea/
+
+# --- OS Generated Files ---
+# Ignore macOS specific files
+.DS_Store
+
+# Ignore Windows thumbnail cache
+Thumbs.db
