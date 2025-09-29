@@ -69,4 +69,6 @@ def update_teacher_profile(
 @router.get("/teacher", response_model=Optional[teacher_schema.Teacher])
 def read_teacher_profile(db: Session = Depends(get_db)):
     db_teacher = crud_teacher.get_teacher(db)
+    if db_teacher is None:
+        return None 
     return db_teacher

@@ -22,6 +22,7 @@ class Subject(Base):
     __tablename__ = 'subjects'
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(255), nullable=False, unique=True)
+    color = Column(String(7), nullable=False, unique=True)
     teacher_id = Column(Integer, ForeignKey('teacher.id'), nullable=False)
 
     teacher = relationship("Teacher", back_populates="subjects")
@@ -33,12 +34,18 @@ class Subject(Base):
 class Group(Base):
     __tablename__ = 'groups'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(255), nullable=False)
+    name = Column(String(1), nullable=False) 
+    grade = Column(Integer, nullable=False) 
     subject_id = Column(Integer, ForeignKey('subjects.id', ondelete='CASCADE'), nullable=False)
+    color = Column(String(7), nullable=False, unique=True) 
 
     subject = relationship("Subject", back_populates="groups")
     students = relationship("Student", back_populates="group")
     classroom_group = relationship("ClassroomGroup", back_populates="group", uselist=False, cascade="all, delete-orphan")
+
+    __table_args__ = (
+        UniqueConstraint('grade', 'name', 'subject_id', name='_grade_name_subject_uc'),
+    )
 
 class Student(Base):
     __tablename__ = 'students'
@@ -265,3 +272,17 @@ class ClassroomGroup(Base):
     classroom_course_id = Column(String(255), nullable=False, unique=True)
 
     group = relationship("Group", back_populates="classroom_group")
+
+class WeeklySchedule(Base):
+    __tablename__ = 'weekly_schedules'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    group_id = Column(Integer, ForeignKey('groups.id', ondelete='CASCADE'), nullable=False)
+    day_of_week = Column(String(10), nullable=False) 
+    start_time = Column(String(5), nullable=False) 
+    end_time = Column(String(5), nullable=False) 
+
+    group = relationship("Group")
+
+    __table_args__ = (
+        UniqueConstraint('day_of_week', 'start_time', name='_day_time_uc'),
+    )
