@@ -28,5 +28,87 @@
     "saveButton": "Guardar",
     "cancelButton": "Cancelar",
     "changePhotoButton": "Cambiar foto"
+  },
+  "workspace": {
+    "loading": "Cargando espacio de trabajo...",
+    "common": {
+      "preview": "Vista previa",
+      "saveChanges": "Guardar cambios",
+      "typeToConfirm": "Por favor escribe el nombre para confirmar.",
+      "typeFullToConfirm": "Por favor escribe el nombre completo para confirmar."
+    },
+    "shortcuts": {
+      "title": "Atajos",
+      "viewExams": "Ver exámenes",
+      "viewAssignments": "Ver tareas",
+      "viewPlannings": "Ver planificaciones",
+      "viewGrades": "Ver calificaciones"
+    },
+    "subjects": {
+      "title": "Asignaturas",
+      "editTitle": "Editar asignatura",
+      "deleteTitle": "Eliminar asignatura",
+      "createModal": {
+        "title": "Crear nueva asignatura",
+        "placeholder": "Nombre de la asignatura (ej. Biología)",
+        "colorLabel": "Seleccionar color de asignatura",
+        "createButton": "Crear asignatura"
+      },
+      "editModal": {
+        "title": "Editar asignatura",
+        "nameLabel": "Nombre de la asignatura",
+        "colorLabel": "Color de la asignatura"
+      },
+      "deleteModal": {
+        "title": "Eliminar asignatura",
+        "confirmationText": "Esto eliminará permanentemente la asignatura <strong>{{name}}</strong> y TODOS sus grupos, estudiantes y calificaciones asociadas. Esta acción no se puede deshacer.",
+        "deleteButton": "Eliminar esta asignatura"
+      },
+      "viewGroupsModal": {
+        "title": "Grupos en {{subjectName}}"
+      }
+    },
+    "groups": {
+      "title": "Grupos",
+      "editTitle": "Editar color de grupo",
+      "deleteTitle": "Activar modo eliminar",
+      "scheduleTitle": "Activar modo horario",
+      "createModal": {
+        "title": "Crear nuevo grupo",
+        "step1Label": "1. Seleccionar asignatura",
+        "step1Placeholder": "Selecciona una asignatura...",
+        "step2Label": "2. Seleccionar grado",
+        "step3Label": "3. Seleccionar letra de grupo",
+        "step4Label": "4. Seleccionar color de grupo",
+        "colorInUseError": "Este color ya está en uso.",
+        "confirmColor": "Confirmar selección de color",
+        "createButton": "Crear grupo"
+      },
+      "deleteModal": {
+        "title": "Eliminar grupo",
+        "confirmationText": "Esta acción no se puede deshacer. Esto eliminará permanentemente el grupo <strong>{{name}}</strong>, todos sus estudiantes y todos los registros de calificaciones y asistencia asociados.",
+        "deleteButton": "Eliminar este grupo"
+      },
+      "editModal": {
+        "title": "Editar color para {{name}}",
+        "colorLabel": "Seleccionar nuevo color"
+      }
+    },
+    "schedule": {
+      "title": "Horario semanal",
+      "editTitle": "Editar horario",
+      "removeTitle": "Quitar del horario",
+      "addTitle": "Añadir al horario",
+      "recess": "Receso",
+      "addModalTitle": "Añadir grupo al horario",
+      "addModalInstruction": "Arrastra un grupo a una franja horaria.",
+      "days": {
+        "monday": "Lunes",
+        "tuesday": "Martes",
+        "wednesday": "Miércoles",
+        "thursday": "Jueves",
+        "friday": "Viernes"
+      }
+    }
   }
 }

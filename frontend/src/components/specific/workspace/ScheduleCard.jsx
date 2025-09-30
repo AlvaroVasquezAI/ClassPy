@@ -1,67 +1,58 @@
 import React, { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { apiClient } from '../../../services/apiClient';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
+import Modal from '../../common/Modal';
 import './Schedule.css';
 
 const timeSlots = [
-  "07:00 - 07:50",
-  "07:50 - 08:40",
-  "08:40 - 09:30",
-  "09:30 - 10:20",
+  "07:00 - 07:50", "07:50 - 08:40", "08:40 - 09:30", "09:30 - 10:20",
   "10:20 - 10:50", // Recess
-  "10:50 - 11:40",
-  "11:40 - 12:30",
-  "12:30 - 13:20",
+  "10:50 - 11:40", "11:40 - 12:30", "12:30 - 13:20",
 ];
 
-const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+const daysInEnglish = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
 const ScheduleCard = ({ groups, subjects, schedule, onUpdate }) => {
+  const { t } = useTranslation();
+
   const [isEditMode, setIsEditMode] = useState(false);
   const [isRemoveMode, setIsRemoveMode] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const groupsMap = useMemo(() => groups.reduce((acc, g) => ({ ...acc, [g.id]: g }), {}), [groups]);
   const subjectsMap = useMemo(() => subjects.reduce((acc, s) => ({ ...acc, [s.id]: s.name }), {}), [subjects]);
 
   const toggleMode = (mode) => {
-    if (mode === 'edit') {
-      setIsRemoveMode(false);
-      setIsEditMode(prev => !prev);
-    } else if (mode === 'remove') {
-      setIsEditMode(false);
-      setIsRemoveMode(prev => !prev);
-    }
+    setIsEditMode(mode === 'edit' ? !isEditMode : false);
+    setIsRemoveMode(mode === 'remove' ? !isRemoveMode : false);
   };
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
+  const handleDragOver = (e) => e.preventDefault();
+  
+  const handleDragStart = (e, data) => {
+    e.dataTransfer.setData("groupId", data.groupId);
+    if (data.scheduleId) e.dataTransfer.setData("scheduleId", data.scheduleId);
   };
-
-  const handleDragStart = (e, scheduleEntry) => {
-    e.dataTransfer.setData("scheduleId", scheduleEntry.id);
-    e.dataTransfer.setData("groupId", scheduleEntry.groupId);
-  };
-
-  const handleDrop = async (e, day, time) => {
+  
+  const handleDrop = async (e, dayInEnglish, time) => {
     e.preventDefault();
     const scheduleIdToMove = e.dataTransfer.getData("scheduleId");
     const groupId = e.dataTransfer.getData("groupId");
 
     if (!groupId) return;
-
+    
     const [startTime, endTime] = time.split(' - ');
     const newScheduleData = {
       groupId: parseInt(groupId),
-      dayOfWeek: day,
+      dayOfWeek: dayInEnglish, 
       startTime,
       endTime,
     };
 
     try {
       await apiClient.saveScheduleEntry(newScheduleData);
-      if (scheduleIdToMove) {
-        await apiClient.deleteScheduleEntry(parseInt(scheduleIdToMove));
-      }
+      if (scheduleIdToMove) await apiClient.deleteScheduleEntry(parseInt(scheduleIdToMove));
       onUpdate();
     } catch (error) {
       console.error("Failed to update schedule", error);
@@ -72,71 +63,58 @@ const ScheduleCard = ({ groups, subjects, schedule, onUpdate }) => {
     try {
       await apiClient.deleteScheduleEntry(scheduleId);
       onUpdate();
-    } catch (error)
-    {
+    } catch (error) {
       console.error("Failed to delete schedule entry", error);
     }
+  };
+
+  const getGroupDisplayText = (group) => {
+    if (!group) return '';
+    const subjectName = subjectsMap[group.subjectId] || '...';
+    return `${group.grade}${group.name} - ${subjectName}`;
   };
 
   return (
     <div className="schedule-container">
       <div className="schedule-header">
-        <h3>Weekly Schedule</h3>
+        <h3>{t('workspace.schedule.title')}</h3>
         <div className="header-actions">
-          <button className={`action-button ${isEditMode ? 'active' : ''}`} title="Edit Schedule" onClick={() => toggleMode('edit')}>
-            <FaEdit />
-          </button>
-          <button className={`action-button ${isRemoveMode ? 'active danger-button' : ''}`} title="Remove from Schedule" onClick={() => toggleMode('remove')}>
-            <FaTrash />
-          </button>
+          <button className={`action-button ${isEditMode ? 'active' : ''}`} title={t('workspace.schedule.editTitle')} onClick={() => toggleMode('edit')}><FaEdit /></button>
+          <button className={`action-button ${isRemoveMode ? 'active danger-button' : ''}`} title={t('workspace.schedule.removeTitle')} onClick={() => toggleMode('remove')}><FaTrash /></button>
+          <button className="add-button" title={t('workspace.schedule.addTitle')} onClick={() => setIsAddModalOpen(true)}><FaPlus /></button>
         </div>
       </div>
       <div className="schedule-grid">
         <div className="time-column">
-          <div className="grid-header"></div> 
+          <div className="grid-header"></div>
           {timeSlots.map(time => {
             const isRecess = time.startsWith("10:20");
-            return (
-              <div key={time} className={`time-slot-label ${isRecess ? 'recess-label' : ''}`}>
-                {isRecess ? "Recess" : time}
-              </div>
-            );
+            return <div key={time} className={`time-slot-label ${isRecess ? 'recess-label' : ''}`}>{isRecess ? t('workspace.schedule.recess') : time}</div>;
           })}
         </div>
-
-        {days.map(day => (
-          <div key={day} className="day-column">
-            <div className="grid-header">{day}</div>
+        {daysInEnglish.map(dayInEnglish => (
+          <div key={dayInEnglish} className="day-column">
+            <div className="grid-header">{t(`workspace.schedule.days.${dayInEnglish.toLowerCase()}`)}</div>
             {timeSlots.map(time => {
               const isRecess = time.startsWith("10:20");
-              if (isRecess) {
-                return <div key={`${day}-${time}`} className="grid-cell recess"></div>;
-              }
+              if (isRecess) return <div key={`${dayInEnglish}-${time}`} className="grid-cell recess"></div>;
 
-              const scheduleEntry = schedule.find(
-                entry => entry.dayOfWeek === day && entry.startTime === time.split(' - ')[0]
-              );
-
+              const scheduleEntry = schedule.find(entry => entry.dayOfWeek === dayInEnglish && entry.startTime === time.split(' - ')[0]);
               return (
                 <div 
-                  key={`${day}-${time}`} 
+                  key={`${dayInEnglish}-${time}`} 
                   className={`grid-cell ${!isRecess ? 'droppable' : ''}`}
                   onDragOver={handleDragOver}
-                  onDrop={(e) => handleDrop(e, day, time)}
+                  onDrop={(e) => handleDrop(e, dayInEnglish, time)}
                 >
                   {scheduleEntry && groupsMap[scheduleEntry.groupId] && (
-                    <div 
-                      className={`item-chip schedule-item ${isEditMode ? 'draggable' : ''} ${isRemoveMode ? 'deletable' : ''}`} 
+                    <div
+                      className={`item-chip schedule-item ${isEditMode ? 'draggable' : ''} ${isRemoveMode ? 'deletable' : ''}`}
                       style={{ backgroundColor: groupsMap[scheduleEntry.groupId].color }}
                       draggable={isEditMode}
-                      onDragStart={(e) => handleDragStart(e, scheduleEntry)}
-                      onClick={() => isRemoveMode && handleDelete(scheduleEntry.id)}
-                    >
-                      {(() => {
-                         const group = groupsMap[scheduleEntry.groupId];
-                         const subjectName = subjectsMap[group.subjectId] || '...';
-                         return `${group.grade}${group.name} - ${subjectName}`;
-                      })()}
+                      onDragStart={(e) => handleDragStart(e, { groupId: scheduleEntry.groupId, scheduleId: scheduleEntry.id })}
+                      onClick={() => isRemoveMode && handleDelete(scheduleEntry.id)}>
+                      {getGroupDisplayText(groupsMap[scheduleEntry.groupId])}
                     </div>
                   )}
                 </div>
@@ -145,6 +123,19 @@ const ScheduleCard = ({ groups, subjects, schedule, onUpdate }) => {
           </div>
         ))}
       </div>
+      <Modal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} title={t('workspace.schedule.addModalTitle')}>
+        <p style={{textAlign: 'center', color: 'var(--text-color-light)', marginTop: 0}}>{t('workspace.schedule.addModalInstruction')}</p>
+        <div className="add-group-modal-body" onDragLeave={() => setIsAddModalOpen(false)}>
+          {groups.map(group => (
+            <div key={group.id} className="item-chip draggable"
+              style={{ backgroundColor: group.color }}
+              draggable="true"
+              onDragStart={(e) => handleDragStart(e, { groupId: group.id })}>
+              {getGroupDisplayText(group)}
+            </div>
+          ))}
+        </div>
+      </Modal>
     </div>
   );
 };

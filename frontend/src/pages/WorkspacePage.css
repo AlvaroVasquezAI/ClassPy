@@ -5,9 +5,8 @@
 
 .workspace-main-grid {
   display: grid;
-  /* Change this line */
-  grid-template-columns: 1.3fr 1.3fr 1.3fr; 
-  grid-template-rows: auto 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
   gap: 1.5rem;
   height: 100%;
 }
@@ -20,5 +19,34 @@
 }
 
 .schedule-card {
-  grid-column: 1 / 4; 
+  grid-column: 1 / 4;
+}
+
+@media (max-width: 1024px) {
+  .workspace-main-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .shortcuts-card,
+  .subjects-card, 
+  .schedule-card {
+    grid-column: 1 / 3;
+  }
+}
+
+@media (max-width: 768px) {
+  .workspace-main-grid {
+    grid-template-columns: 1fr; 
+  }
+
+  .shortcuts-card,
+  .subjects-card,
+  .groups-card,
+  .schedule-card {
+    grid-column: auto; 
+  }
+
+  .grid-item {
+    padding: 1.25rem;
+  }
 }

@@ -16,6 +16,11 @@
   gap: 0.75rem;
 }
 
+.workspace-card-header .header-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .action-button,
 .add-button {
   width: 32px;
@@ -38,6 +43,12 @@
   background-color: rgba(128, 128, 128, 0.1);
 }
 
+.action-button.active {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
 .add-button {
   background-color: var(--primary-color);
   color: white;
@@ -52,7 +63,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  justify-content: center; 
+  justify-content: center;
 }
 
 .item-chip {
@@ -67,6 +78,52 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 1rem 1.2rem;
+  text-align: center;
+}
+
+.items-container.deleting .item-chip {
+  cursor: pointer;
+  border: 2px solid var(--danger-color);
+}
+
+.items-container.editing .item-chip {
+  cursor: pointer;
+  border: 2px solid var(--primary-color);
+}
+
+.item-chip.draggable {
+  cursor: grab;
+}
+.item-chip.draggable:active {
+  cursor: grabbing;
+}
+
+.sub-group-container {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
+}
+
+.sub-group-chip {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.grid-item.groups-card .item-chip {
+  flex-direction: row;
+  padding: 0.7rem 1.2rem;
+  font-size: 0.9rem;
+  min-width: unset;
+  border-radius: 20px;
+  gap: 0;
 }
 
 .modal-form {
@@ -98,37 +155,9 @@
   margin-top: 0.5rem;
 }
 
-.color-picker-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.color-input {
-  width: 40px;
-  height: 40px;
-  border: none;
-  background: none;
-  cursor: pointer;
-  padding: 0;
-}
-
-.workspace-card-header .header-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.action-button.active {
-  background-color: var(--primary-color);
-  color: white;
-  border-color: var(--primary-color);
-}
-
-.item-chip.draggable {
-  cursor: grab;
-}
-.item-chip.draggable:active {
-  cursor: grabbing;
+.primary-button:disabled {
+  background-color: var(--input-border-color);
+  cursor: not-allowed;
 }
 
 .danger-button {
@@ -138,11 +167,6 @@
 .danger-button:disabled {
   background-color: var(--input-border-color);
   opacity: 0.6;
-}
-
-.items-container.deleting .item-chip {
-  cursor: pointer;
-  border: 2px solid var(--danger-color);
 }
 
 .delete-modal-text {
@@ -170,6 +194,7 @@
 .label-group {
   display: flex;
   gap: 0.75rem;
+  flex-wrap: wrap; 
 }
 
 .label-button {
@@ -200,6 +225,21 @@
   border-color: var(--input-border-color);
 }
 
+.color-picker-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.color-input {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+
 .preview-chip-container {
   margin-top: 1.5rem;
   display: flex;
@@ -208,34 +248,10 @@
   gap: 1rem;
 }
 
-.primary-button:disabled {
-  background-color: var(--input-border-color);
-  cursor: not-allowed;
-}
-
 .form-error {
   color: var(--danger-color);
   font-size: 0.9rem;
   margin-top: 0.25rem;
-}
-
-.sub-group-container {
-  display: flex;
-  gap: 0.4rem;
-  margin-top: 0.4rem;
-}
-
-.sub-group-chip {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
-  font-weight: bold;
-  border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .view-groups-modal-body {
@@ -252,26 +268,11 @@
   min-width: unset;
 }
 
-.grid-item.groups-card .item-chip {
-  flex-direction: row;
-  padding: 0.7rem 1.2rem;
-  font-size: 0.9rem;
-  min-width: unset;
-  border-radius: 20px;
-  gap: 0;
-}
-
-.items-container.editing .item-chip {
-  cursor: pointer;
-  border: 2px solid var(--primary-color);
-}
-
 .shortcuts-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 1rem;
   width: 100%;
-  margin-top: 1rem;
 }
 
 .shortcut-button {

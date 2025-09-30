@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { apiClient } from '../services/apiClient';
 import SubjectsCard from '../components/specific/workspace/SubjectsCard';
 import GroupsCard from '../components/specific/workspace/GroupsCard';
@@ -7,6 +8,7 @@ import ShortcutsCard from '../components/specific/workspace/ShortcutsCard';
 import './WorkspacePage.css';
 
 const WorkspacePage = () => {
+  const { t } = useTranslation(); 
   const [subjects, setSubjects] = useState([]);
   const [groups, setGroups] = useState([]);
   const [schedule, setSchedule] = useState([]);
@@ -35,7 +37,7 @@ const WorkspacePage = () => {
   }, []);
   
   if (isLoading) {
-    return <div>Loading Workspace...</div>;
+    return <div>{t('workspace.loading')}</div>; 
   }
 
   return (

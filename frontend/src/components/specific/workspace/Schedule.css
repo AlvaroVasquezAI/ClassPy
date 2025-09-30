@@ -2,6 +2,15 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow-x: auto;
+}
+
+.schedule-grid {
+  display: grid;
+  grid-template-columns: 100px repeat(5, 1fr);
+  flex-grow: 1;
+  gap: 4px;
+  min-width: 700px;
 }
 
 .schedule-header {
@@ -9,23 +18,13 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
+  flex-wrap: nowrap; 
+  gap: 1rem;      
 }
 
-.schedule-header h3 {
-  margin: 0;
-  font-size: 1.25rem;
-}
-
-.schedule-header .header-actions {
+.header-actions {
   display: flex;
-  gap: 0.5rem;
-}
-
-.schedule-grid {
-  display: grid;
-  grid-template-columns: 100px repeat(5, 1fr); 
-  flex-grow: 1;
-  gap: 4px;
+  gap: 0.75rem;
 }
 
 .time-column, .day-column {
@@ -53,15 +52,15 @@
 .recess-label {
   font-weight: bold;
   color: var(--primary-color);
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
 }
 
 .grid-cell {
   background-color: var(--input-bg);
   border-radius: 8px;
   transition: background-color 0.2s;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
 }
 
 .grid-cell.droppable:hover {
@@ -87,17 +86,86 @@
   justify-content: center;
   box-sizing: border-box;
   font-size: 0.9rem;
-  border-radius: inherit; 
-}
-
-.schedule-item.draggable {
-  cursor: grab;
-}
-.schedule-item.draggable:active {
-  cursor: grabbing;
+  border-radius: inherit;
 }
 
 .schedule-item.deletable {
   cursor: pointer;
   border: 2px solid var(--danger-color);
+}
+
+.time-slot-label-mobile {
+  display: none;
+}
+.schedule-row {
+  display: contents;
+}
+
+@media (max-width: 768px) {
+  .schedule-container {
+    overflow-x: hidden;
+  }
+
+  .schedule-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-width: unset;
+  }
+
+  .time-column {
+    display: none;
+  }
+
+  .day-column {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .grid-header {
+    justify-content: flex-start;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--nav-border);
+  }
+
+  .schedule-row {
+    display: flex; 
+    gap: 8px;
+    align-items: stretch;
+  }
+
+  .time-slot-label-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-basis: 90px;
+    flex-shrink: 0;
+    font-size: 0.8rem;
+    color: var(--text-color-light);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .grid-cell {
+    flex-grow: 1; 
+    min-height: 50px;
+  }
+}
+
+.add-group-modal-body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  padding: 1rem 0.5rem;
+  min-height: 150px;
+}
+
+.add-group-modal-body .item-chip {
+  flex-direction: row;
+  padding: 0.7rem 1.2rem;
+  font-size: 0.9rem;
+  border-radius: 20px;
+  gap: 0;
 }

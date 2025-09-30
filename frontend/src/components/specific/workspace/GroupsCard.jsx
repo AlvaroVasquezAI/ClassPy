@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom';
 import slugify from 'slugify';
 import { FaPlus, FaCalendarAlt, FaTrash, FaUsers, FaPencilAlt } from 'react-icons/fa';
@@ -10,6 +11,8 @@ const GRADES = ['1', '2', '3'];
 const GROUP_LETTERS = ['A', 'B', 'C', 'D', 'E'];
 
 const GroupsCard = ({ groups, subjects, onUpdate }) => {
+  const { t } = useTranslation();
+
   const [isSchedulingMode, setIsSchedulingMode] = useState(false);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -166,16 +169,16 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
       <div className="workspace-card-header">
         <div className="header-left">
           <FaUsers />
-          <h3>Groups</h3>
+          <h3>{t('workspace.groups.title')}</h3>
         </div>
         <div className="header-actions">
-          <button className={`action-button ${isEditMode ? 'active' : ''}`} title="Edit Group Color" onClick={() => toggleMode('edit')}>
+          <button className={`action-button ${isEditMode ? 'active' : ''}`} title={t('workspace.groups.editTitle')} onClick={() => toggleMode('edit')}>
             <FaPencilAlt />
           </button>
-          <button className={`action-button ${isDeleteMode ? 'active danger-button' : ''}`} title="Toggle Delete Mode" onClick={() => toggleMode('delete')}>
+          <button className={`action-button ${isDeleteMode ? 'active danger-button' : ''}`} title={t('workspace.groups.deleteTitle')} onClick={() => toggleMode('delete')}>
             <FaTrash />
           </button>
-          <button className={`action-button ${isSchedulingMode ? 'active' : ''}`} title="Toggle Schedule Mode" onClick={() => toggleMode('schedule')}>
+          <button className={`action-button ${isSchedulingMode ? 'active' : ''}`} title={t('workspace.groups.scheduleTitle')} onClick={() => toggleMode('schedule')}>
             <FaCalendarAlt />
           </button>
           <button className="add-button" onClick={() => setIsCreateModalOpen(true)}>
@@ -212,18 +215,18 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
         })}
       </div>
 
-      <Modal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} title="Create New Group">
+      <Modal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} title={t('workspace.groups.createModal.title')}>
         <div className="modal-form">
           {formError && <p className="form-error">{formError}</p>}
           <div className="modal-step">
-            <label>1. Select Subject</label>
+            <label>{t('workspace.groups.createModal.step1Label')}</label>
             <select className="form-input" value={selectedSubjectId} onChange={(e) => setSelectedSubjectId(e.target.value)}>
-              <option value="">Select a Subject...</option>
+              <option value="">{t('workspace.groups.createModal.step1Placeholder')}</option>
               {subjects.map(subject => <option key={subject.id} value={subject.id}>{subject.name}</option>)}
             </select>
           </div>
           <div className="modal-step" style={{ opacity: isGradeStepEnabled ? 1 : 0.5 }}>
-            <label>2. Select Grade</label>
+            <label>{t('workspace.groups.createModal.step2Label')}</label>
             <div className="label-group">
               {GRADES.map(grade => (
                 <button key={grade} disabled={!isGradeStepEnabled} className={`label-button ${selectedGrade === grade ? 'selected' : ''}`} onClick={() => setSelectedGrade(grade)}>{grade}</button>
@@ -231,7 +234,7 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
             </div>
           </div>
           <div className="modal-step" style={{ opacity: isGroupLetterStepEnabled ? 1 : 0.5 }}>
-            <label>3. Select Group Letter</label>
+            <label>{t('workspace.groups.createModal.step3Label')}</label>
             <div className="label-group">
               {GROUP_LETTERS.map(letter => (
                 <button key={letter} disabled={!isGroupLetterStepEnabled || existingGroupLetters.includes(letter)} className={`label-button ${selectedGroupLetter === letter ? 'selected' : ''}`} onClick={() => setSelectedGroupLetter(letter)}>{letter}</button>
@@ -239,34 +242,32 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
             </div>
           </div>
           <div className="modal-step" style={{ opacity: isColorStepEnabled ? 1 : 0.5 }}>
-            <label>4. Select Group Color</label>
+            <label>{t('workspace.groups.createModal.step4Label')}</label>
             <div className="color-picker-wrapper">
               <input type="color" value={selectedColor} disabled={!isColorStepEnabled} onChange={(e) => setSelectedColor(e.target.value)} className="color-input"/>
-              {isColorDuplicate && <span className="form-error">This color is already in use.</span>}
+              {isColorDuplicate && <span className="form-error">{t('workspace.groups.createModal.colorInUseError')}</span>}
             </div>
           </div>
           {isColorStepEnabled && (
             <div className="preview-chip-container">
-              <label>Preview</label>
+              <label>{t('workspace.common.preview')}</label>
               <div className="item-chip" style={{ backgroundColor: selectedColor }}>{previewText}</div>
               <div>
                 <input type="checkbox" id="colorConfirm" checked={isColorConfirmed} onChange={(e) => setIsColorConfirmed(e.target.checked)} />
-                <label htmlFor="colorConfirm" style={{ marginLeft: '8px' }}>Confirm color selection</label>
+                <label htmlFor="colorConfirm" style={{ marginLeft: '8px' }}>{t('workspace.groups.createModal.confirmColor')}</label>
               </div>
             </div>
           )}
           <button className="primary-button" onClick={handleCreateGroup} disabled={!isCreateButtonEnabled}>
-            Create Group
+            {t('workspace.groups.createModal.createButton')}
           </button>
         </div>
       </Modal>
 
-      <Modal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} title="Delete Group">
+      <Modal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} title={t('workspace.groups.deleteModal.title')}>
         <div className="modal-form">
-          <p className="delete-modal-text">
-            This action cannot be undone. This will permanently delete the <strong>{getGroupDisplayText(groupToDelete)}</strong> group, all of its students, and all associated grades and attendance records.
-          </p>
-          <p>Please type the full group name to confirm.</p>
+          <p className="delete-modal-text" dangerouslySetInnerHTML={{ __html: t('workspace.groups.deleteModal.confirmationText', { name: getGroupDisplayText(groupToDelete) }) }} />
+          <p>{t('workspace.common.typeFullToConfirm')}</p>
           <input
             type="text"
             className="form-input"
@@ -279,28 +280,28 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
             onClick={handleConfirmDelete}
             disabled={deleteConfirmationText !== getGroupDisplayText(groupToDelete)}
           >
-            Delete this group
+            {t('workspace.groups.deleteModal.deleteButton')}
           </button>
         </div>
       </Modal>
 
-      <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} title={`Edit Color for ${getGroupDisplayText(groupToEdit)}`}>
+      <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} title={t('workspace.groups.editModal.title', { name: getGroupDisplayText(groupToEdit) })}>
         <div className="modal-form">
           {formError && <p className="form-error">{formError}</p>}
           <div className="modal-step">
-            <label>Select New Color</label>
+            <label>{t('workspace.groups.editModal.colorLabel')}</label>
             <div className="color-picker-wrapper">
               <input type="color" value={newColorForEdit} onChange={(e) => setNewColorForEdit(e.target.value)} className="color-input"/>
             </div>
           </div>
           <div className="preview-chip-container">
-            <label>Preview</label>
+            <label>{t('workspace.common.preview')}</label>
             <div className="item-chip" style={{ backgroundColor: newColorForEdit }}>
               {getGroupDisplayText(groupToEdit)}
             </div>
           </div>
           <button className="primary-button" onClick={handleUpdateGroup}>
-            Save Changes
+            {t('workspace.common.saveChanges')}
           </button>
         </div>
       </Modal>

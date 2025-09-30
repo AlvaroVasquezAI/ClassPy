@@ -28,5 +28,87 @@
     "saveButton": "Save",
     "cancelButton": "Cancel",
     "changePhotoButton": "Change Photo"
+  },
+  "workspace": {
+    "loading": "Loading Workspace...",
+    "common": {
+      "preview": "Preview",
+      "saveChanges": "Save Changes",
+      "typeToConfirm": "Please type the name to confirm.",
+      "typeFullToConfirm": "Please type the full name to confirm."
+    },
+    "shortcuts": {
+      "title": "Shortcuts",
+      "viewExams": "View Exams",
+      "viewAssignments": "View Assignments",
+      "viewPlannings": "View Plannings",
+      "viewGrades": "View Grades"
+    },
+    "subjects": {
+      "title": "Subjects",
+      "editTitle": "Edit Subject",
+      "deleteTitle": "Delete Subject",
+      "createModal": {
+        "title": "Create New Subject",
+        "placeholder": "Subject Name (e.g., Biology)",
+        "colorLabel": "Select Subject Color",
+        "createButton": "Create Subject"
+      },
+      "editModal": {
+        "title": "Edit Subject",
+        "nameLabel": "Subject Name",
+        "colorLabel": "Subject Color"
+      },
+      "deleteModal": {
+        "title": "Delete Subject",
+        "confirmationText": "This will permanently delete the <strong>{{name}}</strong> subject and ALL of its associated groups, students, and grades. This action cannot be undone.",
+        "deleteButton": "Delete this subject"
+      },
+      "viewGroupsModal": {
+        "title": "Groups in {{subjectName}}"
+      }
+    },
+    "groups": {
+      "title": "Groups",
+      "editTitle": "Edit Group Color",
+      "deleteTitle": "Toggle Delete Mode",
+      "scheduleTitle": "Toggle Schedule Mode",
+      "createModal": {
+        "title": "Create New Group",
+        "step1Label": "1. Select Subject",
+        "step1Placeholder": "Select a Subject...",
+        "step2Label": "2. Select Grade",
+        "step3Label": "3. Select Group Letter",
+        "step4Label": "4. Select Group Color",
+        "colorInUseError": "This color is already in use.",
+        "confirmColor": "Confirm color selection",
+        "createButton": "Create Group"
+      },
+      "deleteModal": {
+        "title": "Delete Group",
+        "confirmationText": "This action cannot be undone. This will permanently delete the <strong>{{name}}</strong> group, all of its students, and all associated grades and attendance records.",
+        "deleteButton": "Delete this group"
+      },
+      "editModal": {
+        "title": "Edit Color for {{name}}",
+        "colorLabel": "Select New Color"
+      }
+    },
+    "schedule": {
+      "title": "Weekly Schedule",
+      "editTitle": "Edit Schedule",
+      "removeTitle": "Remove from Schedule",
+      "addTitle": "Add to Schedule",
+      "recess": "Recess",
+      "addModalTitle": "Add Group to Schedule",
+      "addModalInstruction": "Drag a group onto a time slot.",
+      "days": {
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday"
+      }
+    }
   }
 }
