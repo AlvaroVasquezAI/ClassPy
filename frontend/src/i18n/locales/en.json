@@ -4,7 +4,11 @@
     "workspace": "Workspace",
     "classroom": "Classroom",
     "students": "Students",
-    "attendance": "Attendance"
+    "attendance": "Attendance",
+    "light_mode": "Light Mode",
+    "dark_mode": "Dark Mode",
+    "es": "Spanish",
+    "en": "English"
   },
   "setupPage": {
     "title": "C l a s s P y",

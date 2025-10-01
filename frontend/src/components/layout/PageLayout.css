@@ -1,7 +1,7 @@
 .app-container {
   display: flex;
   flex-direction: column;
-  height: 100dvh; 
+  min-height: 100dvh; 
 }
 
 .content-area {
@@ -23,6 +23,9 @@
   height: 60px;
   box-sizing: border-box;
   flex-shrink: 0; 
+  position: sticky; 
+  top: 0;          
+  z-index: 10;
 }
 
 .nav-logo {

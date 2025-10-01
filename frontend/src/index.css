@@ -32,7 +32,7 @@ html.dark {
 }
 
 html {
-  background-color: var(--background-color);
+  background-color: transparent;
 }
 
 body {
