@@ -136,4 +136,88 @@ export const apiClient = {
     if (!response.ok) throw new Error('Failed to delete subject.');
     return true;
   },
+
+  getTopics: async (periodId, subjectId) => {
+    const response = await fetch(`${API_BASE_URL}/api/topics/by-period-subject?period_id=${periodId}&subject_id=${subjectId}`);
+    if (!response.ok) throw new Error('Failed to fetch topics.');
+    return response.json();
+  },
+
+  createTopic: async (topicData) => {
+    const response = await fetch(`${API_BASE_URL}/api/topics`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(topicData),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || 'Failed to create topic.');
+    }
+    return response.json();
+  },
+
+  updateTopic: async (topicId, topicData) => {
+    const response = await fetch(`${API_BASE_URL}/api/topics/${topicId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(topicData),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || 'Failed to update topic.');
+    }
+    return response.json();
+  },
+
+  deleteTopic: async (topicId) => {
+    const response = await fetch(`${API_BASE_URL}/api/topics/${topicId}`, {
+      method: 'DELETE',
+    });
+    if (response.status !== 204) {
+      throw new Error('Failed to delete topic.');
+    }
+    return true;
+  },
+
+  getStudentsByGroup: async (groupId) => {
+    const response = await fetch(`${API_BASE_URL}/api/students?group_id=${groupId}`);
+    if (!response.ok) throw new Error('Failed to fetch students.');
+    return response.json();
+  },
+
+  createStudent: async (studentData) => {
+    const response = await fetch(`${API_BASE_URL}/api/students`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(studentData),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || 'Failed to create student.');
+    }
+    return response.json();
+  },
+
+  updateStudent: async (studentId, studentData) => {
+    const response = await fetch(`${API_BASE_URL}/api/students/${studentId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(studentData),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || 'Failed to update student.');
+    }
+    return response.json();
+  },
+
+  deleteStudent: async (studentId) => {
+    const response = await fetch(`${API_BASE_URL}/api/students/${studentId}`, {
+      method: 'DELETE',
+    });
+    if (response.status !== 204) {
+      throw new Error('Failed to delete student.');
+    }
+    return true;
+  },
 };

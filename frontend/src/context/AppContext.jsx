@@ -20,6 +20,10 @@ export const AppProvider = ({ children }) => {
   const [teacherInfo, setTeacherInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [subjects, setSubjects] = useState([]);
+  const [groups, setGroups] = useState([]);
+  const [isWorkspaceLoading, setIsWorkspaceLoading] = useState(true);
+
   const handleLanguageChange = () => {
     const newLang = i18n.language === 'en' ? 'es' : 'en';
     i18n.changeLanguage(newLang);
@@ -51,6 +55,28 @@ export const AppProvider = ({ children }) => {
     checkTeacherStatus();
   }, []);
 
+  const fetchWorkspaceData = async () => {
+    setIsWorkspaceLoading(true);
+    try {
+      const [subjectsData, groupsData] = await Promise.all([
+        apiClient.getSubjects(),
+        apiClient.getGroups(),
+      ]);
+      setSubjects(subjectsData);
+      setGroups(groupsData);
+    } catch (error) {
+      console.error("Failed to fetch workspace data:", error);
+    } finally {
+      setIsWorkspaceLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (teacherInfo) {
+      fetchWorkspaceData();
+    }
+  }, [teacherInfo]); 
+
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
   };
@@ -60,9 +86,14 @@ export const AppProvider = ({ children }) => {
     toggleTheme,
     teacherInfo,
     setTeacherInfo,
-    isLoading,
+    isLoading, 
     language: i18n.language, 
     changeLanguage: handleLanguageChange,
+
+    subjects,
+    groups,
+    isWorkspaceLoading,
+    refreshWorkspaceData: fetchWorkspaceData, 
   };
   
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

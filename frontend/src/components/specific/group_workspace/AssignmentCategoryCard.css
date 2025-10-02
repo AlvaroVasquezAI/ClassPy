@@ -1,0 +1,58 @@
+.gw-ac-card {
+  border: 2px solid var(--input-border-color);
+  border-radius: 16px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 180px;
+}
+
+.gw-ac-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.gw-ac-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.gw-ac-weight {
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.gw-ac-body {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.gw-ac-count {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-color);
+}
+
+.gw-ac-button {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: auto; 
+}
+
+.gw-ac-button:hover {
+  background-color: var(--input-border-color);
+}

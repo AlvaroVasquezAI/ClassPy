@@ -1,0 +1,113 @@
+.group-workspace-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.gw-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 1rem;
+}
+
+.gw-group-name {
+  border: 2px solid var(--input-border-color);
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+.gw-students-button {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  border: 2px solid var(--input-border-color);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.gw-students-button:hover {
+  background-color: var(--input-bg);
+}
+
+.gw-students-button svg {
+  font-size: 1.5rem;
+}
+
+.gw-period-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.gw-period-button {
+  padding: 0.75rem;
+  border: 2px solid var(--input-border-color);
+  background-color: transparent;
+  color: var(--text-color);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.gw-period-button.active {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.gw-main-content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  align-items: flex-start; 
+}
+
+.gw-topics-card {
+  grid-column: 1 / 2; 
+  border: 2px solid var(--input-border-color);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.gw-grades-breakdown {
+  grid-column: 2 / 4;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.gw-grades-table-container {
+  grid-column: 1 / 4; 
+  border: 2px solid var(--input-border-color);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .gw-main-content {
+    grid-template-columns: 1fr;
+  }
+  .gw-topics-card, .gw-grades-breakdown, .gw-grades-table-container {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .gw-header {
+    grid-template-columns: 1fr;
+  }
+  .gw-grades-breakdown {
+    grid-template-columns: 1fr;
+  }
+}

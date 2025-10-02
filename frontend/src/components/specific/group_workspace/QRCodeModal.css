@@ -1,0 +1,29 @@
+.gw-qrm-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.gw-qrm-image {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid var(--input-border-color);
+}
+
+.gw-qrm-textid {
+  font-family: monospace;
+  background-color: var(--input-bg);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+}
+
+.gw-qrm-container .primary-button {
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+}

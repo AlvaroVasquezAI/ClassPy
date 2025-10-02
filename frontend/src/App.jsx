@@ -9,6 +9,7 @@ import ClassroomPage from './pages/ClassroomPage';
 import StudentsPage from './pages/StudentsPage';
 import AttendancePage from './pages/AttendancePage';
 import InitialSetupPage from './pages/InitialSetupPage';
+import GroupWorkspacePage from './pages/GroupWorkspacePage';
 
 import ProtectedRoute from './router/ProtectedRoute';
 import PublicRoute from './router/PublicRoute';
@@ -30,6 +31,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/workspace" element={<WorkspacePage />} />
+              <Route path="/workspace/:groupSlug" element={<GroupWorkspacePage />} />
               <Route path="/classroom" element={<ClassroomPage />} />
               <Route path="/students" element={<StudentsPage />} />
               <Route path="/attendance" element={<AttendancePage />} />

@@ -1,0 +1,160 @@
+.modal-content {
+  max-width: 900px !important;
+  min-height: 500px;
+}
+
+.gw-sm-container {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 2.5rem;
+  padding: 1rem 0;
+}
+
+.gw-sm-list-section, .gw-sm-form-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.gw-sm-list-section h4, .gw-sm-form-section h4 {
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+  border-bottom: 1px solid var(--nav-border);
+  padding-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.gw-sm-student-count {
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gw-sm-list {
+  max-height: 55vh;
+  overflow-y: auto;
+  padding-right: 1rem;
+}
+
+.gw-sm-student-wrapper {
+  border-bottom: 1px solid var(--input-border-color);
+}
+.gw-sm-student-wrapper:last-child {
+  border-bottom: none;
+}
+
+.gw-sm-student-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0.25rem;
+}
+
+.gw-sm-student-name {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 500;
+}
+
+.gw-sm-student-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.gw-sm-action-btn {
+  background: none;
+  border: none;
+  color: var(--text-color-light);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0.5rem;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.gw-sm-action-btn:hover {
+  background-color: var(--input-bg);
+  color: var(--text-color);
+}
+.gw-sm-action-btn.danger:hover {
+  color: var(--danger-color);
+}
+
+.gw-sm-action-btn.expand.active {
+  transform: rotate(180deg);
+  background-color: var(--input-bg);
+}
+
+.gw-sm-student-details {
+  background-color: var(--input-bg);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.9rem;
+}
+
+.gw-sm-qr-preview img {
+  width: 64px;
+  height: 64px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid var(--input-border-color);
+}
+
+.gw-sm-details-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.gw-sm-details-text span {
+  color: var(--text-color-light);
+  font-family: monospace;
+}
+
+.gw-sm-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.gw-sm-form-group label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.gw-sm-cancel-edit-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-color-light);
+}
+.gw-sm-cancel-edit-btn:hover {
+    color: var(--danger-color);
+}
+
+.status-inactive {
+  color: var(--danger-color);
+}
+.status-transferred {
+  color: #3B82F6;
+}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { apiClient } from '../services/apiClient';
+import { useAppContext } from '../context/AppContext';
+import { apiClient } from '../services/apiClient'; 
 import SubjectsCard from '../components/specific/workspace/SubjectsCard';
 import GroupsCard from '../components/specific/workspace/GroupsCard';
 import ScheduleCard from '../components/specific/workspace/ScheduleCard';
@@ -8,35 +9,34 @@ import ShortcutsCard from '../components/specific/workspace/ShortcutsCard';
 import './WorkspacePage.css';
 
 const WorkspacePage = () => {
-  const { t } = useTranslation(); 
-  const [subjects, setSubjects] = useState([]);
-  const [groups, setGroups] = useState([]);
-  const [schedule, setSchedule] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { t } = useTranslation();
+  
+  const { 
+    subjects, 
+    groups, 
+    isWorkspaceLoading, 
+    refreshWorkspaceData 
+  } = useAppContext();
 
-  const fetchData = async () => {
+  const [schedule, setSchedule] = useState([]);
+  const [isScheduleLoading, setIsScheduleLoading] = useState(true);
+
+  const fetchSchedule = async () => {
     try {
-      setIsLoading(true);
-      const [subjectsData, groupsData, scheduleData] = await Promise.all([
-        apiClient.getSubjects(),
-        apiClient.getGroups(),
-        apiClient.getSchedule(),
-      ]);
-      setSubjects(subjectsData);
-      setGroups(groupsData);
+      const scheduleData = await apiClient.getSchedule();
       setSchedule(scheduleData);
     } catch (error) {
-      console.error("Failed to fetch workspace data:", error);
+      console.error("Failed to fetch schedule data:", error);
     } finally {
-      setIsLoading(false);
+      setIsScheduleLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
   
-  if (isLoading) {
+  useEffect(() => {
+    fetchSchedule();
+  }, []);
+
+  if (isWorkspaceLoading || isScheduleLoading) {
     return <div>{t('workspace.loading')}</div>; 
   }
 
@@ -47,17 +47,17 @@ const WorkspacePage = () => {
                 <ShortcutsCard />
             </div>
             <div className="grid-item subjects-card">
-                <SubjectsCard subjects={subjects} groups={groups} onUpdate={fetchData} />
+                <SubjectsCard subjects={subjects} groups={groups} onUpdate={refreshWorkspaceData} />
             </div>
             <div className="grid-item groups-card">
-                <GroupsCard groups={groups} subjects={subjects} onUpdate={fetchData} />
+                <GroupsCard groups={groups} subjects={subjects} onUpdate={refreshWorkspaceData} />
             </div>
             <div className="grid-item schedule-card">
                 <ScheduleCard 
                     groups={groups} 
                     subjects={subjects} 
                     schedule={schedule} 
-                    onUpdate={fetchData} 
+                    onUpdate={fetchSchedule} 
                 />
             </div>
         </div>
