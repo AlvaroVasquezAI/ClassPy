@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useTranslation, Trans } from 'react-i18next';
 import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
-import Modal from '../../common/Modal'; 
+import Modal from '../../common/Modal';
 import { apiClient } from '../../../services/apiClient';
-import './TopicsCard.css'; 
-import { useState, useEffect } from 'react';
+import './TopicsCard.css';
 
 const TopicsCard = ({ topics, selectedTopicId, setSelectedTopicId, periodId, subjectId, onTopicUpdate }) => {
+  const { t } = useTranslation(); 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [topicToEdit, setTopicToEdit] = useState(null);
@@ -101,7 +102,7 @@ const TopicsCard = ({ topics, selectedTopicId, setSelectedTopicId, periodId, sub
   return (
     <>
       <div className="gw-tc-header">
-        <h3>Topics</h3>
+        <h3>{t('groupWorkspace.topicsCard.title')}</h3>
         <div className="gw-tc-actions">
           <button className="gw-tc-action-btn" onClick={() => selectedTopicId && handleOpenEditModal(topics.find(t => t.id === selectedTopicId))} disabled={!selectedTopicId}><FaEdit /></button>
           <button className="gw-tc-action-btn" onClick={() => selectedTopicId && handleOpenDeleteModal(topics.find(t => t.id === selectedTopicId))} disabled={!selectedTopicId}><FaTrash /></button>
@@ -120,29 +121,33 @@ const TopicsCard = ({ topics, selectedTopicId, setSelectedTopicId, periodId, sub
         ))}
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={handleCloseModals} title={topicToEdit ? 'Edit Topic' : 'Create New Topic'}>
+      <Modal isOpen={isModalOpen} onClose={handleCloseModals} title={topicToEdit ? t('groupWorkspace.topicsCard.editModalTitle') : t('groupWorkspace.topicsCard.createModalTitle')}>
         <div className="gw-tc-modal-form">
           {formError && <p className="form-error">{formError}</p>}
-          <label>Topic Name</label>
+          <label>{t('groupWorkspace.topicsCard.form.nameLabel')}</label>
           <input type="text" name="name" value={formData.name} onChange={handleInputChange} className="form-input" />
           
-          <label>Grading Weights (%)</label>
+          <label>{t('groupWorkspace.topicsCard.form.weightsLabel')}</label>
           <div className="gw-tc-form-grid">
-            <span>Notebook</span><input type="number" name="notebookWeight" value={formData.notebookWeight} onChange={handleInputChange} className="form-input" />
-            <span>Practices</span><input type="number" name="practiceWeight" value={formData.practiceWeight} onChange={handleInputChange} className="form-input" />
-            <span>Exam</span><input type="number" name="examWeight" value={formData.examWeight} onChange={handleInputChange} className="form-input" />
-            <span>Others</span><input type="number" name="otherWeight" value={formData.otherWeight} onChange={handleInputChange} className="form-input" />
+            <span>{t('groupWorkspace.topicsCard.form.notebook')}</span><input type="number" name="notebookWeight" value={formData.notebookWeight} onChange={handleInputChange} className="form-input" />
+            <span>{t('groupWorkspace.topicsCard.form.practices')}</span><input type="number" name="practiceWeight" value={formData.practiceWeight} onChange={handleInputChange} className="form-input" />
+            <span>{t('groupWorkspace.topicsCard.form.exam')}</span><input type="number" name="examWeight" value={formData.examWeight} onChange={handleInputChange} className="form-input" />
+            <span>{t('groupWorkspace.topicsCard.form.others')}</span><input type="number" name="otherWeight" value={formData.otherWeight} onChange={handleInputChange} className="form-input" />
           </div>
           <button className="primary-button" onClick={handleSubmit}>
-            {topicToEdit ? 'Save Changes' : 'Create Topic'}
+            {topicToEdit ? t('groupWorkspace.topicsCard.saveButton') : t('groupWorkspace.topicsCard.createButton')}
           </button>
         </div>
       </Modal>
 
-      <Modal isOpen={isDeleteModalOpen} onClose={handleCloseModals} title="Delete Topic">
+      <Modal isOpen={isDeleteModalOpen} onClose={handleCloseModals} title={t('groupWorkspace.topicsCard.deleteModalTitle')}>
         <div className="modal-form">
-            <p>Are you sure you want to permanently delete the topic "<strong>{topicToDelete?.name}</strong>"? All related assignments and grades will also be deleted.</p>
-            <button className="primary-button danger-button" onClick={handleDelete}>Confirm Delete</button>
+            <p>
+              <Trans i18nKey="groupWorkspace.topicsCard.deleteConfirmation" values={{ name: topicToDelete?.name }}>
+                Are you sure you want to permanently delete the topic "<strong>{{name}}</strong>"? All related assignments and grades will also be deleted.
+              </Trans>
+            </p>
+            <button className="primary-button danger-button" onClick={handleDelete}>{t('groupWorkspace.topicsCard.deleteButton')}</button>
         </div>
       </Modal>
     </>

@@ -38,18 +38,14 @@ def seed_initial_data():
 
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
-CLIENT_IP_ORIGIN = "http://192.168.1.79:3000" 
-
-origins = [
-    "http://localhost:3000",
-]
-
-if CLIENT_IP_ORIGIN:
-    origins.append(CLIENT_IP_ORIGIN)
+# Regex to allow connections from any device on the local network.
+# This pattern matches http://localhost:3000, http://127.0.0.1:3000,
+# and any IP address in the 192.168.x.x range on port 3000.
+origin_regex = r"http://(localhost|127\.0\.0\.1|192\.168\.\d{1,3}\.\d{1,3}):3000"
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origin_regex=origin_regex,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

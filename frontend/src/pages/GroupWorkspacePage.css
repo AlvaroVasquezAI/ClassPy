@@ -7,18 +7,19 @@
 
 .gw-header {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 10fr 7fr 1fr;
   align-items: center;
   gap: 1rem;
 }
 
 .gw-group-name {
-  border: 2px solid var(--input-border-color);
+  border: 2px solid var(--primary-color);
   padding: 0.75rem 1.5rem;
   border-radius: 12px;
   font-size: 1.2rem;
-  font-weight: 600;
-  text-align: left;
+  font-weight: 700;
+  text-align: center;
+  background-color: transparent;  
 }
 
 .gw-students-button {
@@ -27,15 +28,19 @@
   gap: 0.75rem;
   padding: 0.75rem 1.5rem;
   border-radius: 12px;
-  border: 2px solid var(--input-border-color);
-  font-size: 1rem;
-  font-weight: 500;
+  border: 2px solid var(--primary-color);;
+  font-size: 1.1rem;
+  font-weight: 200;
   cursor: pointer;
   transition: background-color 0.2s;
+  justify-content: center;
+  background-color: var(--input-bg);
+  color: var(--text-color);
 }
 
 .gw-students-button:hover {
-  background-color: var(--input-bg);
+  background-color: var(--primary-color);
+  color: white;
 }
 
 .gw-students-button svg {
@@ -45,7 +50,7 @@
 .gw-period-selector {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .gw-period-button {
@@ -76,8 +81,9 @@
 .gw-topics-card {
   grid-column: 1 / 2; 
   border: 2px solid var(--input-border-color);
-  border-radius: 16px;
+  border-radius: 30px;
   padding: 1.5rem;
+  min-height: auto;
 }
 
 .gw-grades-breakdown {
@@ -90,8 +96,20 @@
 .gw-grades-table-container {
   grid-column: 1 / 4; 
   border: 2px solid var(--input-border-color);
-  border-radius: 16px;
+  border-radius: 30px;
   padding: 1.5rem;
+}
+
+.gw-student-count {
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 1.3rem;
+  font-weight: 800;
+  border-radius: 12px;
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (max-width: 1024px) {

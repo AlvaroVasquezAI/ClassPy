@@ -1,12 +1,15 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next'; 
 
 const PERIODS = [
-  { id: 1, name: 'Period 1' },
-  { id: 2, name: 'Period 2' },
-  { id: 3, name: 'Period 3' },
+  { id: 1, tKey: 'groupWorkspace.periods.p1' },
+  { id: 2, tKey: 'groupWorkspace.periods.p2' },
+  { id: 3, tKey: 'groupWorkspace.periods.p3' },
 ];
 
 const PeriodSelector = ({ selectedPeriodId, setSelectedPeriodId }) => {
+  const { t } = useTranslation(); 
+
   return (
     <div className="gw-period-selector">
       {PERIODS.map(period => (
@@ -15,7 +18,7 @@ const PeriodSelector = ({ selectedPeriodId, setSelectedPeriodId }) => {
           className={`gw-period-button ${selectedPeriodId === period.id ? 'active' : ''}`}
           onClick={() => setSelectedPeriodId(period.id)}
         >
-          {period.name}
+          {t(period.tKey)}
         </button>
       ))}
     </div>

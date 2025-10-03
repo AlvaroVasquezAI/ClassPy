@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'; 
 import { apiClient } from '../services/apiClient';
 import { useAppContext } from '../context/AppContext';
 import { FaUserGraduate } from 'react-icons/fa';
@@ -9,11 +10,12 @@ import AssignmentCategoryCard from '../components/specific/group_workspace/Assig
 import GradesTable from '../components/specific/group_workspace/GradesTable';
 import TopicsCard from '../components/specific/group_workspace/TopicsCard';
 import StudentsModal from '../components/specific/group_workspace/StudentsModal';
-import QRCodeModal from '../components/specific/group_workspace/QRCodeModal'; 
+import QRCodeModal from '../components/specific/group_workspace/QRCodeModal';
 
 import './GroupWorkspacePage.css';
 
 const GroupWorkspacePage = () => {
+    const { t } = useTranslation(); 
     const { groupSlug } = useParams();
     const { subjects, groups } = useAppContext();
 
@@ -95,7 +97,7 @@ const GroupWorkspacePage = () => {
 
 
     if (!currentGroup || !currentSubject) {
-        return <div>Group not found. Please check the URL or go back to the workspace.</div>;
+        return <div>{t('groupWorkspace.notFound')}</div>;
     }
 
     return (
@@ -104,8 +106,9 @@ const GroupWorkspacePage = () => {
                 <div className="gw-group-name">{`${currentGroup.grade}${currentGroup.name} - ${currentSubject.name}`}</div>
                 <button className="gw-students-button" onClick={() => setIsStudentsModalOpen(true)}>
                     <FaUserGraduate />
-                    <span>Students ({students.length})</span>
+                    <span>{t('groupWorkspace.students')}</span>
                 </button>
+                <span className="gw-student-count">{students.length}</span>
             </header>
             
             <PeriodSelector selectedPeriodId={selectedPeriodId} setSelectedPeriodId={setSelectedPeriodId} />
@@ -125,13 +128,13 @@ const GroupWorkspacePage = () => {
                 <div className="gw-grades-breakdown">
                     {selectedTopic ? (
                         <>
-                            <AssignmentCategoryCard categoryName="Notebook" weight={selectedTopic.notebookWeight} assignmentCount={0} color="#6A9A8B" />
-                            <AssignmentCategoryCard categoryName="Practices" weight={selectedTopic.practiceWeight} assignmentCount={0} color="#3B82F6" />
-                            <AssignmentCategoryCard categoryName="Exam" weight={selectedTopic.examWeight} assignmentCount={0} color="#EF4444" />
-                            <AssignmentCategoryCard categoryName="Others" weight={selectedTopic.otherWeight} assignmentCount={0} color="#F97316" />
+                            <AssignmentCategoryCard categoryName={t('groupWorkspace.categories.notebook')} weight={selectedTopic.notebookWeight} assignmentCount={0} color="#6A9A8B" />
+                            <AssignmentCategoryCard categoryName={t('groupWorkspace.categories.practices')} weight={selectedTopic.practiceWeight} assignmentCount={0} color="#3B82F6" />
+                            <AssignmentCategoryCard categoryName={t('groupWorkspace.categories.exam')} weight={selectedTopic.examWeight} assignmentCount={0} color="#EF4444" />
+                            <AssignmentCategoryCard categoryName={t('groupWorkspace.categories.others')} weight={selectedTopic.otherWeight} assignmentCount={0} color="#F97316" />
                         </>
                     ) : (
-                        <p>Select a topic to see the grade breakdown.</p>
+                        <p>{t('groupWorkspace.selectTopicPrompt')}</p>
                     )}
                 </div>
                 

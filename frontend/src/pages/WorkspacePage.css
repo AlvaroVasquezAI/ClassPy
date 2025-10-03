@@ -20,6 +20,16 @@
   grid-column: 1 / 4;
 }
 
+.grid-item.subjects-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.grid-item.groups-card {
+  display: flex;
+  flex-direction: column;
+}
+
 @media (max-width: 1024px) {
   .workspace-main-grid {
     grid-template-columns: 1fr 1fr;

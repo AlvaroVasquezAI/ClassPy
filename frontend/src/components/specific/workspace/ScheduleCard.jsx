@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { apiClient } from '../../../services/apiClient';
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
+import { MdOutlineSchedule } from "react-icons/md";
 import Modal from '../../common/Modal';
 import './Schedule.css';
 
@@ -77,7 +78,10 @@ const ScheduleCard = ({ groups, subjects, schedule, onUpdate }) => {
   return (
     <div className="schedule-container">
       <div className="schedule-header">
-        <h3>{t('workspace.schedule.title')}</h3>
+        <div className="header-left">
+          <MdOutlineSchedule />
+          <h3>{t('workspace.schedule.title')}</h3>
+        </div>
         <div className="header-actions">
           <button className={`action-button ${isEditMode ? 'active' : ''}`} title={t('workspace.schedule.editTitle')} onClick={() => toggleMode('edit')}><FaEdit /></button>
           <button className={`action-button ${isRemoveMode ? 'active danger-button' : ''}`} title={t('workspace.schedule.removeTitle')} onClick={() => toggleMode('remove')}><FaTrash /></button>

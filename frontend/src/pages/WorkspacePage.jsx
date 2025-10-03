@@ -43,14 +43,15 @@ const WorkspacePage = () => {
   return (
     <div className="workspace-container">
         <div className="workspace-main-grid">
-            <div className="grid-item shortcuts-card">
-                <ShortcutsCard />
+            <div className="grid-item groups-card">
+                <GroupsCard groups={groups} subjects={subjects} onUpdate={refreshWorkspaceData} />
             </div>
             <div className="grid-item subjects-card">
                 <SubjectsCard subjects={subjects} groups={groups} onUpdate={refreshWorkspaceData} />
             </div>
-            <div className="grid-item groups-card">
-                <GroupsCard groups={groups} subjects={subjects} onUpdate={refreshWorkspaceData} />
+            
+            <div className="grid-item shortcuts-card">
+                <ShortcutsCard />
             </div>
             <div className="grid-item schedule-card">
                 <ScheduleCard 

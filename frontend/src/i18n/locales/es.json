@@ -114,5 +114,94 @@
         "friday": "Viernes"
       }
     }
+  },
+  "groupWorkspace": {
+    "students": "Estudiantes",
+    "notFound": "Grupo no encontrado. Por favor, verifica la URL o regresa al espacio de trabajo.",
+    "selectTopicPrompt": "Selecciona un tema para ver el desglose de calificaciones.",
+    "categories": {
+      "notebook": "Cuaderno",
+      "practices": "Prácticas",
+      "exam": "Examen",
+      "others": "Otros",
+      "general": "General"
+    },
+    "gradesTable": {
+      "title": "Calificaciones",
+      "generalGrade": "Promedio general",
+      "categoryGrade": "Promedio",
+      "studentName": "Nombre del estudiante",
+      "noAssignments": "Aún no hay tareas en esta categoría."
+    },
+    "topicsCard": {
+      "title": "Temas",
+      "editModalTitle": "Editar tema",
+      "createModalTitle": "Crear nuevo tema",
+      "form": {
+        "nameLabel": "Nombre del tema",
+        "weightsLabel": "Ponderaciones (%)",
+        "notebook": "Cuaderno",
+        "practices": "Prácticas",
+        "exam": "Examen",
+        "others": "Otros"
+      },
+      "saveButton": "Guardar cambios",
+      "createButton": "Crear tema",
+      "deleteModalTitle": "Eliminar tema",
+      "deleteConfirmation": "¿Estás seguro de que quieres eliminar permanentemente el tema \"<strong>{{name}}</strong>\"? Todas las tareas y calificaciones relacionadas también serán eliminadas.",
+      "deleteButton": "Confirmar Eliminación"
+    },
+    "studentsModal": {
+      "title": "Estudiantes - {{groupName}}",
+      "listTitle": "Estudiantes",
+      "tooltips": {
+        "edit": "Editar estudiante",
+        "delete": "Eliminar estudiante",
+        "details": "Ver detalles",
+        "cancelEdit": "Cancelar edición"
+      },
+      "details": {
+        "qrId": "ID",
+        "contact": "Contacto",
+        "status": "Estado"
+      },
+      "form": {
+        "editTitle": "Editar estudiante",
+        "addTitle": "Añadir estudiante",
+        "firstNameLabel": "Nombre",
+        "lastNameLabel": "Apellidos",
+        "contactLabel": "Número de contacto (Opcional)",
+        "statusLabel": "Estado",
+        "saveButton": "Guardar Cambios",
+        "addButton": "Añadir"
+      },
+      "status": {
+        "active": "Activo",
+        "inactive": "Inactivo",
+        "transferred": "Transferido"
+      },
+      "errors": {
+        "nameRequired": "El nombre y el apellido son obligatorios."
+      },
+      "alerts": {
+        "confirmDelete": "¿Estás seguro de que quieres eliminar permanentemente a este estudiante?",
+        "deleteFailed": "Error al eliminar al estudiante."
+      }
+    },
+    "downloadMenu": {
+      "csv": "Lista de estudiantes (.csv)",
+      "pdfData": "Lista de estudiantes (.pdf)",
+      "pdfQr": "Tarjetas de códigos QR (.pdf)"
+    },
+    "periods": {
+      "p1": "Primer trismestre",
+      "p2": "Segundo trimestre",
+      "p3": "Tercer trimestre"
+    },
+    "qrCodeModal": {
+      "title": "{{studentName}}",
+      "alt": "Código QR para {{studentName}}",
+      "downloadButton": "Descargar PNG"
+    }
   }
 }

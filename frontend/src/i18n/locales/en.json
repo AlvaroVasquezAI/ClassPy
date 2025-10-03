@@ -114,5 +114,94 @@
         "friday": "Friday"
       }
     }
+  },
+  "groupWorkspace": {
+    "students": "Students",
+    "notFound": "Group not found. Please check the URL or go back to the workspace.",
+    "selectTopicPrompt": "Select a topic to see the grade breakdown.",
+    "categories": {
+      "notebook": "Notebook",
+      "practices": "Practices",
+      "exam": "Exam",
+      "others": "Others",
+      "general": "General"
+    },
+    "gradesTable": {
+      "title": "Grades",
+      "generalGrade": "General Grade",
+      "categoryGrade": "Category Grade",
+      "studentName": "Student Name",
+      "noAssignments": "No assignments found for this category yet."
+    },
+    "topicsCard": {
+      "title": "Topics",
+      "editModalTitle": "Edit Topic",
+      "createModalTitle": "Create New Topic",
+      "form": {
+        "nameLabel": "Topic Name",
+        "weightsLabel": "Grading Weights (%)",
+        "notebook": "Notebook",
+        "practices": "Practices",
+        "exam": "Exam",
+        "others": "Others"
+      },
+      "saveButton": "Save Changes",
+      "createButton": "Create Topic",
+      "deleteModalTitle": "Delete Topic",
+      "deleteConfirmation": "Are you sure you want to permanently delete the topic \"<strong>{{name}}</strong>\"? All related assignments and grades will also be deleted.",
+      "deleteButton": "Confirm Delete"
+    },
+    "studentsModal": {
+      "title": "Students - {{groupName}}",
+      "listTitle": "Students",
+      "tooltips": {
+        "edit": "Edit Student",
+        "delete": "Delete Student",
+        "details": "View Details",
+        "cancelEdit": "Cancel Edit"
+      },
+      "details": {
+        "qrId": "QR Code ID",
+        "contact": "Contact",
+        "status": "Status"
+      },
+      "form": {
+        "editTitle": "Edit Student",
+        "addTitle": "Add New Student",
+        "firstNameLabel": "First Name",
+        "lastNameLabel": "Last Name",
+        "contactLabel": "Contact Number (Optional)",
+        "statusLabel": "Status",
+        "saveButton": "Save Changes",
+        "addButton": "Add Student"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "transferred": "Transferred"
+      },
+      "errors": {
+        "nameRequired": "First and last name are required."
+      },
+      "alerts": {
+        "confirmDelete": "Are you sure you want to permanently delete this student?",
+        "deleteFailed": "Failed to delete student."
+      }
+    },
+    "downloadMenu": {
+      "csv": "Student List (.csv)",
+      "pdfData": "Student List (.pdf)",
+      "pdfQr": "QR Code Cards (.pdf)"
+    },
+    "periods": {
+      "p1": "Period 1",
+      "p2": "Period 2",
+      "p3": "Period 3"
+    },
+    "qrCodeModal": {
+      "title": "{{studentName}}",
+      "alt": "QR Code for {{studentName}}",
+      "downloadButton": "Download PNG"
+    }
   }
 }

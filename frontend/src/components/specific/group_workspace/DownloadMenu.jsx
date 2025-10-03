@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next'; 
 import { FaDownload, FaFileCsv, FaQrcode, FaFilePdf } from 'react-icons/fa';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
@@ -7,6 +8,7 @@ import './DownloadMenu.css';
 const API_BASE_URL = `http://${window.location.hostname}:8000`;
 
 const DownloadMenu = ({ students, currentGroup, currentSubject }) => {
+    const { t } = useTranslation(); 
     const [isOpen, setIsOpen] = useState(false);
 
     const handleDownloadCSV = () => {
@@ -47,10 +49,10 @@ const DownloadMenu = ({ students, currentGroup, currentSubject }) => {
             </button>
             {isOpen && (
                 <div className="gw-dm-menu">
-                    <button onClick={handleDownloadCSV}><FaFileCsv /> Student List (.csv)</button>
-                    <button onClick={handleDownloadDataPDF}><FaFilePdf /> Student List (.pdf)</button>
+                    <button onClick={handleDownloadCSV}><FaFileCsv /> {t('groupWorkspace.downloadMenu.csv')}</button>
+                    <button onClick={handleDownloadDataPDF}><FaFilePdf /> {t('groupWorkspace.downloadMenu.pdfData')}</button>
                     <a href={qrPdfUrl} target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)}>
-                        <FaQrcode /> QR Code Cards (.pdf)
+                        <FaQrcode /> {t('groupWorkspace.downloadMenu.pdfQr')}
                     </a>
                 </div>
             )}
