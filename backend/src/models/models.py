@@ -1,5 +1,5 @@
 from sqlalchemy import (
-    create_engine, Column, Integer, String, Date, Numeric, TIMESTAMP, ForeignKey,
+    Boolean, create_engine, Column, Integer, String, Date, Numeric, TIMESTAMP, ForeignKey,
     CheckConstraint, UniqueConstraint
 )
 from sqlalchemy.orm import relationship
@@ -15,6 +15,9 @@ class Teacher(Base):
     last_name = Column(String(255), nullable=False)
     email = Column(String(255), nullable=False, unique=True)
     profile_photo_url = Column(String(255), nullable=True)
+
+    google_credentials = Column(String, nullable=True)
+    is_google_connected = Column(Boolean, default=False)
 
     subjects = relationship("Subject", back_populates="teacher")
 

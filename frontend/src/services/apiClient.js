@@ -220,4 +220,34 @@ export const apiClient = {
     }
     return true;
   },
+
+  getClassroomCourses: async () => {
+    const response = await fetch(`${API_BASE_URL}/api/classroom/courses`);
+    if (!response.ok) throw new Error('Failed to fetch Classroom courses.');
+    return response.json();
+  },
+
+  getClassroomCourseWork: async (courseId) => {
+    const response = await fetch(`${API_BASE_URL}/api/classroom/courses/${courseId}/coursework`);
+    if (!response.ok) throw new Error('Failed to fetch course work.');
+    return response.json();
+  },
+
+  getClassroomSubmissions: async (courseId, courseworkId) => {
+    const response = await fetch(`${API_BASE_URL}/api/classroom/courses/${courseId}/coursework/${courseworkId}/submissions`);
+    if (!response.ok) throw new Error('Failed to fetch submissions.');
+    return response.json();
+  },
+
+  getClassroomRoster: async (courseId) => {
+    const response = await fetch(`${API_BASE_URL}/api/classroom/courses/${courseId}/students`);
+    if (!response.ok) throw new Error('Failed to fetch student roster.');
+    return response.json();
+  },
+
+  getGoogleUserProfile: async () => {
+    const response = await fetch(`${API_BASE_URL}/api/classroom/user/profile`);
+    if (!response.ok) throw new Error('Failed to fetch Google user profile.');
+    return response.json();
+  }
 };

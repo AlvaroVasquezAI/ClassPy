@@ -13,7 +13,8 @@ def create_teacher(db: Session, teacher: teacher_schema.TeacherCreate, profile_p
         first_name=teacher.first_name,
         last_name=teacher.last_name,
         email=teacher.email,
-        profile_photo_url=profile_photo_url
+        profile_photo_url=profile_photo_url,
+        is_google_connected=False 
     )
     db.add(db_teacher)
     db.commit()

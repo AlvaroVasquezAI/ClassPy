@@ -1,5 +1,6 @@
 # --- Environment ---
 # Ignore all .env files that contain secrets and environment-specific variables
+.env
 *.env
 .env.*
 

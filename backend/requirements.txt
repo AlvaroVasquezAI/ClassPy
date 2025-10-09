@@ -6,3 +6,6 @@ python-multipart
 email-validator
 qrcode[pil]
 reportlab
+google-api-python-client
+google-auth-oauthlib
+google-auth-httplib2

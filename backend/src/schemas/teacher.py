@@ -22,3 +22,4 @@ class Teacher(CamelCaseModel):
     last_name: str
     email: EmailStr
     profile_photo_url: Optional[str] = None
+    is_google_connected: bool

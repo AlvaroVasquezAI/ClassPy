@@ -1,13 +1,13 @@
 services:
   backend:
     build: ./backend
+    env_file:
+      - .env
     ports:
       - "8000:8000"
     volumes:
       - ./backend:/app
       - ./backend/uploads:/app/uploads
-    environment:
-      - DATABASE_URL=postgresql://user:password@db/classpydb
     depends_on:
       db: 
         condition: service_healthy
