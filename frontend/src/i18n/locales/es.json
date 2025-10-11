@@ -163,7 +163,8 @@
       "details": {
         "qrId": "ID",
         "contact": "Contacto",
-        "status": "Estado"
+        "status": "Estado",
+        "classroomId": "ID de Classroom"
       },
       "form": {
         "editTitle": "Editar estudiante",

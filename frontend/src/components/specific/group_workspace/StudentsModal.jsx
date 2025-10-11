@@ -6,12 +6,33 @@ import { apiClient } from '../../../services/apiClient';
 import DownloadMenu from './DownloadMenu';
 import './StudentsModal.css';
 
+const API_BASE_URL = `http://${window.location.hostname}:8000`;
+
 const initialFormState = {
   firstName: '',
   lastName: '',
   contactNumber: '',
   status: 'active',
+  classroomUserId: '',
 };
+
+const parseFullName = (fullName) => {
+  if (!fullName || typeof fullName !== 'string') {
+    return { firstName: '', lastName: '' };
+  }
+  const parts = fullName.trim().split(' ').filter(p => p);
+  
+  if (parts.length <= 1) {
+    return { firstName: parts[0] || '', lastName: '' };
+  }
+  if (parts.length === 2) {
+    return { firstName: parts[0], lastName: parts[1] };
+  }
+  const lastName = parts.slice(-2).join(' ');
+  const firstName = parts.slice(0, -2).join(' ');
+  return { firstName, lastName };
+};
+
 
 const StudentsModal = ({ isOpen, onClose, students, currentGroup, currentSubject, onUpdate, onShowQrCode }) => {
   const { t } = useTranslation();
@@ -19,6 +40,22 @@ const StudentsModal = ({ isOpen, onClose, students, currentGroup, currentSubject
   const [error, setError] = useState('');
   const [studentToEdit, setStudentToEdit] = useState(null);
   const [expandedStudentId, setExpandedStudentId] = useState(null);
+  
+  const [classroomRoster, setClassroomRoster] = useState([]);
+  const [groupDetails, setGroupDetails] = useState(null);
+
+  useEffect(() => {
+    if (isOpen && currentGroup) {
+      apiClient.getGroupDetails(currentGroup.id).then(details => {
+        setGroupDetails(details);
+        if (details.classroomGroup) {
+          apiClient.getClassroomRoster(details.classroomGroup.classroomCourseId)
+            .then(setClassroomRoster)
+            .catch(err => console.error("Failed to fetch roster", err));
+        }
+      });
+    }
+  }, [isOpen, currentGroup]);
 
   useEffect(() => {
     if (studentToEdit) {
@@ -27,11 +64,29 @@ const StudentsModal = ({ isOpen, onClose, students, currentGroup, currentSubject
         lastName: studentToEdit.lastName,
         contactNumber: studentToEdit.contactNumber || '',
         status: studentToEdit.status,
+        classroomUserId: studentToEdit.classroomUserId || '',
       });
     } else {
       setFormData(initialFormState);
     }
   }, [studentToEdit, isOpen]);
+
+  useEffect(() => {
+    if (studentToEdit) return;
+
+    if (formData.classroomUserId) {
+      const selectedStudent = classroomRoster.find(s => s.userId === formData.classroomUserId);
+      if (selectedStudent) {
+        const { firstName, lastName } = parseFullName(selectedStudent.profile.name.fullName);
+        setFormData(prev => ({
+          ...prev,
+          firstName: firstName,
+          lastName: lastName,
+        }));
+      }
+    }
+  }, [formData.classroomUserId, studentToEdit, classroomRoster]);
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -59,7 +114,6 @@ const StudentsModal = ({ isOpen, onClose, students, currentGroup, currentSubject
       }
       onUpdate();
       setStudentToEdit(null);
-      setFormData(initialFormState);
     } catch (err) {
       setError(err.message);
     }
@@ -86,6 +140,7 @@ const StudentsModal = ({ isOpen, onClose, students, currentGroup, currentSubject
     return '';
   };
 
+  const linkedClassroomUserIds = new Set(students.map(s => s.classroomUserId));
   const modalTitle = t('groupWorkspace.studentsModal.title', { groupName: `${currentGroup.grade}${currentGroup.name}` });
 
   return (
@@ -105,9 +160,7 @@ const StudentsModal = ({ isOpen, onClose, students, currentGroup, currentSubject
                 <div className="gw-sm-student-item">
                   <div className={`gw-sm-student-name ${getStatusClass(student.status)}`}>
                     <FaUserGraduate />
-                    <span>
-                      {student.lastName} <strong>{student.firstName}</strong>
-                    </span>
+                    <span>{student.lastName} <strong>{student.firstName}</strong></span>
                   </div>
                   <div className="gw-sm-student-actions">
                     <button onClick={() => setStudentToEdit(student)} className="gw-sm-action-btn" title={t('groupWorkspace.studentsModal.tooltips.edit')}><FaEdit /></button>
@@ -118,16 +171,15 @@ const StudentsModal = ({ isOpen, onClose, students, currentGroup, currentSubject
                 {expandedStudentId === student.id && (
                   <div className="gw-sm-student-details">
                     <div className="gw-sm-qr-preview">
-                      <img 
-                        src={`${window.location.protocol}//${window.location.hostname}:8000/api/qr-code/${student.qrCodeId}.png`}
-                        alt="QR Code Preview"
-                        onClick={() => onShowQrCode(student)}
-                      />
+                      <img src={`${API_BASE_URL}/api/qr-code/${student.qrCodeId}.png`} alt="QR Code Preview" onClick={() => onShowQrCode(student)} />
                     </div>
                     <div className="gw-sm-details-text">
                       <div><strong>{t('groupWorkspace.studentsModal.details.qrId')}:</strong> <span>{student.qrCodeId || 'N/A'}</span></div>
                       <div><strong>{t('groupWorkspace.studentsModal.details.contact')}:</strong> <span>{student.contactNumber || 'N/A'}</span></div>
                       <div><strong>{t('groupWorkspace.studentsModal.details.status')}:</strong> <span className={getStatusClass(student.status)}>{t(`groupWorkspace.studentsModal.status.${student.status}`)}</span></div>
+                      {student.classroomUserId && (
+                        <div><strong>{t('groupWorkspace.studentsModal.details.classroomId')}:</strong> <span>{student.classroomUserId}</span></div>
+                      )}
                     </div>
                   </div>
                 )}
@@ -143,27 +195,47 @@ const StudentsModal = ({ isOpen, onClose, students, currentGroup, currentSubject
           </h4>
           <form onSubmit={handleSubmit} className="gw-sm-form">
             {error && <p className="form-error">{error}</p>}
+            
+            {groupDetails?.classroomGroup && (
+              <div className="gw-sm-form-group">
+                <label htmlFor="classroomUserId">Link to Google Classroom Student</label>
+                <select 
+                    id="classroomUserId"
+                    name="classroomUserId" 
+                    value={formData.classroomUserId} 
+                    onChange={handleInputChange} 
+                    className="form-input"
+                >
+                  <option value="">Do not link</option>
+                  {classroomRoster.map(rosterStudent => (
+                    <option 
+                        key={rosterStudent.userId} 
+                        value={rosterStudent.userId} 
+                        disabled={linkedClassroomUserIds.has(rosterStudent.userId) && rosterStudent.userId !== studentToEdit?.classroomUserId}
+                    >
+                      {rosterStudent.profile.name.fullName}
+                      {linkedClassroomUserIds.has(rosterStudent.userId) && rosterStudent.userId !== studentToEdit?.classroomUserId ? ' (Already linked)' : ''}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+            
             <div className="gw-sm-form-group">
               <label htmlFor="firstName">{t('groupWorkspace.studentsModal.form.firstNameLabel')}</label>
-              <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} className="form-input" required />
+              <input type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleInputChange} className="form-input" required />
             </div>
             <div className="gw-sm-form-group">
               <label htmlFor="lastName">{t('groupWorkspace.studentsModal.form.lastNameLabel')}</label>
-              <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} className="form-input" required />
+              <input type="text" id="lastName" name="lastName" value={formData.lastName} onChange={handleInputChange} className="form-input" required />
             </div>
             <div className="gw-sm-form-group">
               <label htmlFor="contactNumber">{t('groupWorkspace.studentsModal.form.contactLabel')}</label>
-              <input type="tel" name="contactNumber" value={formData.contactNumber} onChange={handleInputChange} className="form-input" />
+              <input type="tel" id="contactNumber" name="contactNumber" value={formData.contactNumber} onChange={handleInputChange} className="form-input" />
             </div>
             <div className="gw-sm-form-group">
                 <label htmlFor="status">{t('groupWorkspace.studentsModal.form.statusLabel')}</label>
-                <select 
-                    name="status" 
-                    value={formData.status} 
-                    onChange={handleInputChange} 
-                    className="form-input"
-                    disabled={!studentToEdit}
-                >
+                <select id="status" name="status" value={formData.status} onChange={handleInputChange} className="form-input">
                     <option value="active">{t('groupWorkspace.studentsModal.status.active')}</option>
                     <option value="inactive">{t('groupWorkspace.studentsModal.status.inactive')}</option>
                     <option value="transferred">{t('groupWorkspace.studentsModal.status.transferred')}</option>

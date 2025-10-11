@@ -36,6 +36,21 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
   const subjectsMap = useMemo(() => subjects.reduce((acc, s) => ({ ...acc, [s.id]: s.name }), {}), [subjects]);
   const existingColors = useMemo(() => new Set(groups.map(g => g.color)), [groups]);
 
+  const [classroomCourses, setClassroomCourses] = useState([]);
+  const [selectedClassroomCourseId, setSelectedClassroomCourseId] = useState('');
+
+  useEffect(() => {
+    const fetchClassroomCourses = async () => {
+      try {
+        const courses = await apiClient.getClassroomCourses();
+        setClassroomCourses(courses);
+      } catch (error) {
+        console.error("Failed to fetch classroom courses", error);
+      }
+    };
+    fetchClassroomCourses();
+  }, []);
+
   useEffect(() => {
     if (!isCreateModalOpen) {
       setSelectedSubjectId('');
@@ -94,6 +109,7 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
         name: selectedGroupLetter,
         grade: parseInt(selectedGrade),
         subjectId: parseInt(selectedSubjectId),
+        classroomCourseId: selectedClassroomCourseId || null,
         color: selectedColor
       });
       setIsCreateModalOpen(false);
@@ -247,6 +263,22 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
               <input type="color" value={selectedColor} disabled={!isColorStepEnabled} onChange={(e) => setSelectedColor(e.target.value)} className="color-input"/>
               {isColorDuplicate && <span className="form-error">{t('workspace.groups.createModal.colorInUseError')}</span>}
             </div>
+          </div>
+          <div className="modal-step" style={{ opacity: isColorStepEnabled ? 1 : 0.5 }}>
+            <label>5. (Optional) Link to Google Classroom</label>
+            <select
+              className="form-input"
+              value={selectedClassroomCourseId}
+              onChange={(e) => setSelectedClassroomCourseId(e.target.value)}
+              disabled={!isColorStepEnabled}
+            >
+              <option value="">Do not link</option>
+              {classroomCourses.map(course => (
+                <option key={course.id} value={course.id}>
+                  {course.name}
+                </option>
+              ))}
+            </select>
           </div>
           {isColorStepEnabled && (
             <div className="preview-chip-container">

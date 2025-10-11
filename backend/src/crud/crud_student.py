@@ -17,7 +17,8 @@ def create_student(db: Session, student: student_schema.StudentCreate):
         last_name=student.last_name,
         contact_number=student.contact_number,
         status=student.status,
-        group_id=student.group_id
+        group_id=student.group_id,
+        classroom_user_id=student.classroom_user_id
     )
     db.add(db_student)
     db.commit()
@@ -47,7 +48,16 @@ def create_student(db: Session, student: student_schema.StudentCreate):
 def update_student(db: Session, student_id: int, student_update: student_schema.StudentUpdate):
     db_student = db.query(models.Student).filter(models.Student.id == student_id).first()
     if not db_student:
-        raise HTTPException(status_code=44, detail="Student not found")
+        raise HTTPException(status_code=404, detail="Student not found") 
+
+    if student_update.classroom_user_id:
+        existing_student = db.query(models.Student).filter(
+            models.Student.group_id == db_student.group_id,
+            models.Student.classroom_user_id == student_update.classroom_user_id,
+            models.Student.id != student_id
+        ).first()
+        if existing_student:
+            raise HTTPException(status_code=400, detail="This Classroom student is already linked to another student in this group.")
 
     update_data = student_update.model_dump(exclude_unset=True)
     for key, value in update_data.items():

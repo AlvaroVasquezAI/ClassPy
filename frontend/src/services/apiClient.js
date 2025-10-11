@@ -2,9 +2,12 @@ const API_HOST = window.location.hostname;
 const API_BASE_URL = `http://${API_HOST}:8000`;
 
 export const apiClient = {
+  // =================================================================
+  // Teacher Methods
+  // =================================================================
   getTeacher: async () => {
     const response = await fetch(`${API_BASE_URL}/api/teacher`);
-    if (response.status === 204 || response.status === 404) { 
+    if (response.status === 204 || response.status === 404) {
       return null;
     }
     if (!response.ok) {
@@ -29,7 +32,7 @@ export const apiClient = {
   updateTeacher: async (formData) => {
     const response = await fetch(`${API_BASE_URL}/api/teacher`, {
       method: 'PUT',
-      body: formData, 
+      body: formData,
     });
     if (!response.ok) {
       const errorData = await response.json();
@@ -38,6 +41,9 @@ export const apiClient = {
     return response.json();
   },
 
+  // =================================================================
+  // Subject Methods
+  // =================================================================
   getSubjects: async () => {
     const response = await fetch(`${API_BASE_URL}/api/subjects`);
     if (!response.ok) throw new Error('Failed to fetch subjects.');
@@ -50,13 +56,51 @@ export const apiClient = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(subjectData),
     });
-    if (!response.ok) throw new Error('Failed to create subject.');
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || 'Failed to create subject.');
+    }
     return response.json();
   },
 
+  updateSubject: async (subjectId, subjectData) => {
+    const response = await fetch(`${API_BASE_URL}/api/subjects/${subjectId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(subjectData),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || 'Failed to update subject.');
+    }
+    return response.json();
+  },
+
+  deleteSubject: async (subjectId) => {
+    const response = await fetch(`${API_BASE_URL}/api/subjects/${subjectId}`, {
+      method: 'DELETE',
+    });
+    if (response.status !== 204) {
+      throw new Error('Failed to delete subject.');
+    }
+    return true;
+  },
+
+  // =================================================================
+  // Group Methods
+  // =================================================================
   getGroups: async () => {
     const response = await fetch(`${API_BASE_URL}/api/groups`);
     if (!response.ok) throw new Error('Failed to fetch groups.');
+    return response.json();
+  },
+
+  getGroupDetails: async (groupId) => {
+    const response = await fetch(`${API_BASE_URL}/api/groups/${groupId}`);
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || 'Failed to fetch group details.');
+    }
     return response.json();
   },
 
@@ -66,34 +110,11 @@ export const apiClient = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(groupData),
     });
-    if (!response.ok) throw new Error('Failed to create group.');
-    return response.json();
-  },
-
-  getSchedule: async () => {
-    const response = await fetch(`${API_BASE_URL}/api/schedule`);
-    if (!response.ok) throw new Error('Failed to fetch schedule.');
-    return response.json();
-  },
-  
-  saveScheduleEntry: async (scheduleData) => {
-    const response = await fetch(`${API_BASE_URL}/api/schedule`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(scheduleData),
-    });
-    if (!response.ok) throw new Error('Failed to save schedule entry.');
-    return response.json();
-  },
-
-  deleteGroup: async (groupId) => {
-    const response = await fetch(`${API_BASE_URL}/api/groups/${groupId}`, {
-      method: 'DELETE',
-    });
     if (!response.ok) {
-      throw new Error('Failed to delete group.');
+      const errorData = await response.json();
+      throw new Error(errorData.detail || 'Failed to create group.');
     }
-    return true; 
+    return response.json();
   },
 
   updateGroup: async (groupId, groupData) => {
@@ -108,35 +129,52 @@ export const apiClient = {
     }
     return response.json();
   },
-  
+
+  deleteGroup: async (groupId) => {
+    const response = await fetch(`${API_BASE_URL}/api/groups/${groupId}`, {
+      method: 'DELETE',
+    });
+    if (response.status !== 204) {
+      throw new Error('Failed to delete group.');
+    }
+    return true;
+  },
+
+  // =================================================================
+  // Schedule Methods
+  // =================================================================
+  getSchedule: async () => {
+    const response = await fetch(`${API_BASE_URL}/api/schedule`);
+    if (!response.ok) throw new Error('Failed to fetch schedule.');
+    return response.json();
+  },
+
+  saveScheduleEntry: async (scheduleData) => {
+    const response = await fetch(`${API_BASE_URL}/api/schedule`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(scheduleData),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || 'Failed to save schedule entry.');
+    }
+    return response.json();
+  },
+
   deleteScheduleEntry: async (scheduleId) => {
     const response = await fetch(`${API_BASE_URL}/api/schedule/${scheduleId}`, {
       method: 'DELETE',
     });
-    if (!response.ok) {
+    if (response.status !== 204) {
       throw new Error('Failed to delete schedule entry.');
     }
     return true;
   },
 
-  updateSubject: async (subjectId, subjectData) => {
-    const response = await fetch(`${API_BASE_URL}/api/subjects/${subjectId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(subjectData),
-    });
-    if (!response.ok) throw new Error('Failed to update subject.');
-    return response.json();
-  },
-
-  deleteSubject: async (subjectId) => {
-    const response = await fetch(`${API_BASE_URL}/api/subjects/${subjectId}`, {
-      method: 'DELETE',
-    });
-    if (!response.ok) throw new Error('Failed to delete subject.');
-    return true;
-  },
-
+  // =================================================================
+  // Topic Methods
+  // =================================================================
   getTopics: async (periodId, subjectId) => {
     const response = await fetch(`${API_BASE_URL}/api/topics/by-period-subject?period_id=${periodId}&subject_id=${subjectId}`);
     if (!response.ok) throw new Error('Failed to fetch topics.');
@@ -179,6 +217,9 @@ export const apiClient = {
     return true;
   },
 
+  // =================================================================
+  // Student Methods
+  // =================================================================
   getStudentsByGroup: async (groupId) => {
     const response = await fetch(`${API_BASE_URL}/api/students?group_id=${groupId}`);
     if (!response.ok) throw new Error('Failed to fetch students.');
@@ -221,6 +262,94 @@ export const apiClient = {
     return true;
   },
 
+  // =================================================================
+  // Assignment Methods
+  // =================================================================
+  getAssignmentsByTopic: async (topicId) => {
+    const response = await fetch(`${API_BASE_URL}/api/assignments/by-topic/${topicId}`);
+    if (!response.ok) throw new Error('Failed to fetch assignments.');
+    return response.json();
+  },
+  
+  createNotebookAssignment: async (data) => {
+    const response = await fetch(`${API_BASE_URL}/api/assignments/notebook`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    if (!response.ok) { const errorData = await response.json(); throw new Error(errorData.detail || 'Failed to create Notebook assignment.'); }
+    return response.json();
+  },
+  updateNotebookAssignment: async (id, data) => {
+    const response = await fetch(`${API_BASE_URL}/api/assignments/notebook/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    if (!response.ok) { const errorData = await response.json(); throw new Error(errorData.detail || 'Failed to update Notebook assignment.'); }
+    return response.json();
+  },
+  deleteNotebookAssignment: async (id) => {
+    const response = await fetch(`${API_BASE_URL}/api/assignments/notebook/${id}`, { method: 'DELETE' });
+    if (response.status !== 204) throw new Error('Failed to delete Notebook assignment.');
+    return true;
+  },
+
+  createPracticeAssignment: async (data) => {
+    const response = await fetch(`${API_BASE_URL}/api/assignments/practice`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    if (!response.ok) { const errorData = await response.json(); throw new Error(errorData.detail || 'Failed to create Practice assignment.'); }
+    return response.json();
+  },
+  updatePracticeAssignment: async (id, data) => {
+    const response = await fetch(`${API_BASE_URL}/api/assignments/practice/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    if (!response.ok) { const errorData = await response.json(); throw new Error(errorData.detail || 'Failed to update Practice assignment.'); }
+    return response.json();
+  },
+  deletePracticeAssignment: async (id) => {
+    const response = await fetch(`${API_BASE_URL}/api/assignments/practice/${id}`, { method: 'DELETE' });
+    if (response.status !== 204) throw new Error('Failed to delete Practice assignment.');
+    return true;
+  },
+
+  createExamAssignment: async (data) => {
+    const response = await fetch(`${API_BASE_URL}/api/assignments/exam`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    if (!response.ok) { const errorData = await response.json(); throw new Error(errorData.detail || 'Failed to create Exam assignment.'); }
+    return response.json();
+  },
+  updateExamAssignment: async (id, data) => {
+    const response = await fetch(`${API_BASE_URL}/api/assignments/exam/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    if (!response.ok) { const errorData = await response.json(); throw new Error(errorData.detail || 'Failed to update Exam assignment.'); }
+    return response.json();
+  },
+  deleteExamAssignment: async (id) => {
+    const response = await fetch(`${API_BASE_URL}/api/assignments/exam/${id}`, { method: 'DELETE' });
+    if (response.status !== 204) throw new Error('Failed to delete Exam assignment.');
+    return true;
+  },
+
+  createOtherAssignment: async (data) => {
+    const response = await fetch(`${API_BASE_URL}/api/assignments/other`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    if (!response.ok) { const errorData = await response.json(); throw new Error(errorData.detail || 'Failed to create Other assignment.'); }
+    return response.json();
+  },
+  updateOtherAssignment: async (id, data) => {
+    const response = await fetch(`${API_BASE_URL}/api/assignments/other/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    if (!response.ok) { const errorData = await response.json(); throw new Error(errorData.detail || 'Failed to update Other assignment.'); }
+    return response.json();
+  },
+  deleteOtherAssignment: async (id) => {
+    const response = await fetch(`${API_BASE_URL}/api/assignments/other/${id}`, { method: 'DELETE' });
+    if (response.status !== 204) throw new Error('Failed to delete Other assignment.');
+    return true;
+  },
+
+  // =================================================================
+  // Grades Methods
+  // =================================================================
+  getGradesForTopic: async (topicId) => {
+    const response = await fetch(`${API_BASE_URL}/api/grades/topic/${topicId}`);
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || 'Failed to fetch grades.');
+    }
+    return response.json();
+  },
+  
+  // =================================================================
+  // Google Classroom Methods
+  // =================================================================
   getClassroomCourses: async () => {
     const response = await fetch(`${API_BASE_URL}/api/classroom/courses`);
     if (!response.ok) throw new Error('Failed to fetch Classroom courses.');
@@ -249,5 +378,5 @@ export const apiClient = {
     const response = await fetch(`${API_BASE_URL}/api/classroom/user/profile`);
     if (!response.ok) throw new Error('Failed to fetch Google user profile.');
     return response.json();
-  }
+  },
 };

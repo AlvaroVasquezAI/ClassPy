@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from .endpoints import teacher, subject, group, schedule, topic, student, qr_code, download, google_auth, classroom
+from .endpoints import teacher, subject, group, schedule, topic, student, qr_code, download, google_auth, classroom, assignment, grades
 
 api_router = APIRouter()
 api_router.include_router(teacher.router, prefix="/api", tags=["teacher"])
@@ -12,3 +12,5 @@ api_router.include_router(qr_code.router, prefix="/api", tags=["qr_code"])
 api_router.include_router(download.router, prefix="/api", tags=["download"])
 api_router.include_router(google_auth.router, prefix="/api", tags=["auth"])
 api_router.include_router(classroom.router, prefix="/api", tags=["classroom"])
+api_router.include_router(assignment.router, prefix="/api", tags=["assignment"])
+api_router.include_router(grades.router, prefix="/api", tags=["grades"])

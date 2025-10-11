@@ -1,7 +1,7 @@
 import React from 'react';
 import './AssignmentCategoryCard.css';
 
-const AssignmentCategoryCard = ({ categoryName, weight, assignmentCount, color }) => {
+const AssignmentCategoryCard = ({ categoryName, weight, assignmentCount, color, onView, onCreate }) => {
   return (
     <div className="gw-ac-card">
       <div className="gw-ac-header">
@@ -10,7 +10,10 @@ const AssignmentCategoryCard = ({ categoryName, weight, assignmentCount, color }
       </div>
       <div className="gw-ac-body">
         <p className="gw-ac-count">{assignmentCount}</p>
-        <button className="gw-ac-button">See assignments</button>
+      </div>
+      <div className="gw-ac-footer">
+        <button className="gw-ac-button view" onClick={onView}>See assignments</button>
+        <button className="gw-ac-button create" onClick={onCreate}>+ Create</button>
       </div>
     </div>
   );

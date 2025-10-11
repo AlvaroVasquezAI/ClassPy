@@ -163,7 +163,8 @@
       "details": {
         "qrId": "QR Code ID",
         "contact": "Contact",
-        "status": "Status"
+        "status": "Status",
+        "classroomId": "Classroom ID" 
       },
       "form": {
         "editTitle": "Edit Student",

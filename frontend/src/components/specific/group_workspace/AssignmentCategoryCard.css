@@ -31,6 +31,10 @@
 .gw-ac-body {
   text-align: center;
   margin: 1rem 0;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .gw-ac-count {
@@ -40,19 +44,36 @@
   color: var(--text-color);
 }
 
+.gw-ac-footer {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
 .gw-ac-button {
   width: 100%;
   padding: 0.75rem;
   border: none;
-  background-color: var(--input-bg);
-  color: var(--text-color);
   border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s;
-  margin-top: auto; 
 }
 
-.gw-ac-button:hover {
+.gw-ac-button.view {
+  background-color: var(--input-bg);
+  color: var(--text-color);
+}
+
+.gw-ac-button.view:hover {
   background-color: var(--input-border-color);
+}
+
+.gw-ac-button.create {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.gw-ac-button.create:hover {
+  opacity: 0.85;
 }

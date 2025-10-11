@@ -45,7 +45,7 @@ origin_regex = r"http://(localhost|127\.0\.0\.1|192\.168\.\d{1,3}\.\d{1,3}):3000
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=origin_regex,
+    allow_origins=["http://localhost:3000"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

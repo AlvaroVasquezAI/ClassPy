@@ -8,10 +8,31 @@ def create_group(db: Session, group: group_schema.GroupCreate):
     if existing_color:
         raise HTTPException(status_code=400, detail="This color is already in use by another group.")
 
-    db_group = models.Group(**group.model_dump())
+    db_group = models.Group(
+        name=group.name,
+        grade=group.grade,
+        subject_id=group.subject_id,
+        color=group.color
+    )
     db.add(db_group)
     db.commit()
     db.refresh(db_group)
+
+    if group.classroom_course_id:
+        existing_link = db.query(models.ClassroomGroup).filter(models.ClassroomGroup.classroom_course_id == group.classroom_course_id).first()
+        if existing_link:
+            db.delete(db_group)
+            db.commit()
+            raise HTTPException(status_code=400, detail="This Google Classroom course is already linked to another group.")
+
+        db_classroom_link = models.ClassroomGroup(
+            group_id=db_group.id,
+            classroom_course_id=group.classroom_course_id
+        )
+        db.add(db_classroom_link)
+        db.commit()
+        db.refresh(db_group) 
+
     return db_group
 
 def update_group(db: Session, group_id: int, group_update: group_schema.GroupUpdate):

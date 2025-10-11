@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from ..database import Base
 
-# --- Core Foundational Schemas ---
+# Core Foundational Schemas 
 
 class Teacher(Base):
     __tablename__ = 'teacher'
@@ -59,6 +59,7 @@ class Student(Base):
     contact_number = Column(String(10), nullable=True)
     status = Column(String(50), nullable=False, default='active')
     group_id = Column(Integer, ForeignKey('groups.id', ondelete='CASCADE'), nullable=False)
+    classroom_user_id = Column(String(255), nullable=True)
 
     group = relationship("Group", back_populates="students")
     notebook_grades = relationship("StudentNotebookGrade", back_populates="student", cascade="all, delete-orphan")
@@ -69,7 +70,11 @@ class Student(Base):
     final_grades = relationship("StudentFinalGrade", back_populates="student", cascade="all, delete-orphan")
     attendance_records = relationship("AttendanceRecord", back_populates="student", cascade="all, delete-orphan")
 
-# --- Grading and Evaluation Schemas ---
+    __table_args__ = (
+        UniqueConstraint('group_id', 'classroom_user_id', name='_group_classroom_user_uc'),
+    )
+
+# Grading and Evaluation Schemas 
 
 class Period(Base):
     __tablename__ = 'periods'
@@ -106,13 +111,12 @@ class Topic(Base):
     student_topic_grades = relationship("StudentTopicGrade", back_populates="topic", cascade="all, delete-orphan")
 
 
-# --- Assignment Definition Tables ---
+# Assignment Definition Tables
 
 class NotebookAssignment(Base):
     __tablename__ = 'notebook_assignments'
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(255), nullable=False)
-    weight = Column(Numeric(5, 2), nullable=False)
     max_grade = Column(Numeric(5, 2), nullable=False, default=10.0)
     topic_id = Column(Integer, ForeignKey('topics.id', ondelete='CASCADE'), nullable=False)
     classroom_asg_id = Column(String(255), nullable=True)
@@ -126,6 +130,7 @@ class PracticeAssignment(Base):
     name = Column(String(255), nullable=False)
     max_grade = Column(Numeric(5, 2), nullable=False, default=10.0)
     topic_id = Column(Integer, ForeignKey('topics.id', ondelete='CASCADE'), nullable=False)
+    classroom_asg_id = Column(String(255), nullable=True)
 
     topic = relationship("Topic", back_populates="practice_assignments")
     grades = relationship("StudentPracticeGrade", back_populates="assignment", cascade="all, delete-orphan")
@@ -136,6 +141,7 @@ class ExamAssignment(Base):
     name = Column(String(255), nullable=False)
     max_grade = Column(Numeric(5, 2), nullable=False, default=10.0)
     topic_id = Column(Integer, ForeignKey('topics.id', ondelete='CASCADE'), nullable=False, unique=True)
+    classroom_asg_id = Column(String(255), nullable=True)
 
     topic = relationship("Topic", back_populates="exam_assignments")
     grades = relationship("StudentExamGrade", back_populates="assignment", cascade="all, delete-orphan")
@@ -146,12 +152,13 @@ class OtherAssignment(Base):
     name = Column(String(255), nullable=False)
     max_grade = Column(Numeric(5, 2), nullable=False, default=10.0)
     topic_id = Column(Integer, ForeignKey('topics.id', ondelete='CASCADE'), nullable=False)
+    classroom_asg_id = Column(String(255), nullable=True)
 
     topic = relationship("Topic", back_populates="other_assignments")
     grades = relationship("StudentOtherGrade", back_populates="assignment", cascade="all, delete-orphan")
 
 
-# --- Student Grade Tables ---
+# Student Grade Tables
 
 class StudentNotebookGrade(Base):
     __tablename__ = 'student_notebook_grades'
@@ -214,7 +221,7 @@ class StudentOtherGrade(Base):
     assignment = relationship("OtherAssignment", back_populates="grades")
 
 
-# --- Aggregated Grade Tables ---
+# Aggregated Grade Tables
 
 class StudentTopicGrade(Base):
     __tablename__ = 'student_topic_grades'
@@ -245,7 +252,7 @@ class StudentFinalGrade(Base):
     subject = relationship("Subject", back_populates="final_grades")
 
 
-# --- Ancillary and Integration Schemas ---
+# Ancillary and Integration Schemas
 
 class AttendanceRecord(Base):
     __tablename__ = 'attendance_records'
