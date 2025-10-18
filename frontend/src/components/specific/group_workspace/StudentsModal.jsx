@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next'; 
+import { useTranslation } from 'react-i18next';
 import { FaTrash, FaPlus, FaEdit, FaChevronDown, FaTimes, FaUserGraduate } from 'react-icons/fa';
 import Modal from '../../common/Modal';
 import { apiClient } from '../../../services/apiClient';
@@ -33,9 +33,11 @@ const parseFullName = (fullName) => {
   return { firstName, lastName };
 };
 
-
 const StudentsModal = ({ isOpen, onClose, students, currentGroup, currentSubject, onUpdate, onShowQrCode }) => {
   const { t } = useTranslation();
+  
+  const [viewMode, setViewMode] = useState('list'); 
+
   const [formData, setFormData] = useState(initialFormState);
   const [error, setError] = useState('');
   const [studentToEdit, setStudentToEdit] = useState(null);
@@ -45,15 +47,19 @@ const StudentsModal = ({ isOpen, onClose, students, currentGroup, currentSubject
   const [groupDetails, setGroupDetails] = useState(null);
 
   useEffect(() => {
-    if (isOpen && currentGroup) {
-      apiClient.getGroupDetails(currentGroup.id).then(details => {
-        setGroupDetails(details);
-        if (details.classroomGroup) {
-          apiClient.getClassroomRoster(details.classroomGroup.classroomCourseId)
-            .then(setClassroomRoster)
-            .catch(err => console.error("Failed to fetch roster", err));
-        }
-      });
+    if (isOpen) {
+      setViewMode('list');
+      setStudentToEdit(null);
+      if (currentGroup) {
+        apiClient.getGroupDetails(currentGroup.id).then(details => {
+          setGroupDetails(details);
+          if (details.classroomGroup) {
+            apiClient.getClassroomRoster(details.classroomGroup.classroomCourseId)
+              .then(setClassroomRoster)
+              .catch(err => console.error("Failed to fetch roster", err));
+          }
+        });
+      }
     }
   }, [isOpen, currentGroup]);
 
@@ -69,37 +75,26 @@ const StudentsModal = ({ isOpen, onClose, students, currentGroup, currentSubject
     } else {
       setFormData(initialFormState);
     }
-  }, [studentToEdit, isOpen]);
+  }, [studentToEdit]);
 
   useEffect(() => {
     if (studentToEdit) return;
-
     if (formData.classroomUserId) {
       const selectedStudent = classroomRoster.find(s => s.userId === formData.classroomUserId);
       if (selectedStudent) {
         const { firstName, lastName } = parseFullName(selectedStudent.profile.name.fullName);
-        setFormData(prev => ({
-          ...prev,
-          firstName: firstName,
-          lastName: lastName,
-        }));
+        setFormData(prev => ({ ...prev, firstName, lastName }));
       }
     }
   }, [formData.classroomUserId, studentToEdit, classroomRoster]);
-
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleCancelEdit = () => {
-    setStudentToEdit(null);
-    setError('');
-  };
-
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     setError('');
     if (!formData.firstName || !formData.lastName) {
       setError(t('groupWorkspace.studentsModal.errors.nameRequired'));
@@ -114,6 +109,7 @@ const StudentsModal = ({ isOpen, onClose, students, currentGroup, currentSubject
       }
       onUpdate();
       setStudentToEdit(null);
+      setViewMode('list'); 
     } catch (err) {
       setError(err.message);
     }
@@ -130,6 +126,11 @@ const StudentsModal = ({ isOpen, onClose, students, currentGroup, currentSubject
     }
   };
 
+  const handleEditClick = (student) => {
+    setStudentToEdit(student);
+    setViewMode('form');
+  };
+
   const toggleDetails = (studentId) => {
     setExpandedStudentId(prevId => (prevId === studentId ? null : studentId));
   };
@@ -143,14 +144,34 @@ const StudentsModal = ({ isOpen, onClose, students, currentGroup, currentSubject
   const linkedClassroomUserIds = new Set(students.map(s => s.classroomUserId));
   const modalTitle = t('groupWorkspace.studentsModal.title', { groupName: `${currentGroup.grade}${currentGroup.name}` });
 
+  const modalFooter = viewMode === 'list' ? (
+    <div className="profile-actions">
+      <button className="profile-button primary" onClick={() => {
+        setStudentToEdit(null); 
+        setViewMode('form');
+      }}>
+        <FaPlus style={{ marginRight: '0.5rem' }} /> {t('groupWorkspace.studentsModal.form.addButton')}
+      </button>
+    </div>
+  ) : (
+    <div className="profile-actions">
+      <button className="profile-button secondary" onClick={() => setViewMode('list')}>
+        {t('profileModal.cancelButton')}
+      </button>
+      <button className="profile-button primary" onClick={handleSubmit}>
+        {studentToEdit ? t('groupWorkspace.studentsModal.form.saveButton') : t('groupWorkspace.studentsModal.form.addButton')}
+      </button>
+    </div>
+  );
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={modalTitle}>
-      <div className="gw-sm-container">
+    <Modal isOpen={isOpen} onClose={onClose} title={modalTitle} footer={modalFooter}>
+      {viewMode === 'list' ? (
         <div className="gw-sm-list-section">
           <h4>
             <div className="gw-sm-header-left">
-                <span className="gw-sm-student-count">{students.length}</span>
-                <span>{t('groupWorkspace.studentsModal.listTitle')}</span>
+              <span className="gw-sm-student-count">{students.length}</span>
+              <span>{t('groupWorkspace.studentsModal.listTitle')}</span>
             </div>
             <DownloadMenu students={students} currentGroup={currentGroup} currentSubject={currentSubject} />
           </h4>
@@ -163,35 +184,34 @@ const StudentsModal = ({ isOpen, onClose, students, currentGroup, currentSubject
                     <span>{student.lastName} <strong>{student.firstName}</strong></span>
                   </div>
                   <div className="gw-sm-student-actions">
-                    <button onClick={() => setStudentToEdit(student)} className="gw-sm-action-btn" title={t('groupWorkspace.studentsModal.tooltips.edit')}><FaEdit /></button>
+                    <button onClick={() => handleEditClick(student)} className="gw-sm-action-btn" title={t('groupWorkspace.studentsModal.tooltips.edit')}><FaEdit /></button>
                     <button onClick={() => handleDeleteStudent(student.id)} className="gw-sm-action-btn danger" title={t('groupWorkspace.studentsModal.tooltips.delete')}><FaTrash /></button>
                     <button onClick={() => toggleDetails(student.id)} className={`gw-sm-action-btn expand ${expandedStudentId === student.id ? 'active' : ''}`} title={t('groupWorkspace.studentsModal.tooltips.details')}><FaChevronDown /></button>
                   </div>
                 </div>
                 {expandedStudentId === student.id && (
-                  <div className="gw-sm-student-details">
-                    <div className="gw-sm-qr-preview">
-                      <img src={`${API_BASE_URL}/api/qr-code/${student.qrCodeId}.png`} alt="QR Code Preview" onClick={() => onShowQrCode(student)} />
-                    </div>
-                    <div className="gw-sm-details-text">
-                      <div><strong>{t('groupWorkspace.studentsModal.details.qrId')}:</strong> <span>{student.qrCodeId || 'N/A'}</span></div>
-                      <div><strong>{t('groupWorkspace.studentsModal.details.contact')}:</strong> <span>{student.contactNumber || 'N/A'}</span></div>
-                      <div><strong>{t('groupWorkspace.studentsModal.details.status')}:</strong> <span className={getStatusClass(student.status)}>{t(`groupWorkspace.studentsModal.status.${student.status}`)}</span></div>
-                      {student.classroomUserId && (
-                        <div><strong>{t('groupWorkspace.studentsModal.details.classroomId')}:</strong> <span>{student.classroomUserId}</span></div>
-                      )}
-                    </div>
-                  </div>
+                   <div className="gw-sm-student-details">
+                     <div className="gw-sm-qr-preview">
+                       <img src={`${API_BASE_URL}/api/qr-code/${student.qrCodeId}.png`} alt="QR Code Preview" onClick={() => onShowQrCode(student)} />
+                     </div>
+                     <div className="gw-sm-details-text">
+                       <div><strong>{t('groupWorkspace.studentsModal.details.qrId')}:</strong> <span>{student.qrCodeId || 'N/A'}</span></div>
+                       <div><strong>{t('groupWorkspace.studentsModal.details.contact')}:</strong> <span>{student.contactNumber || 'N/A'}</span></div>
+                       <div><strong>{t('groupWorkspace.studentsModal.details.status')}:</strong> <span className={getStatusClass(student.status)}>{t(`groupWorkspace.studentsModal.status.${student.status}`)}</span></div>
+                       {student.classroomUserId && (
+                         <div><strong>{t('groupWorkspace.studentsModal.details.classroomId')}:</strong> <span>{student.classroomUserId}</span></div>
+                       )}
+                     </div>
+                   </div>
                 )}
               </div>
             ))}
           </div>
         </div>
-
+      ) : (
         <div className="gw-sm-form-section">
           <h4>
             {studentToEdit ? <><FaEdit /> {t('groupWorkspace.studentsModal.form.editTitle')}</> : <><FaPlus /> {t('groupWorkspace.studentsModal.form.addTitle')}</>}
-            {studentToEdit && <button onClick={handleCancelEdit} className="gw-sm-cancel-edit-btn" title={t('groupWorkspace.studentsModal.tooltips.cancelEdit')}><FaTimes /></button>}
           </h4>
           <form onSubmit={handleSubmit} className="gw-sm-form">
             {error && <p className="form-error">{error}</p>}
@@ -241,10 +261,9 @@ const StudentsModal = ({ isOpen, onClose, students, currentGroup, currentSubject
                     <option value="transferred">{t('groupWorkspace.studentsModal.status.transferred')}</option>
                 </select>
             </div>
-            <button type="submit" className="primary-button">{studentToEdit ? t('groupWorkspace.studentsModal.form.saveButton') : t('groupWorkspace.studentsModal.form.addButton')}</button>
           </form>
         </div>
-      </div>
+      )}
     </Modal>
   );
 };

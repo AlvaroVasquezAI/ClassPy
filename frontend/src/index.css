@@ -8,6 +8,7 @@
 /* Light Theme */
 html.light {
   --background-color: #ffffff;
+  --bg-color-transparent: rgba(255, 255, 255, 0.9);
   --text-color: #1c1c1e;
   --text-color-light: #636366;
   --nav-background: #ffffff;
@@ -21,6 +22,7 @@ html.light {
 /* Dark Theme */
 html.dark {
   --background-color: #000000;
+  --bg-color-transparent: rgba(0, 0, 0, 0.9);
   --text-color: #f2f2f7;
   --text-color-light: #8e8e93;
   --nav-background: #1c1c1e;

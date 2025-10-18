@@ -127,7 +127,13 @@ const ScheduleCard = ({ groups, subjects, schedule, onUpdate }) => {
           </div>
         ))}
       </div>
-      <Modal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} title={t('workspace.schedule.addModalTitle')}>
+
+      <Modal 
+        isOpen={isAddModalOpen} 
+        onClose={() => setIsAddModalOpen(false)} 
+        title={t('workspace.schedule.addModalTitle')}
+        footer={null} 
+      >
         <p style={{textAlign: 'center', color: 'var(--text-color-light)', marginTop: 0}}>{t('workspace.schedule.addModalInstruction')}</p>
         <div className="add-group-modal-body" onDragLeave={() => setIsAddModalOpen(false)}>
           {groups.map(group => (

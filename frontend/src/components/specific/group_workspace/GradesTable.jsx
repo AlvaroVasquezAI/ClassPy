@@ -125,7 +125,7 @@ const GradesTable = ({ selectedTopic, students, gradeData, isLoading }) => {
                       ))}
                     </tr>
                   ))
-                ) : ( <tr><td colSpan={filterCategories.length + 1} className="empty-cell">No grades to summarize yet.</td></tr> )
+                ) : ( <tr><td colSpan={filterCategories.length + 1} className="empty-cell">{t('groupWorkspace.gradesTable.noGrades')}</td></tr> )
               ) : (
                 assignmentsForCategory.length > 0 ? (
                   summaryData.map(data => (
@@ -137,7 +137,7 @@ const GradesTable = ({ selectedTopic, students, gradeData, isLoading }) => {
                       ))}
                     </tr>
                   ))
-                ) : ( <tr><td colSpan="2" className="empty-cell">No linked assignments in this category yet.</td></tr> )
+                ) : ( <tr><td colSpan="2" className="empty-cell">{t('groupWorkspace.gradesTable.noAssignments')}</td></tr> )
               )}
             </tbody>
           </table>

@@ -2,10 +2,8 @@ import React from 'react';
 import { IoClose } from 'react-icons/io5';
 import './Modal.css';
 
-const Modal = ({ isOpen, onClose, title, children }) => {
-  if (!isOpen) {
-    return null;
-  }
+const Modal = ({ isOpen, onClose, title, children, footer }) => {
+  if (!isOpen) return null;
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
@@ -19,6 +17,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
         <div className="modal-body">
           {children}
         </div>
+        {footer && <div className="modal-footer">{footer}</div>}
       </div>
     </div>
   );

@@ -58,6 +58,7 @@ const SubjectsCard = ({ subjects, groups, onUpdate }) => {
   useEffect(() => {
     if (!isDeleteModalOpen) {
       setSubjectToDelete(null);
+      setDeleteConfirmationText(''); 
     }
   }, [isDeleteModalOpen]);
   
@@ -195,7 +196,16 @@ const SubjectsCard = ({ subjects, groups, onUpdate }) => {
         })}
       </div>
 
-      <Modal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} title={t('workspace.subjects.createModal.title')}>
+      <Modal 
+        isOpen={isCreateModalOpen} 
+        onClose={() => setIsCreateModalOpen(false)} 
+        title={t('workspace.subjects.createModal.title')}
+        footer={
+          <button className="primary-button" onClick={handleCreateSubject}>
+            {t('workspace.subjects.createModal.createButton')}
+          </button>
+        }
+      >
         <div className="modal-form">
           {formError && <p className="form-error">{formError}</p>}
           <input
@@ -220,11 +230,19 @@ const SubjectsCard = ({ subjects, groups, onUpdate }) => {
               </div>
             </div>
           )}
-          <button className="primary-button" onClick={handleCreateSubject}>{t('workspace.subjects.createModal.createButton')}</button>
         </div>
       </Modal>
 
-      <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} title={t('workspace.subjects.editModal.title')}>
+      <Modal 
+        isOpen={isEditModalOpen} 
+        onClose={() => setIsEditModalOpen(false)} 
+        title={t('workspace.subjects.editModal.title')}
+        footer={
+          <button className="primary-button" onClick={handleUpdateSubject}>
+            {t('workspace.common.saveChanges')}
+          </button>
+        }
+      >
         <div className="modal-form">
           {formError && <p className="form-error">{formError}</p>}
           <div className="modal-step">
@@ -246,18 +264,33 @@ const SubjectsCard = ({ subjects, groups, onUpdate }) => {
               </div>
             </div>
           )}
-          <button className="primary-button" onClick={handleUpdateSubject}>{t('workspace.common.saveChanges')}</button>
         </div>
       </Modal>
 
-      <Modal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} title={t('workspace.subjects.deleteModal.title')}>
+      <Modal 
+        isOpen={isDeleteModalOpen} 
+        onClose={() => setIsDeleteModalOpen(false)} 
+        title={t('workspace.subjects.deleteModal.title')}
+        footer={
+          <button 
+            className="primary-button danger-button" 
+            onClick={handleConfirmDelete} 
+            disabled={deleteConfirmationText !== subjectToDelete?.name}
+          >
+            {t('workspace.subjects.deleteModal.deleteButton')}
+          </button>
+        }
+      >
         <div className="modal-form">
           <p className="delete-modal-text" dangerouslySetInnerHTML={{ __html: t('workspace.subjects.deleteModal.confirmationText', { name: subjectToDelete?.name }) }} />
           <p>{t('workspace.common.typeToConfirm')}</p>
-          <input type="text" className="form-input" value={deleteConfirmationText} onChange={(e) => setDeleteConfirmationText(e.target.value)} placeholder={subjectToDelete?.name} />
-          <button className="primary-button danger-button" onClick={handleConfirmDelete} disabled={deleteConfirmationText !== subjectToDelete?.name}>
-            {t('workspace.subjects.deleteModal.deleteButton')}
-          </button>
+          <input 
+            type="text" 
+            className="form-input" 
+            value={deleteConfirmationText} 
+            onChange={(e) => setDeleteConfirmationText(e.target.value)} 
+            placeholder={subjectToDelete?.name} 
+          />
         </div>
       </Modal>
 

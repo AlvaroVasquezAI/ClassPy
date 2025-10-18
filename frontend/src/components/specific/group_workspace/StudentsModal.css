@@ -4,8 +4,8 @@
 }
 
 .gw-sm-container {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
+  display: flex;
+  flex-direction: column; 
   gap: 2.5rem;
   padding: 1rem 0;
 }
@@ -13,6 +13,7 @@
 .gw-sm-list-section, .gw-sm-form-section {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .gw-sm-list-section h4, .gw-sm-form-section h4 {
@@ -163,4 +164,36 @@
 }
 .status-transferred {
   color: #3B82F6;
+}
+
+.profile-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.profile-button {
+  border: none;
+  padding: 0.9rem 1.5rem;
+  border-radius: 12px; 
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-button.primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.profile-button.secondary {
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  border: 1px solid var(--input-border-color);
 }

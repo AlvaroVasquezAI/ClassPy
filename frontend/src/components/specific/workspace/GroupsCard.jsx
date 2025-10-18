@@ -59,6 +59,7 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
       setSelectedColor('#749280');
       setIsColorConfirmed(false);
       setFormError('');
+      setSelectedClassroomCourseId('');
     }
   }, [isCreateModalOpen]);
 
@@ -206,7 +207,6 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
       <div className={`items-container ${isDeleteMode ? 'deleting' : ''} ${isEditMode ? 'editing' : ''}`}>
         {groups.map(group => {
           const displayText = getGroupDisplayText(group);
-
           if (isEditMode || isDeleteMode) {
             return (
               <button key={group.id} className="item-chip" style={{ backgroundColor: group.color }} onClick={() => handleChipClick(group)}>
@@ -214,7 +214,6 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
               </button>
             );
           }
-
           if (isSchedulingMode) {
             return (
               <div key={group.id} className="item-chip draggable" style={{ backgroundColor: group.color }} draggable="true" onDragStart={(e) => handleDragStart(e, group)}>
@@ -222,7 +221,6 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
               </div>
             );
           }
-
           return (
             <Link to={generateGroupUrl(group)} key={group.id} className="item-chip" style={{ backgroundColor: group.color, textDecoration: 'none' }}>
               {displayText}
@@ -231,7 +229,16 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
         })}
       </div>
 
-      <Modal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} title={t('workspace.groups.createModal.title')}>
+      <Modal 
+        isOpen={isCreateModalOpen} 
+        onClose={() => setIsCreateModalOpen(false)} 
+        title={t('workspace.groups.createModal.title')}
+        footer={
+          <button className="primary-button" onClick={handleCreateGroup} disabled={!isCreateButtonEnabled}>
+            {t('workspace.groups.createModal.createButton')}
+          </button>
+        }
+      >
         <div className="modal-form">
           {formError && <p className="form-error">{formError}</p>}
           <div className="modal-step">
@@ -259,26 +266,26 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
           </div>
           <div className="modal-step" style={{ opacity: isColorStepEnabled ? 1 : 0.5 }}>
             <label>{t('workspace.groups.createModal.step4Label')}</label>
-            <div className="color-picker-wrapper">
-              <input type="color" value={selectedColor} disabled={!isColorStepEnabled} onChange={(e) => setSelectedColor(e.target.value)} className="color-input"/>
-              {isColorDuplicate && <span className="form-error">{t('workspace.groups.createModal.colorInUseError')}</span>}
-            </div>
-          </div>
-          <div className="modal-step" style={{ opacity: isColorStepEnabled ? 1 : 0.5 }}>
-            <label>5. (Optional) Link to Google Classroom</label>
             <select
               className="form-input"
               value={selectedClassroomCourseId}
               onChange={(e) => setSelectedClassroomCourseId(e.target.value)}
               disabled={!isColorStepEnabled}
             >
-              <option value="">Do not link</option>
+              <option value=""></option>
               {classroomCourses.map(course => (
                 <option key={course.id} value={course.id}>
                   {course.name}
                 </option>
               ))}
             </select>
+          </div>
+          <div className="modal-step" style={{ opacity: isColorStepEnabled ? 1 : 0.5 }}>
+            <label>{t('workspace.groups.createModal.step5Label')}</label>
+            <div className="color-picker-wrapper">
+              <input type="color" value={selectedColor} disabled={!isColorStepEnabled} onChange={(e) => setSelectedColor(e.target.value)} className="color-input"/>
+              {isColorDuplicate && <span className="form-error">{t('workspace.groups.createModal.colorInUseError')}</span>}
+            </div>
           </div>
           {isColorStepEnabled && (
             <div className="preview-chip-container">
@@ -290,13 +297,23 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
               </div>
             </div>
           )}
-          <button className="primary-button" onClick={handleCreateGroup} disabled={!isCreateButtonEnabled}>
-            {t('workspace.groups.createModal.createButton')}
-          </button>
         </div>
       </Modal>
 
-      <Modal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} title={t('workspace.groups.deleteModal.title')}>
+      <Modal 
+        isOpen={isDeleteModalOpen} 
+        onClose={() => setIsDeleteModalOpen(false)} 
+        title={t('workspace.groups.deleteModal.title')}
+        footer={
+          <button
+            className="primary-button danger-button"
+            onClick={handleConfirmDelete}
+            disabled={deleteConfirmationText !== getGroupDisplayText(groupToDelete)}
+          >
+            {t('workspace.groups.deleteModal.deleteButton')}
+          </button>
+        }
+      >
         <div className="modal-form">
           <p className="delete-modal-text" dangerouslySetInnerHTML={{ __html: t('workspace.groups.deleteModal.confirmationText', { name: getGroupDisplayText(groupToDelete) }) }} />
           <p>{t('workspace.common.typeFullToConfirm')}</p>
@@ -307,17 +324,19 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
             onChange={(e) => setDeleteConfirmationText(e.target.value)}
             placeholder={getGroupDisplayText(groupToDelete)}
           />
-          <button
-            className="primary-button danger-button"
-            onClick={handleConfirmDelete}
-            disabled={deleteConfirmationText !== getGroupDisplayText(groupToDelete)}
-          >
-            {t('workspace.groups.deleteModal.deleteButton')}
-          </button>
         </div>
       </Modal>
 
-      <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} title={t('workspace.groups.editModal.title', { name: getGroupDisplayText(groupToEdit) })}>
+      <Modal 
+        isOpen={isEditModalOpen} 
+        onClose={() => setIsEditModalOpen(false)} 
+        title={t('workspace.groups.editModal.title', { name: getGroupDisplayText(groupToEdit) })}
+        footer={
+          <button className="primary-button" onClick={handleUpdateGroup}>
+            {t('workspace.common.saveChanges')}
+          </button>
+        }
+      >
         <div className="modal-form">
           {formError && <p className="form-error">{formError}</p>}
           <div className="modal-step">
@@ -332,9 +351,6 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
               {getGroupDisplayText(groupToEdit)}
             </div>
           </div>
-          <button className="primary-button" onClick={handleUpdateGroup}>
-            {t('workspace.common.saveChanges')}
-          </button>
         </div>
       </Modal>
     </>

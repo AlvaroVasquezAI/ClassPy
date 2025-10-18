@@ -19,10 +19,12 @@ const ProfileModal = ({ isOpen, onClose }) => {
   const [previewUrl, setPreviewUrl] = useState(null);
   
   useEffect(() => {
-    setFormData(teacherInfo);
-    setIsEditing(false);
-    setNewProfilePic(null);
-    setPreviewUrl(null);
+    if (isOpen) {
+      setFormData(teacherInfo);
+      setIsEditing(false);
+      setNewProfilePic(null);
+      setPreviewUrl(null);
+    }
   }, [isOpen, teacherInfo]);
   
   if (!teacherInfo) return null;
@@ -58,8 +60,24 @@ const ProfileModal = ({ isOpen, onClose }) => {
     }
   };
 
+  const modalFooter = isEditing ? (
+    <div className="profile-actions">
+      <button onClick={() => setIsEditing(false)} className="profile-button secondary">{t('profileModal.cancelButton')}</button>
+      <button onClick={handleSave} className="profile-button primary">{t('profileModal.saveButton')}</button>
+    </div>
+  ) : (
+    <div className="profile-actions">
+      <button onClick={() => setIsEditing(true)} className="profile-button primary">{t('profileModal.editButton')}</button>
+    </div>
+  );
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={t('profileModal.title')}>
+    <Modal 
+      isOpen={isOpen} 
+      onClose={onClose} 
+      title={t('profileModal.title')} 
+      footer={modalFooter}
+    >
       <div className="profile-modal-content">
         <div className="profile-pic-container">
           {previewUrl ? (
@@ -81,24 +99,19 @@ const ProfileModal = ({ isOpen, onClose }) => {
             <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} className="profile-input"/>
             <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} className="profile-input"/>
             <input type="email" name="email" value={formData.email} onChange={handleInputChange} className="profile-input"/>
-
-            <div className="profile-actions">
-              <button onClick={() => setIsEditing(false)} className="profile-button secondary">{t('profileModal.cancelButton')}</button>
-              <button onClick={handleSave} className="profile-button primary">{t('profileModal.saveButton')}</button>
-            </div>
           </div>
         ) : (
           <div className="profile-details">
-            <div className="profile-info-row">
-              <strong>{t('profileModal.nameLabel')}:</strong>
-              <span>{teacherInfo.firstName} {teacherInfo.lastName}</span>
-            </div>
-            <div className="profile-info-row">
-              <strong>{t('profileModal.emailLabel')}:</strong>
-              <span>{teacherInfo.email}</span>
-            </div>
-            <div className="profile-actions">
-              <button onClick={() => setIsEditing(true)} className="profile-button primary">{t('profileModal.editButton')}</button>
+            <div className="profile-info-card">
+              <div className="profile-info-row">
+                <strong>{t('profileModal.nameLabel')}:</strong>
+                <span>{teacherInfo.firstName} {teacherInfo.lastName}</span>
+              </div>
+              <div className="profile-info-divider"></div>
+              <div className="profile-info-row">
+                <strong>{t('profileModal.emailLabel')}:</strong>
+                <span>{teacherInfo.email}</span>
+              </div>
             </div>
           </div>
         )}

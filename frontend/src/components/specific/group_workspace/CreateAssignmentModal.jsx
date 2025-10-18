@@ -89,8 +89,8 @@ const CreateAssignmentModal = ({ isOpen, onClose, topic, category, classroomCour
       }
       
       await apiCall;
-      onUpdate();
-      onClose();
+      onUpdate(); 
+      onClose();  
     } catch (err) {
       setError(err.message || 'An unexpected error occurred. Please try again.');
     } finally {
@@ -98,8 +98,19 @@ const CreateAssignmentModal = ({ isOpen, onClose, topic, category, classroomCour
     }
   };
 
+  const modalFooter = (
+    <button className="primary-button" onClick={handleSubmit} disabled={isLoading}>
+      {isLoading ? 'Saving...' : (isEditMode ? 'Save Changes' : 'Create Assignment')}
+    </button>
+  );
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={isEditMode ? `Edit ${category} Assignment` : `Create New ${category} Assignment`}>
+    <Modal 
+      isOpen={isOpen} 
+      onClose={onClose} 
+      title={isEditMode ? `Edit ${category} Assignment` : `Create New ${category} Assignment`}
+      footer={modalFooter}
+    >
       <div className="modal-form">
         {error && <p className="form-error">{error}</p>}
         
@@ -133,10 +144,6 @@ const CreateAssignmentModal = ({ isOpen, onClose, topic, category, classroomCour
           required
           disabled={isLoading}
         />
-        
-        <button className="primary-button" onClick={handleSubmit} disabled={isLoading}>
-          {isLoading ? 'Saving...' : (isEditMode ? 'Save Changes' : 'Create Assignment')}
-        </button>
       </div>
     </Modal>
   );

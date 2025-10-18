@@ -83,7 +83,8 @@
         "step1Placeholder": "Selecciona una asignatura...",
         "step2Label": "2. Seleccionar grado",
         "step3Label": "3. Seleccionar letra de grupo",
-        "step4Label": "4. Seleccionar color de grupo",
+        "step4Label": "4. Google Classroom",
+        "step5label": "5. Seleccionar color de grupo",
         "colorInUseError": "Este color ya está en uso.",
         "confirmColor": "Confirmar selección de color",
         "createButton": "Crear grupo"
@@ -131,7 +132,8 @@
       "generalGrade": "Promedio general",
       "categoryGrade": "Promedio",
       "studentName": "Nombre del estudiante",
-      "noAssignments": "Aún no hay tareas en esta categoría."
+      "noAssignments": "Aún no hay tareas en esta categoría.",
+      "noGrades": "Aún no hay calificaciones."
     },
     "topicsCard": {
       "title": "Temas",
@@ -203,6 +205,35 @@
       "title": "{{studentName}}",
       "alt": "Código QR para {{studentName}}",
       "downloadButton": "Descargar PNG"
+    },
+    "deleteModal": {
+      "title": "¿Eliminar \"{{assignmentName}}\"?",
+      "text1": "Esta acción no se puede deshacer. Todas las calificaciones asociadas a esta tarea serán eliminadas permanentemente.",
+      "text2": "Por favor, escribe <1>{{assignmentName}}</1> para confirmar.",
+      "button": "Eliminar Permanentemente"
     }
-  }
+  },
+  "classroom": {
+      "connectTitle": "Conectar con Google Classroom",
+      "connectSubtitle": "Vincula tu cuenta de Google para importar cursos, tareas y calificaciones sin problemas.",
+      "connectButton": "Conectar con Google",
+      "headerTitle": "Google Classroom",
+      "groups": "Grupos",
+      "noDate": "Sin fecha",
+      "totalStudents": "Estudiantes",
+      "selectGroupPrompt": "Selecciona un grupo para ver sus detalles.",
+      "classCode": "Código de la clase",
+      "assignments": "Tareas",
+      "submissionsFor": "Entregas para \"{{assignmentTitle}}\"",
+      "created": "Creado",
+      "due": "Fecha de entrega",
+      "acceptingSubmissions": "Aceptando entregas",
+      "closed": "Cerrado",
+      "returned": "Devueltas",
+      "turnedIn": "Entregadas",
+      "assigned": "Asignadas",
+      "loading": "Cargando...",
+      "unknownStudent": "Estudiante desconocido",
+      "students": "Estudiantes"
+    }
 }

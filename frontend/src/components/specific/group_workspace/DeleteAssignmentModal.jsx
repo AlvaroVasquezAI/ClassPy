@@ -1,29 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useTranslation, Trans } from 'react-i18next';
 import Modal from '../../common/Modal';
 
 const DeleteAssignmentModal = ({ isOpen, onClose, assignment, onConfirm }) => {
+  const { t } = useTranslation();
   const [confirmationText, setConfirmationText] = useState('');
-  if (!assignment) return null;
+
+  useEffect(() => {
+    if (isOpen) {
+      setConfirmationText('');
+    }
+  }, [isOpen]);
+
+  if (!isOpen || !assignment) {
+    return null;
+  }
 
   const isConfirmed = confirmationText === assignment.name;
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={`Delete "${assignment.name}"?`}>
+    <Modal 
+      isOpen={isOpen} 
+      onClose={onClose} 
+      title={t('groupWorkspace.deleteModal.title', { assignmentName: assignment.name })}
+    >
       <div className="modal-form">
-        <p>This action cannot be undone. All grades associated with this assignment will be permanently deleted.</p>
-        <p>Please type <strong>{assignment.name}</strong> to confirm.</p>
+        <p>{t('groupWorkspace.deleteModal.text1')}</p>
+        
+        <p>
+          <Trans i18nKey="groupWorkspace.deleteModal.text2"
+            values={{ assignmentName: assignment.name }}
+            components={[<strong />]}
+          />
+        </p>
+
         <input
           type="text"
           className="form-input"
           value={confirmationText}
           onChange={(e) => setConfirmationText(e.target.value)}
+          placeholder={assignment.name}
+          autoFocus
         />
+
         <button
           className="primary-button danger-button"
           onClick={onConfirm}
           disabled={!isConfirmed}
         >
-          Permanently Delete
+          {t('groupWorkspace.deleteModal.button')}
         </button>
       </div>
     </Modal>

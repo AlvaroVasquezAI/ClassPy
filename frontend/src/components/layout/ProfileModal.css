@@ -33,6 +33,20 @@
   text-align: left; 
 }
 
+.profile-info-card {
+  background-color: var(--input-bg);
+  border-radius: 16px;
+  padding: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.profile-info-divider {
+  height: 1px;
+  background-color: var(--input-border-color);
+  margin: 1rem 0;
+}
+
 .profile-info-row {
   display: flex;
   justify-content: space-between; 
@@ -61,7 +75,6 @@
 }
 
 .profile-actions {
-  margin-top: 1.5rem;
   display: flex;
   justify-content: center;
   gap: 1rem;
