@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import List, Optional
 from .teacher import CamelCaseModel
 
 class StudentBase(CamelCaseModel):
@@ -24,3 +24,11 @@ class Student(StudentBase):
     group_id: int
     qr_code_id: Optional[str] = None
     classroom_user_id: Optional[str] = None
+
+class StudentFromClassroom(CamelCaseModel):
+    first_name: str
+    last_name: str
+    classroom_user_id: str
+
+class StudentBulkCreate(CamelCaseModel):
+    students: List[StudentFromClassroom]

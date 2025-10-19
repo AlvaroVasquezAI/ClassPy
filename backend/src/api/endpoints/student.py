@@ -30,3 +30,10 @@ def update_student(student_id: int, student: student_schema.StudentUpdate, db: S
 def delete_student(student_id: int, db: Session = Depends(get_db)):
     crud_student.delete_student(db=db, student_id=student_id)
     return {"ok": True}
+
+@router.post("/students/bulk/{group_id}", response_model=List[student_schema.Student], status_code=status.HTTP_201_CREATED)
+def create_students_in_bulk(group_id: int, payload: student_schema.StudentBulkCreate, db: Session = Depends(get_db)):
+    """
+    Creates multiple students in a group from a Google Classroom roster.
+    """
+    return crud_student.create_students_from_roster(db=db, group_id=group_id, students=payload.students)

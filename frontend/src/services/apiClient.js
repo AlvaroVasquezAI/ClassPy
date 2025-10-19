@@ -379,4 +379,18 @@ export const apiClient = {
     if (!response.ok) throw new Error('Failed to fetch Google user profile.');
     return response.json();
   },
+
+  createStudentsInBulk: async (groupId, studentsData) => {
+    const payload = { students: studentsData };
+    const response = await fetch(`${API_BASE_URL}/api/students/bulk/${groupId}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || 'Failed to bulk create students.');
+    }
+    return response.json();
+  },
 };

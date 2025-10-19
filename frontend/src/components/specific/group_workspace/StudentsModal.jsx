@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FaTrash, FaPlus, FaEdit, FaChevronDown, FaTimes, FaUserGraduate } from 'react-icons/fa';
+import { FaTrash, FaPlus, FaEdit, FaChevronDown, FaTimes, FaUserGraduate, FaChalkboardTeacher } from 'react-icons/fa';
 import Modal from '../../common/Modal';
 import { apiClient } from '../../../services/apiClient';
 import DownloadMenu from './DownloadMenu';
@@ -144,25 +144,18 @@ const StudentsModal = ({ isOpen, onClose, students, currentGroup, currentSubject
   const linkedClassroomUserIds = new Set(students.map(s => s.classroomUserId));
   const modalTitle = t('groupWorkspace.studentsModal.title', { groupName: `${currentGroup.grade}${currentGroup.name}` });
 
-  const modalFooter = viewMode === 'list' ? (
-    <div className="profile-actions">
-      <button className="profile-button primary" onClick={() => {
-        setStudentToEdit(null); 
-        setViewMode('form');
-      }}>
-        <FaPlus style={{ marginRight: '0.5rem' }} /> {t('groupWorkspace.studentsModal.form.addButton')}
-      </button>
-    </div>
-  ) : (
+  const isFormDisabled = !studentToEdit && !formData.classroomUserId;
+
+  const modalFooter = viewMode === 'form' ? (
     <div className="profile-actions">
       <button className="profile-button secondary" onClick={() => setViewMode('list')}>
         {t('profileModal.cancelButton')}
       </button>
-      <button className="profile-button primary" onClick={handleSubmit}>
+      <button className="profile-button primary" onClick={handleSubmit} disabled={isFormDisabled}>
         {studentToEdit ? t('groupWorkspace.studentsModal.form.saveButton') : t('groupWorkspace.studentsModal.form.addButton')}
       </button>
     </div>
-  );
+  ) : null;
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={modalTitle} footer={modalFooter}>
@@ -171,9 +164,20 @@ const StudentsModal = ({ isOpen, onClose, students, currentGroup, currentSubject
           <h4>
             <div className="gw-sm-header-left">
               <span className="gw-sm-student-count">{students.length}</span>
-              <span>{t('groupWorkspace.studentsModal.listTitle')}</span>
             </div>
-            <DownloadMenu students={students} currentGroup={currentGroup} currentSubject={currentSubject} />
+            <div className="gw-sm-header-actions">
+              <DownloadMenu students={students} currentGroup={currentGroup} currentSubject={currentSubject} />
+              <button 
+                className="gw-sm-action-btn add" 
+                onClick={() => {
+                  setStudentToEdit(null); 
+                  setViewMode('form');
+                }}
+                title={t('groupWorkspace.studentsModal.form.addTitle')}
+              >
+                <FaPlus />
+              </button>
+            </div>
           </h4>
           <div className="gw-sm-list">
             {students.map(student => (
@@ -218,15 +222,15 @@ const StudentsModal = ({ isOpen, onClose, students, currentGroup, currentSubject
             
             {groupDetails?.classroomGroup && (
               <div className="gw-sm-form-group">
-                <label htmlFor="classroomUserId">Link to Google Classroom Student</label>
+                <label htmlFor="firstName">{t('groupWorkspace.studentsModal.form.classroomStudent')}</label>
                 <select 
-                    id="classroomUserId"
-                    name="classroomUserId" 
-                    value={formData.classroomUserId} 
-                    onChange={handleInputChange} 
-                    className="form-input"
+                  id="classroomUserId"
+                  name="classroomUserId" 
+                  value={formData.classroomUserId} 
+                  onChange={handleInputChange} 
+                  className="form-input"
                 >
-                  <option value="">Do not link</option>
+                  <option value="">{t('groupWorkspace.studentsModal.form.selectClassroomStudent')}</option>
                   {classroomRoster.map(rosterStudent => (
                     <option 
                         key={rosterStudent.userId} 
@@ -241,26 +245,31 @@ const StudentsModal = ({ isOpen, onClose, students, currentGroup, currentSubject
               </div>
             )}
             
+            {/* 2. Disabled Input Fields */}
             <div className="gw-sm-form-group">
               <label htmlFor="firstName">{t('groupWorkspace.studentsModal.form.firstNameLabel')}</label>
-              <input type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleInputChange} className="form-input" required />
+              <input type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleInputChange} className="form-input" required disabled={isFormDisabled} />
             </div>
             <div className="gw-sm-form-group">
               <label htmlFor="lastName">{t('groupWorkspace.studentsModal.form.lastNameLabel')}</label>
-              <input type="text" id="lastName" name="lastName" value={formData.lastName} onChange={handleInputChange} className="form-input" required />
+              <input type="text" id="lastName" name="lastName" value={formData.lastName} onChange={handleInputChange} className="form-input" required disabled={isFormDisabled} />
             </div>
             <div className="gw-sm-form-group">
               <label htmlFor="contactNumber">{t('groupWorkspace.studentsModal.form.contactLabel')}</label>
-              <input type="tel" id="contactNumber" name="contactNumber" value={formData.contactNumber} onChange={handleInputChange} className="form-input" />
+              <input type="tel" id="contactNumber" name="contactNumber" value={formData.contactNumber} onChange={handleInputChange} className="form-input" disabled={isFormDisabled} />
             </div>
-            <div className="gw-sm-form-group">
-                <label htmlFor="status">{t('groupWorkspace.studentsModal.form.statusLabel')}</label>
-                <select id="status" name="status" value={formData.status} onChange={handleInputChange} className="form-input">
-                    <option value="active">{t('groupWorkspace.studentsModal.status.active')}</option>
-                    <option value="inactive">{t('groupWorkspace.studentsModal.status.inactive')}</option>
-                    <option value="transferred">{t('groupWorkspace.studentsModal.status.transferred')}</option>
-                </select>
-            </div>
+
+            {/* 3. Conditionally Rendered Status Field */}
+            {studentToEdit && (
+              <div className="gw-sm-form-group">
+                  <label htmlFor="status">{t('groupWorkspace.studentsModal.form.statusLabel')}</label>
+                  <select id="status" name="status" value={formData.status} onChange={handleInputChange} className="form-input">
+                      <option value="active">{t('groupWorkspace.studentsModal.status.active')}</option>
+                      <option value="inactive">{t('groupWorkspace.studentsModal.status.inactive')}</option>
+                      <option value="transferred">{t('groupWorkspace.studentsModal.status.transferred')}</option>
+                  </select>
+              </div>
+            )}
           </form>
         </div>
       )}

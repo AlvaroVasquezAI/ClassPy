@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from ..models import models
 from ..schemas import student as student_schema
+from typing import List
 
 def normalize_text(text: str) -> str:
     nfkd_form = unicodedata.normalize('NFKD', text)
@@ -74,3 +75,45 @@ def delete_student(db: Session, student_id: int):
     db.delete(db_student)
     db.commit()
     return {"ok": True}
+
+def create_students_from_roster(db: Session, group_id: int, students: List[student_schema.StudentFromClassroom]):
+    db_students_to_add = []
+    for student_data in students:
+        existing_student = db.query(models.Student).filter(
+            models.Student.group_id == group_id,
+            models.Student.classroom_user_id == student_data.classroom_user_id
+        ).first()
+
+        if not existing_student:
+            new_student = models.Student(
+                first_name=student_data.first_name,
+                last_name=student_data.last_name,
+                classroom_user_id=student_data.classroom_user_id,
+                group_id=group_id,
+                status='active'
+            )
+            db_students_to_add.append(new_student)
+
+    if not db_students_to_add:
+        return []
+
+    db.add_all(db_students_to_add)
+    db.commit()
+
+    for student in db_students_to_add:
+        db.refresh(student) 
+        
+        normalized_first_name = normalize_text(student.first_name).upper()
+        normalized_last_name = normalize_text(student.last_name).upper()
+        first_initial = normalized_first_name[0] if normalized_first_name else ''
+        last_name_parts = normalized_last_name.split()
+        first_last_name = last_name_parts[0] if last_name_parts else ''
+        second_last_name_initial = ''
+        if len(last_name_parts) > 1:
+            second_last_name_initial = last_name_parts[1][0] if last_name_parts[1] else ''
+        
+        qr_code = f"{first_initial}{first_last_name}{second_last_name_initial}{student.id}"
+        student.qr_code_id = qr_code
+
+    db.commit() 
+    return db_students_to_add

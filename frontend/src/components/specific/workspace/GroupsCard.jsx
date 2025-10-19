@@ -13,6 +13,23 @@ const GROUP_LETTERS = ['A', 'B', 'C', 'D', 'E'];
 const GroupsCard = ({ groups, subjects, onUpdate }) => {
   const { t } = useTranslation();
 
+  const parseFullName = (fullName) => {
+    if (!fullName || typeof fullName !== 'string') {
+      return { firstName: '', lastName: '' };
+    }
+    const parts = fullName.trim().split(' ').filter(p => p);
+    
+    if (parts.length <= 1) {
+      return { firstName: parts[0] || '', lastName: '' };
+    }
+    if (parts.length === 2) {
+      return { firstName: parts[0], lastName: parts[1] };
+    }
+    const lastName = parts.slice(-2).join(' ');
+    const firstName = parts.slice(0, -2).join(' ');
+    return { firstName, lastName };
+  };
+
   const [isSchedulingMode, setIsSchedulingMode] = useState(false);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -37,7 +54,7 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
   const existingColors = useMemo(() => new Set(groups.map(g => g.color)), [groups]);
 
   const [classroomCourses, setClassroomCourses] = useState([]);
-  const [selectedClassroomCourseId, setSelectedClassroomCourseId] = useState('');
+  const [selectedClassroomCourseId, setSelectedClassroomCourseId] = useState(null);
 
   useEffect(() => {
     const fetchClassroomCourses = async () => {
@@ -59,7 +76,7 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
       setSelectedColor('#749280');
       setIsColorConfirmed(false);
       setFormError('');
-      setSelectedClassroomCourseId('');
+      setSelectedClassroomCourseId(null);
     }
   }, [isCreateModalOpen]);
 
@@ -80,7 +97,8 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
 
   const isGradeStepEnabled = !!selectedSubjectId;
   const isGroupLetterStepEnabled = isGradeStepEnabled && !!selectedGrade;
-  const isColorStepEnabled = isGroupLetterStepEnabled && !!selectedGroupLetter;
+  const isClassroomStepEnabled = isGroupLetterStepEnabled && !!selectedGroupLetter;
+  const isColorStepEnabled = isClassroomStepEnabled && selectedClassroomCourseId !== null;
 
   const existingGroupLetters = useMemo(() => {
     if (!isGroupLetterStepEnabled) return [];
@@ -106,17 +124,36 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
   const handleCreateGroup = async () => {
     setFormError('');
     try {
-      await apiClient.createGroup({
+      const newGroup = await apiClient.createGroup({
         name: selectedGroupLetter,
         grade: parseInt(selectedGrade),
         subjectId: parseInt(selectedSubjectId),
         classroomCourseId: selectedClassroomCourseId || null,
         color: selectedColor
       });
+
+      if (selectedClassroomCourseId) {
+        const roster = await apiClient.getClassroomRoster(selectedClassroomCourseId);
+
+        if (roster && roster.length > 0) {
+          const studentsToCreate = roster.map(rosterStudent => {
+            const { firstName, lastName } = parseFullName(rosterStudent.profile.name.fullName);
+            return {
+              firstName,
+              lastName,
+              classroomUserId: rosterStudent.userId
+            };
+          });
+          
+          await apiClient.createStudentsInBulk(newGroup.id, studentsToCreate);
+        }
+      }
+
       setIsCreateModalOpen(false);
-      onUpdate();
+      onUpdate(); 
+
     } catch (err) {
-      setFormError(err.message || "Failed to create group. It may already exist.");
+      setFormError(err.message || "Failed to create group or import students.");
     }
   };
 
@@ -264,13 +301,13 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
               ))}
             </div>
           </div>
-          <div className="modal-step" style={{ opacity: isColorStepEnabled ? 1 : 0.5 }}>
+          <div className="modal-step" style={{ opacity: isClassroomStepEnabled ? 1 : 0.5 }}>
             <label>{t('workspace.groups.createModal.step4Label')}</label>
             <select
               className="form-input"
-              value={selectedClassroomCourseId}
+              value={selectedClassroomCourseId ?? ''}
               onChange={(e) => setSelectedClassroomCourseId(e.target.value)}
-              disabled={!isColorStepEnabled}
+              disabled={!isClassroomStepEnabled}
             >
               <option value=""></option>
               {classroomCourses.map(course => (

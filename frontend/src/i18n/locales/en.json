@@ -176,7 +176,9 @@
         "contactLabel": "Contact Number (Optional)",
         "statusLabel": "Status",
         "saveButton": "Save Changes",
-        "addButton": "Add Student"
+        "addButton": "Add Student",
+        "classroomStudent": "Classroom",
+        "selectClassroomStudent": "Select a student"
       },
       "status": {
         "active": "Active",
