@@ -393,4 +393,10 @@ export const apiClient = {
     }
     return response.json();
   },
+
+  getAllStudents: async () => {
+    const response = await fetch(`${API_BASE_URL}/api/students/all`);
+    if (!response.ok) throw new Error('Failed to fetch all students.');
+    return response.json();
+  },
 };

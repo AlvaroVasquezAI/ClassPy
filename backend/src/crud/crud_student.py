@@ -4,6 +4,7 @@ from fastapi import HTTPException
 from ..models import models
 from ..schemas import student as student_schema
 from typing import List
+from sqlalchemy.orm import Session, joinedload
 
 def normalize_text(text: str) -> str:
     nfkd_form = unicodedata.normalize('NFKD', text)
@@ -117,3 +118,8 @@ def create_students_from_roster(db: Session, group_id: int, students: List[stude
 
     db.commit() 
     return db_students_to_add
+
+def get_all_students_with_details(db: Session):
+    return db.query(models.Student).options(
+        joinedload(models.Student.group).joinedload(models.Group.subject)
+    ).order_by(models.Student.last_name).all()

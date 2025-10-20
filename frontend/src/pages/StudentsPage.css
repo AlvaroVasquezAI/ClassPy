@@ -1,0 +1,121 @@
+.students-page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.students-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.students-page-header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.filters-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: var(--card-bg);
+  border-radius: 16px;
+  border: 1px solid var(--card-border);
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-color-light);
+  padding-left: 0.5rem;
+}
+
+.filter-select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--input-border-color);
+  background: var(--input-bg);
+  color: var(--text-color);
+  border-radius: 12px;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+.students-table-container {
+  overflow-x: auto;
+  background-color: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 1px solid var(--card-border);
+}
+
+.students-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+.students-table th,
+.students-table td {
+  padding: 1rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.students-table thead {
+  border-bottom: 2px solid var(--nav-border);
+}
+
+.students-table tbody tr:not(:last-child) {
+  border-bottom: 1px solid var(--input-border-color);
+}
+
+.student-qr-code {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid var(--input-border-color);
+  transition: transform 0.2s;
+}
+
+.student-qr-code:hover {
+  transform: scale(1.1);
+}
+
+.status-badge {
+  padding: 0.3rem 0.7rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.status-active {
+  background-color: rgba(52, 199, 89, 0.15);
+  color: var(--success-color);
+}
+.status-inactive {
+  background-color: rgba(255, 59, 48, 0.15);
+  color: var(--danger-color);
+}
+.status-transferred {
+  background-color: rgba(59, 130, 246, 0.15);
+  color: #3B82F6;
+}
+
+.no-students-message {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-color-light);
+}

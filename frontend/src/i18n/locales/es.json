@@ -216,26 +216,55 @@
     }
   },
   "classroom": {
-      "connectTitle": "Conectar con Google Classroom",
-      "connectSubtitle": "Vincula tu cuenta de Google para importar cursos, tareas y calificaciones sin problemas.",
-      "connectButton": "Conectar con Google",
-      "headerTitle": "Google Classroom",
-      "groups": "Grupos",
-      "noDate": "Sin fecha",
-      "totalStudents": "Estudiantes",
-      "selectGroupPrompt": "Selecciona un grupo para ver sus detalles.",
-      "classCode": "Código de la clase",
-      "assignments": "Tareas",
-      "submissionsFor": "Entregas para \"{{assignmentTitle}}\"",
-      "created": "Creado",
-      "due": "Fecha de entrega",
-      "acceptingSubmissions": "Aceptando entregas",
-      "closed": "Cerrado",
-      "returned": "Devueltas",
-      "turnedIn": "Entregadas",
-      "assigned": "Asignadas",
-      "loading": "Cargando...",
-      "unknownStudent": "Estudiante desconocido",
-      "students": "Estudiantes"
-    }
+    "connectTitle": "Conectar con Google Classroom",
+    "connectSubtitle": "Vincula tu cuenta de Google para importar cursos, tareas y calificaciones sin problemas.",
+    "connectButton": "Conectar con Google",
+    "headerTitle": "Google Classroom",
+    "groups": "Grupos",
+    "noDate": "Sin fecha",
+    "totalStudents": "Estudiantes",
+    "selectGroupPrompt": "Selecciona un grupo para ver sus detalles.",
+    "classCode": "Código de la clase",
+    "assignments": "Tareas",
+    "submissionsFor": "Entregas para \"{{assignmentTitle}}\"",
+    "created": "Creado",
+    "due": "Fecha de entrega",
+    "acceptingSubmissions": "Aceptando entregas",
+    "closed": "Cerrado",
+    "returned": "Devueltas",
+    "turnedIn": "Entregadas",
+    "assigned": "Asignadas",
+    "loading": "Cargando...",
+    "unknownStudent": "Estudiante desconocido",
+    "students": "Estudiantes"
+  },
+  "studentsPage": {
+    "title": "Estudiantes",
+    "filters": {
+      "group": "Filtrar por Grupo",
+      "subject": "Filtrar por Asignatura",
+      "firstName": "Filtrar por Nombre",
+      "lastName": "Filtrar por Apellido",
+      "status": "Filtrar por Estado",
+      "all": "Todos"
+    },
+    "table": {
+      "qrCode": "QR",
+      "id": "ID",
+      "lastName": "Apellidos",
+      "firstName": "Nombres",
+      "group": "Grupo",
+      "subject": "Asignatura",
+      "contact": "Contacto",
+      "status": "Estado",
+      "classroomId": "ID de Classroom"
+    },
+    "status": {
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "transferred": "Transferido"
+    },
+    "noStudents": "No se encontraron estudiantes con los filtros seleccionados.",
+    "loading": "Cargando estudiantes..."
+  }
 }

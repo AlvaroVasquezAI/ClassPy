@@ -37,3 +37,29 @@ def create_students_in_bulk(group_id: int, payload: student_schema.StudentBulkCr
     Creates multiple students in a group from a Google Classroom roster.
     """
     return crud_student.create_students_from_roster(db=db, group_id=group_id, students=payload.students)
+
+@router.get("/students/all", response_model=List[student_schema.StudentDetails])
+def read_all_students_with_details(db: Session = Depends(get_db)):
+    """
+    Retrieves all students with their group and subject details.
+    """
+    db_students = crud_student.get_all_students_with_details(db=db)
+    
+    response = []
+    for student in db_students:
+        if student.group and student.group.subject:
+            student_details = student_schema.StudentDetails(
+                id=student.id,
+                first_name=student.first_name,
+                last_name=student.last_name,
+                qr_code_id=student.qr_code_id,
+                contact_number=student.contact_number,
+                status=student.status,
+                group_id=student.group_id,
+                classroom_user_id=student.classroom_user_id,
+                group=student.group,
+                subject=student.group.subject  
+            )
+            response.append(student_details)
+            
+    return response

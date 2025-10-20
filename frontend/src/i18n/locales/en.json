@@ -216,26 +216,55 @@
     }
   },
   "classroom": {
-      "connectTitle": "Connect to Google Classroom",
-      "connectSubtitle": "Link your Google account to import courses, assignments, and grades seamlessly.",
-      "connectButton": "Connect with Google",
-      "headerTitle": "Google Classroom",
-      "groups": "Groups",
-      "noDate": "No Date",
-      "totalStudents": "Total Students",
-      "selectGroupPrompt": "Select a group to view its details.",
-      "classCode": "Class Code",
-      "assignments": "Assignments",
-      "submissionsFor": "Submissions for \"{{assignmentTitle}}\"",
-      "created": "Created",
-      "due": "Due",
-      "acceptingSubmissions": "Accepting Submissions",
-      "closed": "Closed",
-      "returned": "Returned",
-      "turnedIn": "Turned In",
-      "assigned": "Assigned",
-      "loading": "Loading...",
-      "unknownStudent": "Unknown Student",
-      "students": "Students"
-    }
+    "connectTitle": "Connect to Google Classroom",
+    "connectSubtitle": "Link your Google account to import courses, assignments, and grades seamlessly.",
+    "connectButton": "Connect with Google",
+    "headerTitle": "Google Classroom",
+    "groups": "Groups",
+    "noDate": "No Date",
+    "totalStudents": "Total Students",
+    "selectGroupPrompt": "Select a group to view its details.",
+    "classCode": "Class Code",
+    "assignments": "Assignments",
+    "submissionsFor": "Submissions for \"{{assignmentTitle}}\"",
+    "created": "Created",
+    "due": "Due",
+    "acceptingSubmissions": "Accepting Submissions",
+    "closed": "Closed",
+    "returned": "Returned",
+    "turnedIn": "Turned In",
+    "assigned": "Assigned",
+    "loading": "Loading...",
+    "unknownStudent": "Unknown Student",
+    "students": "Students"
+  },
+  "studentsPage": {
+    "title": "Students",
+    "filters": {
+      "group": "Filter by Group",
+      "subject": "Filter by Subject",
+      "firstName": "Filter by First Name",
+      "lastName": "Filter by Last Name",
+      "status": "Filter by Status",
+      "all": "All"
+    },
+    "table": {
+      "qrCode": "QR",
+      "id": "ID",
+      "lastName": "Last Name",
+      "firstName": "First Name",
+      "group": "Group",
+      "subject": "Subject",
+      "contact": "Contact",
+      "status": "Status",
+      "classroomId": "Classroom ID"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "transferred": "Transferred"
+    },
+    "noStudents": "No students found matching the selected filters.",
+    "loading": "Loading students..."
+  }
 }

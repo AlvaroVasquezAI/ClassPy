@@ -32,3 +32,19 @@ class StudentFromClassroom(CamelCaseModel):
 
 class StudentBulkCreate(CamelCaseModel):
     students: List[StudentFromClassroom]
+
+class StudentGroup(CamelCaseModel):
+    id: int
+    name: str
+    grade: int
+
+class StudentSubject(CamelCaseModel):
+    id: int
+    name: str
+
+class StudentDetails(Student):
+    group: StudentGroup
+    subject: StudentSubject
+
+    class Config:
+        from_attributes = True
