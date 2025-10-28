@@ -266,5 +266,22 @@
     },
     "noStudents": "No students found matching the selected filters.",
     "loading": "Loading students..."
+  },
+  "attendancePage": {
+    "readyTitle": "Ready to Scan",
+    "readySubtitle": "Please scan your QR code to register your attendance.",
+    "allGroups": "All",
+    "recordsFor": "Records for",
+    "totalRecords": "Total Records",
+    "noRecords": "No attendance records for this day.",
+    "table": {
+      "time": "Time",
+      "lastName": "Last Name",
+      "firstName": "First Name",
+      "group": "Group",
+      "subject": "Subject",
+      "period": "Period",
+      "qrId": "QR Code ID"
+    }
   }
 }

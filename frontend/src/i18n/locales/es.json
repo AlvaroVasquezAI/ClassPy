@@ -266,5 +266,22 @@
     },
     "noStudents": "No se encontraron estudiantes con los filtros seleccionados.",
     "loading": "Cargando estudiantes..."
+  },
+  "attendancePage": {
+    "readyTitle": "Listo para Escanear",
+    "readySubtitle": "Por favor, escanea tu código QR para registrar tu asistencia.",
+    "allGroups": "Todos",
+    "recordsFor": "Registros de",
+    "totalRecords": "Total de Registros",
+    "noRecords": "No hay registros de asistencia para este día.", 
+    "table": {
+      "time": "Hora",
+      "lastName": "Apellidos",
+      "firstName": "Nombres",
+      "group": "Grupo",
+      "subject": "Asignatura",
+      "period": "Periodo", 
+      "qrId": "ID QR"
+    }
   }
 }

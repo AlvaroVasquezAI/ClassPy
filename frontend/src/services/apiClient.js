@@ -399,4 +399,34 @@ export const apiClient = {
     if (!response.ok) throw new Error('Failed to fetch all students.');
     return response.json();
   },
+
+  // =================================================================
+  // Attendance Methods
+  // =================================================================
+  createAttendanceRecord: async (attendanceData) => {
+    const response = await fetch(`${API_BASE_URL}/api/attendance`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(attendanceData),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || 'Failed to record attendance.');
+    }
+    return response.json();
+  },
+
+  getTodaysAttendance: async () => {
+    const response = await fetch(`${API_BASE_URL}/api/attendance/today`);
+    if (!response.ok) throw new Error("Failed to fetch today's attendance.");
+    return response.json();
+  },
+
+   getAttendanceByDate: async (date) => {
+    // Format date as YYYY-MM-DD
+    const formattedDate = date.toISOString().split('T')[0];
+    const response = await fetch(`${API_BASE_URL}/api/attendance/by-date?query_date=${formattedDate}`);
+    if (!response.ok) throw new Error("Failed to fetch attendance for the selected date.");
+    return response.json();
+  },
 };

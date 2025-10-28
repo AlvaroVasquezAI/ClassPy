@@ -1,0 +1,420 @@
+.attendance-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.attendance-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background-color: var(--card-bg);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid var(--card-border);
+}
+
+.header-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.attendance-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.attendance-title h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.period-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.period-selector label {
+  font-weight: 600;
+}
+
+.period-select {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--input-border-color);
+  background: var(--input-bg);
+  color: var(--text-color);
+  border-radius: 12px;
+  font-size: 1rem;
+}
+
+.group-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.group-filter-btn {
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--input-border-color);
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.group-filter-btn:hover {
+  border-color: var(--primary-color);
+}
+
+.group-filter-btn.active {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.scan-grid-container {
+  display: grid;
+  grid-template-columns: 3fr 3fr 6fr;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.calendar-card {
+  background-color: var(--card-bg);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid var(--card-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.react-datepicker {
+  font-family: var(--font-family) !important;
+  background-color: var(--input-bg) !important;
+  border: 1px solid var(--input-border-color) !important;
+  border-radius: 12px !important;
+}
+.react-datepicker__header {
+  background-color: var(--card-bg) !important;
+  border-bottom: 1px solid var(--input-border-color) !important;
+}
+.react-datepicker__current-month, .react-datepicker__day-name {
+  color: var(--text-color) !important;
+}
+.react-datepicker__day {
+  color: var(--text-color-light) !important;
+}
+.react-datepicker__day:hover {
+  background-color: var(--input-border-color) !important;
+}
+.react-datepicker__day--selected {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+.react-datepicker__day--disabled {
+  color: var(--input-border-color) !important;
+  cursor: not-allowed;
+}
+.react-datepicker__navigation-icon::before {
+  border-color: var(--text-color) !important;
+}
+
+.scan-status-card {
+  background-color: var(--card-bg);
+  border-radius: 16px;
+  padding: 1rem;
+  border: 1px solid var(--card-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.scanner-icon {
+  font-size: 3rem;
+  color: var(--primary-color);
+  animation: pulse 2.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.8; }
+}
+
+.scan-text-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.scan-prompt {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.scan-sub-prompt {
+  color: var(--text-color-light);
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.last-scan-card {
+  grid-column: 3 / 4;
+  background-color: transparent;
+  perspective: 1000px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.last-scan-card.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+.flip-card-back > * {
+  animation: fadeIn 0.5s ease-in-out forwards;
+  opacity: 0;
+}
+
+.scan-details-top { animation-delay: 0.2s; }
+.student-name { animation-delay: 0.4s; }
+.student-period { animation-delay: 0.6s; }
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.scan-details-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.student-qr-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
+  border: 1px solid var(--input-border-color);
+  background-color: white;
+}
+
+.student-qrid {
+  font-family: monospace;
+  background-color: var(--input-bg);
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.student-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  text-align: center;
+}
+
+.student-period {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-color-light);
+  margin-top: -0.5rem;
+}
+
+.scan-placeholder-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.placeholder-icon {
+  font-size: 120px;
+  color: var(--input-border-color);
+}
+
+.scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--primary-color);
+  box-shadow: 0 0 10px var(--primary-color);
+  border-radius: 3px;
+  animation: scan-animation 3s infinite cubic-bezier(0.5, 0, 0.5, 1);
+}
+
+@keyframes scan-animation {
+  0% { top: 0%; }
+  50% { top: 98%; }
+  100% { top: 0%; }
+}
+
+.greeting-text {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-color-light);
+  height: 2.2rem;
+}
+
+.typing-cursor {
+  display: inline-block;
+  width: 10px;
+  height: 2rem;
+  background-color: var(--text-color-light);
+  animation: blink 0.7s infinite;
+  margin-left: 5px;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.qr-input {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  opacity: 0;
+}
+
+.scan-error-feedback {
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  width: 100%;
+  font-weight: 600;
+  text-align: center;
+  background-color: rgba(255, 59, 48, 0.15);
+  color: var(--danger-color);
+  grid-column: 1 / -1;
+}
+
+.attendance-table-container {
+  background-color: var(--card-bg);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid var(--card-border);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Reduced gap */
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; 
+}
+
+.table-title-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.table-title-section h3 {
+  margin: 0;
+}
+
+.active-filters-display {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.filter-tag {
+  background-color: var(--input-bg);
+  color: var(--text-color-light);
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.filter-tag strong {
+  color: var(--text-color);
+}
+
+
+.record-count-card {
+  background-color: var(--input-bg);
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.record-count-card .count {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.record-count-card .label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-color-light);
+}
+
+@media (max-width: 1200px) {
+  .scan-grid-container {
+    grid-template-columns: 1fr;
+  }
+  .last-scan-card {
+    grid-column: auto;
+  }
+}

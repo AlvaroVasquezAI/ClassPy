@@ -23,9 +23,9 @@ def seed_initial_data():
         existing_period = db.query(models.Period).first()
         if not existing_period:
             print("Seeding initial data: Creating Periods...")
-            period1 = models.Period(id=1, name="Period 1", start_date=date(2025, 9, 1), end_date=date(2025, 11, 30))
-            period2 = models.Period(id=2, name="Period 2", start_date=date(2025, 12, 1), end_date=date(2026, 3, 15))
-            period3 = models.Period(id=3, name="Period 3", start_date=date(2026, 3, 16), end_date=date(2026, 6, 20))
+            period1 = models.Period(id=1, name="1", start_date=date(2025, 9, 1), end_date=date(2025, 11, 30))
+            period2 = models.Period(id=2, name="2", start_date=date(2025, 12, 1), end_date=date(2026, 3, 15))
+            period3 = models.Period(id=3, name="3", start_date=date(2026, 3, 16), end_date=date(2026, 6, 20))
             
             db.add_all([period1, period2, period3])
             db.commit()
