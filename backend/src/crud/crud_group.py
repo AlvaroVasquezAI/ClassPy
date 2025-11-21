@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from fastapi import HTTPException
 from ..models import models
 from ..schemas import group as group_schema
@@ -54,7 +54,7 @@ def update_group(db: Session, group_id: int, group_update: group_schema.GroupUpd
     return db_group
 
 def get_groups_by_teacher(db: Session, teacher_id: int):
-    return db.query(models.Group).join(models.Subject).filter(models.Subject.teacher_id == teacher_id).all()
+    return db.query(models.Group).join(models.Subject).filter(models.Subject.teacher_id == teacher_id).options(joinedload(models.Group.classroom_group)).all()
 
 def delete_group(db: Session, group_id: int):
     db_group = db.query(models.Group).filter(models.Group.id == group_id).first()

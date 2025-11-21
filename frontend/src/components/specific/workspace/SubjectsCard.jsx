@@ -154,6 +154,14 @@ const SubjectsCard = ({ subjects, groups, onUpdate }) => {
     }
   };
 
+  const normalizeSubjectName = (name) => {
+  if (!name || typeof name !== 'string') return '';
+  return name
+    .normalize("NFD") 
+    .replace(/[\u0300-\u036f]/g, "") 
+    .toUpperCase(); 
+};
+
   return (
     <>
       <div className="workspace-card-header">
@@ -213,7 +221,7 @@ const SubjectsCard = ({ subjects, groups, onUpdate }) => {
             className="form-input"
             placeholder={t('workspace.subjects.createModal.placeholder')}
             value={newSubjectName}
-            onChange={(e) => setNewSubjectName(e.target.value.toUpperCase())}
+            onChange={(e) => setNewSubjectName(normalizeSubjectName(e.target.value))}
           />
           <div className="modal-step" style={{marginTop: '1rem'}}>
             <label>{t('workspace.subjects.createModal.colorLabel')}</label>
@@ -247,7 +255,7 @@ const SubjectsCard = ({ subjects, groups, onUpdate }) => {
           {formError && <p className="form-error">{formError}</p>}
           <div className="modal-step">
             <label>{t('workspace.subjects.editModal.nameLabel')}</label>
-            <input type="text" className="form-input" value={editSubjectName} onChange={(e) => setEditSubjectName(e.target.value.toUpperCase())} />
+            <input type="text" className="form-input" value={editSubjectName} onChange={(e) => setEditSubjectName(normalizeSubjectName(e.target.value))} />
           </div>
           <div className="modal-step">
             <label>{t('workspace.subjects.editModal.colorLabel')}</label>

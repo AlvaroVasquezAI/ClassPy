@@ -53,6 +53,14 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
   const subjectsMap = useMemo(() => subjects.reduce((acc, s) => ({ ...acc, [s.id]: s.name }), {}), [subjects]);
   const existingColors = useMemo(() => new Set(groups.map(g => g.color)), [groups]);
 
+  const linkedCourseIds = useMemo(() => {
+    return new Set(
+        groups
+          .filter(g => g.classroomGroup && g.classroomGroup.classroomCourseId)
+          .map(g => g.classroomGroup.classroomCourseId)
+    );
+}, [groups]);
+
   const [classroomCourses, setClassroomCourses] = useState([]);
   const [selectedClassroomCourseId, setSelectedClassroomCourseId] = useState(null);
 
@@ -309,10 +317,14 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
               onChange={(e) => setSelectedClassroomCourseId(e.target.value)}
               disabled={!isClassroomStepEnabled}
             >
-              <option value=""></option>
+              <option value="">{t('workspace.groups.createModal.step4Placeholder')}</option>
               {classroomCourses.map(course => (
-                <option key={course.id} value={course.id}>
-                  {course.name}
+                <option 
+                  key={course.id} 
+                  value={course.id}
+                  disabled={linkedCourseIds.has(course.id)}
+                >
+                  {course.name} {linkedCourseIds.has(course.id) ? t('workspace.groups.createModal.courseLinked') : ''}
                 </option>
               ))}
             </select>

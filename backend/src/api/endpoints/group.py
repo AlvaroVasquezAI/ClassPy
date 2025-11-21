@@ -19,7 +19,7 @@ def get_db():
 def create_group(group: group_schema.GroupCreate, db: Session = Depends(get_db)):
     return crud_group.create_group(db=db, group=group)
 
-@router.get("/groups", response_model=List[group_schema.Group])
+@router.get("/groups", response_model=List[group_schema.GroupDetails])
 def read_groups(db: Session = Depends(get_db)):
     return crud_group.get_groups_by_teacher(db=db, teacher_id=1)
 

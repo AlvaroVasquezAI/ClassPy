@@ -21,15 +21,15 @@ const parseFullName = (fullName) => {
     return { firstName: '', lastName: '' };
   }
   const parts = fullName.trim().split(' ').filter(p => p);
-  
+
   if (parts.length <= 1) {
-    return { firstName: parts[0] || '', lastName: '' };
+    return { firstName: capitalizeName(parts[0] || ''), lastName: '' };
   }
   if (parts.length === 2) {
-    return { firstName: parts[0], lastName: parts[1] };
+    return { firstName: capitalizeName(parts[0]), lastName: capitalizeName(parts[1]) };
   }
-  const lastName = parts.slice(-2).join(' ');
-  const firstName = parts.slice(0, -2).join(' ');
+  const lastName = capitalizeName(parts.slice(-2).join(' '));
+  const firstName = capitalizeName(parts.slice(0, -2).join(' '));
   return { firstName, lastName };
 };
 
@@ -157,6 +157,23 @@ const StudentsModal = ({ isOpen, onClose, students, currentGroup, currentSubject
     </div>
   ) : null;
 
+  const capitalizeName = (name) => {
+    if (!name || typeof name !== 'string') return '';
+    return name
+      .trim()
+      .split(' ')
+      .filter(word => word.length > 0)
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  };
+
+  const handleInputBlur = (e) => {
+    const { name, value } = e.target;
+    if (name === 'firstName' || name === 'lastName') {
+        setFormData(prev => ({ ...prev, [name]: capitalizeName(value) }));
+    }
+};
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={modalTitle} footer={modalFooter}>
       {viewMode === 'list' ? (
@@ -245,21 +262,19 @@ const StudentsModal = ({ isOpen, onClose, students, currentGroup, currentSubject
               </div>
             )}
             
-            {/* 2. Disabled Input Fields */}
             <div className="gw-sm-form-group">
               <label htmlFor="firstName">{t('groupWorkspace.studentsModal.form.firstNameLabel')}</label>
-              <input type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleInputChange} className="form-input" required disabled={isFormDisabled} />
+              <input type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleInputChange} onBlur={handleInputBlur} className="form-input" required disabled={isFormDisabled} />
             </div>
             <div className="gw-sm-form-group">
               <label htmlFor="lastName">{t('groupWorkspace.studentsModal.form.lastNameLabel')}</label>
-              <input type="text" id="lastName" name="lastName" value={formData.lastName} onChange={handleInputChange} className="form-input" required disabled={isFormDisabled} />
+              <input type="text" id="lastName" name="lastName" value={formData.lastName} onChange={handleInputChange} onBlur={handleInputBlur} className="form-input" required disabled={isFormDisabled} />
             </div>
             <div className="gw-sm-form-group">
               <label htmlFor="contactNumber">{t('groupWorkspace.studentsModal.form.contactLabel')}</label>
               <input type="tel" id="contactNumber" name="contactNumber" value={formData.contactNumber} onChange={handleInputChange} className="form-input" disabled={isFormDisabled} />
             </div>
 
-            {/* 3. Conditionally Rendered Status Field */}
             {studentToEdit && (
               <div className="gw-sm-form-group">
                   <label htmlFor="status">{t('groupWorkspace.studentsModal.form.statusLabel')}</label>

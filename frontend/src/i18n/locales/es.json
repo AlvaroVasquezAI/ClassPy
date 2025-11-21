@@ -84,6 +84,8 @@
         "step2Label": "2. Seleccionar grado",
         "step3Label": "3. Seleccionar letra de grupo",
         "step4Label": "4. Google Classroom",
+        "step4Placeholder": "Seleccionar un curso", 
+        "courseLinked": "(Ya vinculado)", 
         "step5label": "5. Seleccionar color de grupo",
         "colorInUseError": "Este color ya está en uso.",
         "confirmColor": "Confirmar selección de color",

@@ -6,6 +6,11 @@ from ..schemas import student as student_schema
 from typing import List
 from sqlalchemy.orm import Session, joinedload
 
+def capitalize_name(name: str) -> str:
+    if not name:
+        return ""
+    return " ".join(part.capitalize() for part in name.strip().split())
+
 def normalize_text(text: str) -> str:
     nfkd_form = unicodedata.normalize('NFKD', text)
     return "".join([c for c in nfkd_form if not unicodedata.combining(c)])
@@ -15,8 +20,8 @@ def get_students_by_group(db: Session, group_id: int):
 
 def create_student(db: Session, student: student_schema.StudentCreate):
     db_student = models.Student(
-        first_name=student.first_name,
-        last_name=student.last_name,
+        first_name=capitalize_name(student.first_name),
+        last_name=capitalize_name(student.last_name),
         contact_number=student.contact_number,
         status=student.status,
         group_id=student.group_id,
@@ -62,6 +67,11 @@ def update_student(db: Session, student_id: int, student_update: student_schema.
             raise HTTPException(status_code=400, detail="This Classroom student is already linked to another student in this group.")
 
     update_data = student_update.model_dump(exclude_unset=True)
+    if 'first_name' in update_data and update_data['first_name']:
+        update_data['first_name'] = capitalize_name(update_data['first_name'])
+    if 'last_name' in update_data and update_data['last_name']:
+        update_data['last_name'] = capitalize_name(update_data['last_name'])
+
     for key, value in update_data.items():
         setattr(db_student, key, value)
     
@@ -87,8 +97,8 @@ def create_students_from_roster(db: Session, group_id: int, students: List[stude
 
         if not existing_student:
             new_student = models.Student(
-                first_name=student_data.first_name,
-                last_name=student_data.last_name,
+                first_name=capitalize_name(student_data.first_name),
+                last_name=capitalize_name(student_data.last_name),
                 classroom_user_id=student_data.classroom_user_id,
                 group_id=group_id,
                 status='active'
