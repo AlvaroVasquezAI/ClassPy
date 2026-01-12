@@ -407,7 +407,12 @@ export const apiClient = {
     const response = await fetch(`${API_BASE_URL}/api/attendance`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(attendanceData),
+      body: JSON.stringify({
+          student_qr_id: attendanceData.studentQrId,
+          period_id: attendanceData.periodId,
+          strict_mode: attendanceData.strictMode,
+          late_threshold: attendanceData.lateThreshold
+      }),
     });
     if (!response.ok) {
       const errorData = await response.json();

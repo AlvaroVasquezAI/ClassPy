@@ -270,6 +270,10 @@
     "loading": "Loading students..."
   },
   "attendancePage": {
+    "strictMode": "Strict Mode",
+    "strictModeTooltip": "Toggle Strict Attendance Mode",
+    "lateThreshold": "Late Tolerance (min):",
+    "lateBadge": "LATE",
     "readyTitle": "Ready to Scan",
     "readySubtitle": "Please scan your QR code to register your attendance.",
     "allGroups": "All",
@@ -285,5 +289,8 @@
       "period": "Period",
       "qrId": "QR Code ID"
     }
-  }
+  },
+  "attendance_error_student_not_found": "Student with this QR ID not found",
+  "attendance_error_strict_no_class": "Strict Mode: No class is currently in session.",
+  "attendance_error_strict_wrong_group": "Strict Mode: Student does not belong to the active class ({{groupName}})."
 }

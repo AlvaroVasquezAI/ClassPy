@@ -261,6 +261,8 @@ class AttendanceRecord(Base):
     subject_id = Column(Integer, ForeignKey('subjects.id', ondelete='CASCADE'), nullable=False)
     timestamp = Column(TIMESTAMP, server_default=func.now(), nullable=False)
     period_id = Column(Integer, ForeignKey('periods.id'), nullable=False)
+    
+    status = Column(String(20), default='present') 
 
     student = relationship("Student", back_populates="attendance_records")
     subject = relationship("Subject", back_populates="attendance_records")

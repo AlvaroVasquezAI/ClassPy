@@ -17,10 +17,13 @@ def get_db():
 
 @router.post("/attendance", response_model=attendance_schema.AttendanceRecord, status_code=status.HTTP_201_CREATED)
 def record_attendance(attendance: attendance_schema.AttendanceCreate, db: Session = Depends(get_db)):
-    """
-    Records attendance for a student via their QR code ID.
-    """
-    return crud_attendance.create_attendance_record(db=db, student_qr_id=attendance.student_qr_id, period_id=attendance.period_id)
+    return crud_attendance.create_attendance_record(
+        db=db, 
+        student_qr_id=attendance.student_qr_id, 
+        period_id=attendance.period_id,
+        strict_mode=attendance.strict_mode,
+        late_threshold=attendance.late_threshold
+    )
 
 @router.get("/attendance/today", response_model=List[attendance_schema.AttendanceRecord])
 def get_todays_attendance(db: Session = Depends(get_db)):

@@ -410,6 +410,61 @@
   color: var(--text-color-light);
 }
 
+.controls-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--input-border-color);
+}
+
+.strict-mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 600;
+}
+
+.toggle-checkbox {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--primary-color);
+}
+
+.threshold-input-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.threshold-input {
+  width: 60px;
+  padding: 0.4rem;
+  border-radius: 8px;
+  border: 1px solid var(--input-border-color);
+  background: var(--input-bg);
+  color: var(--text-color);
+  text-align: center;
+}
+
+/* Late Attendance Styling */
+.row-late {
+  background-color: rgba(255, 59, 48, 0.1) !important;
+  color: var(--danger-color);
+}
+.late-badge {
+  background-color: var(--danger-color);
+  color: white;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  margin-left: 0.5rem;
+}
+
 @media (max-width: 1200px) {
   .scan-grid-container {
     grid-template-columns: 1fr;

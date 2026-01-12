@@ -25,6 +25,7 @@ class StudentForAttendance(CamelCaseModel):
 class AttendanceRecord(CamelCaseModel):
     id: int
     timestamp: datetime
+    status: str 
     student: StudentForAttendance
     period: PeriodForAttendance 
 
@@ -34,3 +35,5 @@ class AttendanceRecord(CamelCaseModel):
 class AttendanceCreate(CamelCaseModel):
     student_qr_id: str
     period_id: int
+    strict_mode: bool = False
+    late_threshold: int = 5

@@ -270,6 +270,10 @@
     "loading": "Cargando estudiantes..."
   },
   "attendancePage": {
+    "strictMode": "Modo Estricto",
+    "strictModeTooltip": "Activar/Desactivar Modo Estricto",
+    "lateThreshold": "Tolerancia (min):",
+    "lateBadge": "RETARDO",
     "readyTitle": "Listo para Escanear",
     "readySubtitle": "Por favor, escanea tu código QR para registrar tu asistencia.",
     "allGroups": "Todos",
@@ -285,5 +289,8 @@
       "period": "Periodo", 
       "qrId": "ID QR"
     }
-  }
+  },
+  "attendance_error_student_not_found": "Estudiante con este ID de QR no encontrado",
+  "attendance_error_strict_no_class": "Modo Estricto: No hay ninguna clase en sesión actualmente.",
+  "attendance_error_strict_wrong_group": "Modo Estricto: El estudiante no pertenece a la clase activa ({{groupName}})."
 }

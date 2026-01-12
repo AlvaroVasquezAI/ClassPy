@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useAppContext } from '../context/AppContext';
 import { BsQrCodeScan } from 'react-icons/bs';
-import { FaRegUserCircle } from 'react-icons/fa';
+import { FaRegUserCircle, FaLock, FaLockOpen } from 'react-icons/fa';
 import { apiClient } from '../services/apiClient';
 
 import DatePicker from 'react-datepicker';
@@ -14,9 +14,9 @@ import './StudentsPage.css';
 const API_BASE_URL = `http://${window.location.hostname}:8000`;
 
 const PERIODS = [
-  { id: 1, name: 'Period 1' },
-  { id: 2, name: 'Period 2' },
-  { id: 3, name: 'Period 3' },
+  { id: 1, name: '1' },
+  { id: 2, name: '2' },
+  { id: 3, name: '3' },
 ];
 
 const GREETINGS = ['Hello...', 'Hola...', 'Bonjour...', 'Ciao...', 'Olá...'];
@@ -36,6 +36,10 @@ const AttendancePage = () => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isFocusPaused, setIsFocusPaused] = useState(false);
   const [selectedGroupId, setSelectedGroupId] = useState('all');
+
+  const [schedule, setSchedule] = useState([]);
+  const [isStrictMode, setIsStrictMode] = useState(false);
+  const [lateThreshold, setLateThreshold] = useState(5);
 
   const [greetingIndex, setGreetingIndex] = useState(0);
   const [displayedGreeting, setDisplayedGreeting] = useState('');
@@ -59,6 +63,41 @@ const AttendancePage = () => {
     const subjectName = subjects.find(s => s.id === group.subjectId)?.name || '...';
     return `${group.grade}${group.name} - ${subjectName}`;
   };
+
+  useEffect(() => {
+    apiClient.getSchedule().then(setSchedule).catch(console.error);
+  }, []);
+
+  const determineActiveGroup = useCallback(() => {
+    const now = new Date();
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const currentDay = days[now.getDay()];
+    
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const currentTime = `${hours}:${minutes}`;
+
+    const activeEntry = schedule.find(entry => 
+      entry.dayOfWeek === currentDay && 
+      entry.startTime <= currentTime && 
+      entry.endTime > currentTime
+    );
+
+    if (activeEntry) {
+      setSelectedGroupId(activeEntry.groupId);
+    } else {
+      setSelectedGroupId('all'); 
+    }
+  }, [schedule]);
+
+  useEffect(() => {
+    if (!isStrictMode) return;
+
+    determineActiveGroup();
+    const interval = setInterval(determineActiveGroup, 60000);
+
+    return () => clearInterval(interval);
+  }, [isStrictMode, determineActiveGroup]);
 
   useEffect(() => {
     if (isFlipped) {
@@ -125,6 +164,8 @@ const AttendancePage = () => {
       const newRecord = await apiClient.createAttendanceRecord({
         studentQrId: qrInputValue,
         periodId: selectedPeriodId,
+        strictMode: isStrictMode,
+        lateThreshold: parseInt(lateThreshold)
       });
 
       if (isFlipped) {
@@ -189,6 +230,33 @@ const AttendancePage = () => {
             </select>
           </div>
         </div>
+
+        <div className="controls-row">
+           <div 
+             className="strict-mode-toggle" 
+             onClick={() => setIsStrictMode(!isStrictMode)}
+             title={t('attendancePage.strictModeTooltip')}
+           >
+             {isStrictMode ? <FaLock color="var(--primary-color)"/> : <FaLockOpen color="var(--text-color-light)"/>}
+             <span>{t('attendancePage.strictMode')}</span>
+           </div>
+           
+           {isStrictMode && (
+             <div className="threshold-input-group">
+               <label>{t('attendancePage.lateThreshold')}</label>
+               <input 
+                 type="number" 
+                 value={lateThreshold} 
+                 onChange={(e) => setLateThreshold(e.target.value)}
+                 className="threshold-input"
+                 min="0"
+                 onFocus={() => setIsFocusPaused(true)}
+                 onBlur={() => setIsFocusPaused(false)}
+               />
+             </div>
+           )}
+        </div>
+
         <div className="group-filters">
           <button
             className={`group-filter-btn ${selectedGroupId === 'all' ? 'active' : ''}`}
@@ -250,14 +318,20 @@ const AttendancePage = () => {
                     <p className="student-qrid">{lastScannedRecord.student.qrCodeId}</p>
                   </div>
                   <h2 className="student-name">{`${lastScannedRecord.student.firstName} ${lastScannedRecord.student.lastName}`}</h2>
-                  <p className="student-period">{lastScannedRecord.period.name}</p>
                 </React.Fragment>
               )}
             </div>
           </div>
         </div>
 
-        {scanError && <div className="scan-error-feedback">{scanError}</div>}
+        {scanError && (
+          <div className="scan-error-feedback">
+            {(() => {
+              const [key, param] = scanError.split('||');
+              return t(key, { groupName: param || '' });
+            })()}
+          </div>
+        )}
       </div>
 
       <form onSubmit={handleScanSubmit}>
@@ -312,7 +386,7 @@ const AttendancePage = () => {
                         <tr><td colSpan="7" style={{textAlign: 'center'}}>Loading...</td></tr>
                     ) : filteredAttendance.length > 0 ? (
                         filteredAttendance.map(record => (
-                            <tr key={record.id}>
+                            <tr key={record.id} className={record.status === 'late' ? 'row-late' : ''}>
                                 <td>
                                   {new Date(record.timestamp + 'Z').toLocaleTimeString(i18n.language, {
                                     timeZone: 'America/Mexico_City',
@@ -320,6 +394,7 @@ const AttendancePage = () => {
                                     minute: '2-digit',
                                     hour12: true,
                                   })}
+                                  {record.status === 'late' && <span className="late-badge">{t('attendancePage.lateBadge')}</span>}
                                 </td>
                                 <td><strong>{record.student?.lastName}</strong></td>
                                 <td>{record.student?.firstName}</td>
