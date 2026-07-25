@@ -20,6 +20,7 @@ class Group(GroupBase):
 
 class GroupDetails(Group):
     classroom_group: Optional[ClassroomGroupLink] = None
+    student_count: int = 0
 
 class GroupUpdate(CamelCaseModel):
     color: Optional[str] = None

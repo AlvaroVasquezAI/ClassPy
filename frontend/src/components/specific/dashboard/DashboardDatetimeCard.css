@@ -1,0 +1,432 @@
+.dashboard-datetime {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 1.5rem;
+  padding: 1.75rem 1.85rem;
+  border-radius: 24px;
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--primary-color) 16%, var(--card-bg)) 0%,
+      var(--card-bg) 48%
+    );
+  border: 1px solid var(--card-border);
+  animation: dashboard-datetime-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
+
+.dashboard-datetime-glow {
+  pointer-events: none;
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--primary-color) 28%, transparent);
+  filter: blur(8px);
+  top: -70px;
+  right: -40px;
+  opacity: 0.55;
+  animation: dashboard-datetime-orb 10s ease-in-out infinite alternate;
+}
+
+.dashboard-datetime-time,
+.dashboard-datetime-calendar {
+  position: relative;
+  z-index: 1;
+}
+
+.dashboard-datetime-time {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  height: 100%;
+}
+
+.dashboard-datetime-date-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0;
+  animation: dashboard-fade-up 0.55s ease 0.34s both;
+}
+
+.dashboard-datetime-date-main {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.dashboard-datetime-weekday {
+  margin: 0;
+  flex-shrink: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: right;
+  color: var(--primary-color);
+}
+
+.dashboard-datetime-day {
+  font-size: clamp(3.4rem, 8vw, 4.6rem);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  color: var(--text-color);
+}
+
+.dashboard-datetime-month-year {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding-bottom: 0.35rem;
+}
+
+.dashboard-datetime-month {
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: var(--text-color);
+}
+
+.dashboard-datetime-year {
+  font-size: 0.95rem;
+  color: var(--text-color-light);
+}
+
+.dashboard-datetime-clock {
+  margin-top: 1.4rem;
+  width: 100%;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.15rem;
+  padding: 0.85rem 1.1rem;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--background-color) 55%, transparent);
+  border: 1px solid var(--card-border);
+  font-variant-numeric: tabular-nums;
+  animation: dashboard-fade-up 0.55s ease 0.42s both;
+}
+
+.dashboard-datetime-status {
+  --status-accent: var(--primary-color);
+  margin-top: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  padding: 1.25rem 1.15rem;
+  border-radius: 16px;
+  text-align: center;
+  background: color-mix(in srgb, var(--status-accent) 14%, var(--card-bg));
+  border: 1px solid color-mix(in srgb, var(--status-accent) 28%, var(--card-border));
+  animation: dashboard-status-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.dashboard-datetime-status.is-free {
+  --status-accent: #6a9a8b;
+}
+
+.dashboard-datetime-status.is-weekend {
+  --status-accent: #d4a017;
+}
+
+.dashboard-datetime-status.is-class {
+  --status-accent: var(--primary-color);
+}
+
+.dashboard-datetime-status-icon {
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--status-accent) 22%, transparent);
+  color: var(--status-accent);
+  font-size: 1.35rem;
+  animation: dashboard-status-icon-bob 2.8s ease-in-out infinite;
+}
+
+.dashboard-datetime-status-text {
+  margin: 0;
+  max-width: 16rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.dashboard-datetime-digit {
+  font-size: clamp(1.8rem, 4.5vw, 2.35rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--text-color);
+  line-height: 1;
+}
+
+.dashboard-datetime-seconds {
+  color: var(--primary-color);
+  animation: dashboard-second-pop 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dashboard-datetime-colon {
+  font-size: clamp(1.6rem, 4vw, 2.1rem);
+  font-weight: 600;
+  color: var(--text-color-light);
+  animation: dashboard-colon-blink 1s steps(1, end) infinite;
+  padding: 0 0.05rem;
+}
+
+.dashboard-datetime-calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  animation: dashboard-fade-up 0.55s ease 0.38s both;
+}
+
+.dashboard-datetime-cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.dashboard-datetime-nav {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--input-bg);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+
+.dashboard-datetime-nav:hover {
+  background: color-mix(in srgb, var(--primary-color) 22%, var(--input-bg));
+  color: var(--primary-color);
+  transform: translateY(-1px);
+}
+
+.dashboard-datetime-month-btn {
+  border: none;
+  background: transparent;
+  color: var(--text-color);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  cursor: pointer;
+  padding: 0.35rem 0.55rem;
+  border-radius: 8px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dashboard-datetime-month-btn:hover {
+  background: var(--input-bg);
+  color: var(--primary-color);
+}
+
+.dashboard-datetime-weekdays,
+.dashboard-datetime-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.3rem;
+}
+
+.dashboard-datetime-weekday-cell {
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-color-light);
+  padding: 0.2rem 0;
+}
+
+.dashboard-datetime-days {
+  animation: dashboard-cal-swap 0.35s ease both;
+}
+
+.dashboard-datetime-day-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-color);
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.dashboard-datetime-day-cell.is-outside {
+  color: var(--text-color-light);
+  opacity: 0.4;
+}
+
+.dashboard-datetime-day-cell.is-today {
+  background: var(--primary-color);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--primary-color) 35%, transparent);
+  animation: dashboard-today-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes dashboard-datetime-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes dashboard-datetime-orb {
+  from {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.4;
+  }
+  to {
+    transform: translate(-18px, 14px) scale(1.12);
+    opacity: 0.7;
+  }
+}
+
+@keyframes dashboard-second-pop {
+  0% {
+    transform: translateY(4px) scale(0.92);
+    opacity: 0.45;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes dashboard-colon-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes dashboard-today-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 6px 16px color-mix(in srgb, var(--primary-color) 30%, transparent);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--primary-color) 45%, transparent);
+  }
+}
+
+@keyframes dashboard-cal-swap {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dashboard-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dashboard-status-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes dashboard-status-icon-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-datetime {
+    grid-template-columns: 1fr;
+    padding: 1.4rem;
+    gap: 1.25rem;
+  }
+
+  .dashboard-datetime-time {
+    min-height: auto;
+  }
+
+  .dashboard-datetime-status {
+    flex: none;
+    min-height: 8.5rem;
+  }
+
+  .dashboard-datetime-clock {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .dashboard-datetime-day {
+    font-size: 3.2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-datetime,
+  .dashboard-datetime-glow,
+  .dashboard-datetime-weekday,
+  .dashboard-datetime-date-row,
+  .dashboard-datetime-clock,
+  .dashboard-datetime-calendar,
+  .dashboard-datetime-seconds,
+  .dashboard-datetime-colon,
+  .dashboard-datetime-day-cell.is-today,
+  .dashboard-datetime-days,
+  .dashboard-datetime-status,
+  .dashboard-datetime-status-icon {
+    animation: none !important;
+  }
+
+  .dashboard-datetime {
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -46,6 +46,10 @@ class Group(Base):
     students = relationship("Student", back_populates="group")
     classroom_group = relationship("ClassroomGroup", back_populates="group", uselist=False, cascade="all, delete-orphan")
 
+    @property
+    def student_count(self) -> int:
+        return len(self.students) if self.students is not None else 0
+
     __table_args__ = (
         UniqueConstraint('grade', 'name', 'subject_id', name='_grade_name_subject_uc'),
     )

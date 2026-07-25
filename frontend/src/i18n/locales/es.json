@@ -24,6 +24,54 @@
   "homePage": {
     "welcome": "Bienvenido de nuevo, {{name}}."
   },
+  "dashboard": {
+    "studentCount_one": "{{count}} estudiante",
+    "studentCount_other": "{{count}} estudiantes",
+    "loading": "Cargando tus grupos...",
+    "emptyTitle": "Aún no hay grupos",
+    "emptySubtitle": "Cuando Classroom sincronice tus materias y grupos, aparecerán aquí como accesos rápidos.",
+    "emptyCta": "Ir al espacio de trabajo",
+    "unknownSubject": "Materia",
+    "datetimeLabel": "Fecha y hora",
+    "prevMonth": "Mes anterior",
+    "nextMonth": "Mes siguiente",
+    "weekdays": {
+      "sun": "Do",
+      "mon": "Lu",
+      "tue": "Ma",
+      "wed": "Mi",
+      "thu": "Ju",
+      "fri": "Vi",
+      "sat": "Sa"
+    },
+    "schedule": {
+      "title": "Horario Semanal",
+      "now": "Ahora",
+      "empty": "No hay clases programadas para este día.",
+      "recess": "Receso",
+      "recessHint": "Tiempo de descanso",
+      "free": "Libre",
+      "freeHint": "Sin clase en este periodo",
+      "days": {
+        "mon": "Lun",
+        "tue": "Mar",
+        "wed": "Mié",
+        "thu": "Jue",
+        "fri": "Vie"
+      }
+    },
+    "status": {
+      "inClass": "Ahora estás en clase con {{group}}.",
+      "unknownGroup": "tu grupo",
+      "free1": "Tiempo libre — respira un momento, te lo mereces.",
+      "free2": "¡No te preocupes! Ahora es tu tiempo libre.",
+      "free3": "No hay clase en este momento. Disfruta la calma.",
+      "free4": "Estás libre ahora. Perfecto para recargar energías.",
+      "weekend1": "Es fin de semana — ¡disfrútalo!",
+      "weekend2": "Modo fin de semana. Descansa y recarga.",
+      "weekend3": "Hoy no hay clases. ¡Aprovecha tu fin de semana!"
+    }
+  },
   "profileModal": {
     "title": "Perfil",
     "nameLabel": "Nombre",

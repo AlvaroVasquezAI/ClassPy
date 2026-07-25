@@ -24,6 +24,54 @@
   "homePage": {
     "welcome": "Welcome back, {{name}}."
   },
+  "dashboard": {
+    "studentCount_one": "{{count}} student",
+    "studentCount_other": "{{count}} students",
+    "loading": "Loading your groups...",
+    "emptyTitle": "No groups yet",
+    "emptySubtitle": "Once Classroom syncs your subjects and groups, they will show up here as quick links.",
+    "emptyCta": "Go to Workspace",
+    "unknownSubject": "Subject",
+    "datetimeLabel": "Date and time",
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month",
+    "weekdays": {
+      "sun": "Su",
+      "mon": "Mo",
+      "tue": "Tu",
+      "wed": "We",
+      "thu": "Th",
+      "fri": "Fr",
+      "sat": "Sa"
+    },
+    "schedule": {
+      "title": "Weekly Schedule",
+      "now": "Now",
+      "empty": "No classes scheduled for this day.",
+      "recess": "Recess",
+      "recessHint": "Break time",
+      "free": "Free",
+      "freeHint": "No class this period",
+      "days": {
+        "mon": "Mon",
+        "tue": "Tue",
+        "wed": "Wed",
+        "thu": "Thu",
+        "fri": "Fri"
+      }
+    },
+    "status": {
+      "inClass": "You're in class with {{group}} right now.",
+      "unknownGroup": "your group",
+      "free1": "Free time — take a breath, you've earned it.",
+      "free2": "Hey, don't worry! It's your free time right now.",
+      "free3": "No class on the clock. Enjoy the quiet moment.",
+      "free4": "You're free right now. Perfect time to reset.",
+      "weekend1": "It's the weekend — go enjoy it!",
+      "weekend2": "Weekend mode on. Rest well and recharge.",
+      "weekend3": "No classes today. Make the most of your weekend!"
+    }
+  },
   "profileModal": {
     "title": "Profile",
     "nameLabel": "Name",
