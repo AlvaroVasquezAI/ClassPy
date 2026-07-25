@@ -12,13 +12,13 @@
   },
   "setupPage": {
     "title": "C l a s s P y",
-    "subtitle": "Let's set up your profile to get started.",
+    "subtitle": "Connect with Google Classroom to create your profile.",
     "uploadButton": "Upload Photo",
     "changeButton": "Change Photo",
-    "firstNamePlaceholder": "First Name",
-    "lastNamePlaceholder": "Last Name",
-    "emailPlaceholder": "Email Address",
-    "createButton": "Create Profile",
+    "optionalHint": "Photo is optional. Your name and email come from Google Classroom.",
+    "createButton": "Continue with Google",
+    "connectingButton": "Connecting...",
+    "errorGeneric": "Something went wrong. Please try again.",
     "successAlert": "Profile created! App would now redirect."
   },
   "homePage": {
@@ -31,7 +31,8 @@
     "editButton": "Edit Profile",
     "saveButton": "Save",
     "cancelButton": "Cancel",
-    "changePhotoButton": "Change Photo"
+    "changePhotoButton": "Change Photo",
+    "emailReadOnly": "Email comes from your connected Google account"
   },
   "workspace": {
     "loading": "Loading Workspace...",

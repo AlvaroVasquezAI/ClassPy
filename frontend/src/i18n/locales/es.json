@@ -12,13 +12,13 @@
   },
   "setupPage": {
     "title": "C l a s s P y",
-    "subtitle": "Vamos a configurar tu perfil para comenzar.",
+    "subtitle": "Conecta con Google Classroom para crear tu perfil.",
     "uploadButton": "Subir foto",
     "changeButton": "Cambiar foto",
-    "firstNamePlaceholder": "Nombre",
-    "lastNamePlaceholder": "Apellido",
-    "emailPlaceholder": "Dirección de correo electrónico",
-    "createButton": "Crear perfil",
+    "optionalHint": "La foto es opcional. Tu nombre y correo provienen de Google Classroom.",
+    "createButton": "Continuar con Google",
+    "connectingButton": "Conectando...",
+    "errorGeneric": "Algo salió mal. Inténtalo de nuevo.",
     "successAlert": "¡Perfil creado! La aplicación ahora se redirigiría."
   },
   "homePage": {
@@ -31,7 +31,8 @@
     "editButton": "Editar perfil",
     "saveButton": "Guardar",
     "cancelButton": "Cancelar",
-    "changePhotoButton": "Cambiar foto"
+    "changePhotoButton": "Cambiar foto",
+    "emailReadOnly": "El correo proviene de tu cuenta de Google conectada"
   },
   "workspace": {
     "loading": "Cargando espacio de trabajo...",

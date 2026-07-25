@@ -1,6 +1,8 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next'; 
 import { apiClient } from '../services/apiClient';
+
+const PENDING_SETUP_KEY = 'classpy_pending_setup';
 
 const AppContext = createContext();
 
@@ -19,6 +21,7 @@ export const AppProvider = ({ children }) => {
   const [theme, setTheme] = useState(getInitialTheme);
   const [teacherInfo, setTeacherInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const pendingPhotoApplied = useRef(false);
 
   const [subjects, setSubjects] = useState([]);
   const [groups, setGroups] = useState([]);
@@ -58,10 +61,28 @@ export const AppProvider = ({ children }) => {
   const fetchWorkspaceData = async () => {
     setIsWorkspaceLoading(true);
     try {
-      const [subjectsData, groupsData] = await Promise.all([
+      let [subjectsData, groupsData] = await Promise.all([
         apiClient.getSubjects(),
         apiClient.getGroups(),
       ]);
+
+      // If Classroom is connected but workspace is empty, bootstrap from course titles.
+      if (
+        teacherInfo?.isGoogleConnected &&
+        subjectsData.length === 0 &&
+        groupsData.length === 0
+      ) {
+        try {
+          await apiClient.syncWorkspaceFromClassroom();
+          [subjectsData, groupsData] = await Promise.all([
+            apiClient.getSubjects(),
+            apiClient.getGroups(),
+          ]);
+        } catch (syncError) {
+          console.error('Classroom workspace sync skipped/failed:', syncError);
+        }
+      }
+
       setSubjects(subjectsData);
       setGroups(groupsData);
     } catch (error) {
@@ -75,7 +96,43 @@ export const AppProvider = ({ children }) => {
     if (teacherInfo) {
       fetchWorkspaceData();
     }
-  }, [teacherInfo]); 
+  }, [teacherInfo]);
+
+  // After Google signup, apply an optional photo saved before the OAuth redirect.
+  useEffect(() => {
+    const applyPendingPhoto = async () => {
+      if (!teacherInfo || pendingPhotoApplied.current) return;
+
+      const raw = sessionStorage.getItem(PENDING_SETUP_KEY);
+      if (!raw) return;
+
+      pendingPhotoApplied.current = true;
+
+      try {
+        const { photoDataUrl, photoName } = JSON.parse(raw);
+        if (!photoDataUrl) {
+          sessionStorage.removeItem(PENDING_SETUP_KEY);
+          return;
+        }
+
+        const blob = await (await fetch(photoDataUrl)).blob();
+        const submissionData = new FormData();
+        submissionData.append('first_name', teacherInfo.firstName);
+        submissionData.append('last_name', teacherInfo.lastName);
+        submissionData.append('email', teacherInfo.email);
+        submissionData.append('profile_photo', blob, photoName || 'profile.jpg');
+
+        const updatedTeacher = await apiClient.updateTeacher(submissionData);
+        sessionStorage.removeItem(PENDING_SETUP_KEY);
+        setTeacherInfo(updatedTeacher);
+      } catch (error) {
+        console.error('Failed to apply pending profile photo:', error);
+        pendingPhotoApplied.current = false;
+      }
+    };
+
+    applyPendingPhoto();
+  }, [teacherInfo]);
 
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));

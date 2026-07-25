@@ -8,6 +8,7 @@ from googleapiclient.errors import HttpError
 
 from ...database import SessionLocal
 from ...crud import crud_teacher
+from ...services.classroom_sync import sync_workspace_from_classroom
 
 router = APIRouter()
 
@@ -90,3 +91,19 @@ def get_user_profile(service=Depends(get_classroom_service)):
         return json.loads(user_profile[1])
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to fetch user profile: {e}")
+
+
+@router.post("/classroom/sync-workspace", tags=["classroom"])
+def sync_workspace(db: Session = Depends(get_db)):
+    """
+    Idempotent sync: parse Classroom course titles into Subjects + Groups,
+    link each group to its Classroom course, and import rosters.
+    Useful for accounts created before auto-sync, or to pick up new courses.
+    """
+    teacher = crud_teacher.get_teacher(db)
+    if not teacher or not teacher.google_credentials:
+        raise HTTPException(status_code=401, detail="Google account not connected.")
+    try:
+        return sync_workspace_from_classroom(db, teacher)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Workspace sync failed: {e}")

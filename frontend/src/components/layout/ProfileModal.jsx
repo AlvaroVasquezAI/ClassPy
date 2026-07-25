@@ -98,7 +98,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
 
             <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} className="profile-input"/>
             <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} className="profile-input"/>
-            <input type="email" name="email" value={formData.email} onChange={handleInputChange} className="profile-input"/>
+            <input type="email" name="email" value={formData.email} className="profile-input" readOnly disabled title={t('profileModal.emailReadOnly')}/>
           </div>
         ) : (
           <div className="profile-details">

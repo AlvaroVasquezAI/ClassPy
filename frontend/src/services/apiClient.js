@@ -380,6 +380,17 @@ export const apiClient = {
     return response.json();
   },
 
+  syncWorkspaceFromClassroom: async () => {
+    const response = await fetch(`${API_BASE_URL}/api/classroom/sync-workspace`, {
+      method: 'POST',
+    });
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.detail || 'Failed to sync workspace from Classroom.');
+    }
+    return response.json();
+  },
+
   createStudentsInBulk: async (groupId, studentsData) => {
     const payload = { students: studentsData };
     const response = await fetch(`${API_BASE_URL}/api/students/bulk/${groupId}`, {

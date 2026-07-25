@@ -98,8 +98,15 @@ input:checked + .slider:before {
 
 .setup-subtitle {
   margin-top: 0;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   color: var(--text-color-light);
+}
+
+.setup-optional-hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-color-light);
+  opacity: 0.9;
 }
 
 .setup-form {
@@ -154,7 +161,7 @@ input:checked + .slider:before {
 
 .form-input {
   width: 100%;
-  padding: 0.9rem 2.5rem 0.9rem 1rem;
+  padding: 0.9rem 1rem;
   border: 1px solid var(--input-border-color);
   background: var(--input-bg);
   color: var(--text-color);
@@ -180,6 +187,10 @@ input:checked + .slider:before {
 .invalid-icon { color: var(--danger-color); }
 
 .create-profile-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
   background-color: var(--primary-color);
   color: white;
   border: none;
@@ -190,6 +201,10 @@ input:checked + .slider:before {
   cursor: pointer;
   transition: transform 0.1s ease, opacity 0.2s;
   margin-top: 1rem;
+}
+
+.google-button-icon {
+  font-size: 1.1rem;
 }
 
 .create-profile-button:disabled {

@@ -98,7 +98,7 @@ const ClassroomPage = () => {
             <SiGoogleclassroom className="connect-icon" />
             <h2>{t('classroom.connectTitle')}</h2>
             <p>{t('classroom.connectSubtitle')}</p>
-            <button onClick={() => window.location.href='http://localhost:8000/api/auth/google/login'} className="connect-button">
+            <button onClick={() => window.location.href=`http://${window.location.hostname}:8000/api/auth/google/login`} className="connect-button">
               <FaGoogle />
               <span>{t('classroom.connectButton')}</span>
             </button>
