@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Modal from '../common/Modal';
 import { useAppContext } from '../../context/AppContext';
 import { apiClient } from '../../services/apiClient';
-import { FaUserCircle } from 'react-icons/fa';
+import { FaUserCircle, FaUser, FaEnvelope, FaCamera } from 'react-icons/fa';
 import './ProfileModal.css';
 
 const API_HOST = window.location.hostname;
@@ -17,7 +17,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState(teacherInfo);
   const [newProfilePic, setNewProfilePic] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
-  
+
   useEffect(() => {
     if (isOpen) {
       setFormData(teacherInfo);
@@ -26,7 +26,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
       setPreviewUrl(null);
     }
   }, [isOpen, teacherInfo]);
-  
+
   if (!teacherInfo) return null;
 
   const handleInputChange = (e) => {
@@ -56,61 +56,129 @@ const ProfileModal = ({ isOpen, onClose }) => {
       setTeacherInfo(updatedTeacher);
       setIsEditing(false);
     } catch (error) {
-      console.error("Failed to update profile", error);
+      console.error('Failed to update profile', error);
     }
   };
 
+  const fullName = `${teacherInfo.firstName} ${teacherInfo.lastName}`.trim();
+
   const modalFooter = isEditing ? (
     <div className="profile-actions">
-      <button onClick={() => setIsEditing(false)} className="profile-button secondary">{t('profileModal.cancelButton')}</button>
-      <button onClick={handleSave} className="profile-button primary">{t('profileModal.saveButton')}</button>
+      <button type="button" onClick={() => setIsEditing(false)} className="profile-button secondary">
+        {t('profileModal.cancelButton')}
+      </button>
+      <button type="button" onClick={handleSave} className="profile-button primary">
+        {t('profileModal.saveButton')}
+      </button>
     </div>
   ) : (
     <div className="profile-actions">
-      <button onClick={() => setIsEditing(true)} className="profile-button primary">{t('profileModal.editButton')}</button>
+      <button type="button" onClick={() => setIsEditing(true)} className="profile-button primary">
+        {t('profileModal.editButton')}
+      </button>
     </div>
   );
 
   return (
-    <Modal 
-      isOpen={isOpen} 
-      onClose={onClose} 
-      title={t('profileModal.title')} 
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={t('profileModal.title')}
       footer={modalFooter}
+      contentClassName="modal-content--profile"
     >
-      <div className="profile-modal-content">
-        <div className="profile-pic-container">
-          {previewUrl ? (
-            <img src={previewUrl} alt="New Profile" className="profile-modal-image" />
-          ) : (teacherInfo.profilePhotoUrl ? (
-            <img src={`${API_BASE_URL}/${teacherInfo.profilePhotoUrl}`} alt="Profile" className="profile-modal-image"/>
-          ) : (
-            <FaUserCircle className="profile-modal-icon" />
-          ))}
+      <div className={`profile-modal${isEditing ? ' is-editing' : ''}`}>
+        <div className="profile-hero">
+          <div className="profile-avatar-wrap">
+            {previewUrl ? (
+              <img src={previewUrl} alt="" className="profile-modal-image" />
+            ) : teacherInfo.profilePhotoUrl ? (
+              <img
+                src={`${API_BASE_URL}/${teacherInfo.profilePhotoUrl}`}
+                alt=""
+                className="profile-modal-image"
+              />
+            ) : (
+              <FaUserCircle className="profile-modal-icon" aria-hidden="true" />
+            )}
+          </div>
+
+          {!isEditing && (
+            <div className="profile-hero-text">
+              <h3 className="profile-display-name">{fullName}</h3>
+              <p className="profile-display-email">{teacherInfo.email}</p>
+            </div>
+          )}
+
+          {isEditing && (
+            <label htmlFor="changeProfilePic" className="profile-photo-btn">
+              <FaCamera aria-hidden="true" />
+              <span>{t('profileModal.changePhotoButton')}</span>
+            </label>
+          )}
+          <input
+            type="file"
+            id="changeProfilePic"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="profile-file-input"
+          />
         </div>
 
         {isEditing ? (
-          <div className="profile-details">
-            <label htmlFor="changeProfilePic" className="profile-button secondary">
-              {t('profileModal.changePhotoButton')}
+          <div className="profile-edit-fields">
+            <label className="profile-field">
+              <span className="profile-field-label">{t('profileModal.firstNameLabel')}</span>
+              <input
+                type="text"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleInputChange}
+                className="profile-input"
+              />
             </label>
-            <input type="file" id="changeProfilePic" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }}/>
-
-            <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} className="profile-input"/>
-            <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} className="profile-input"/>
-            <input type="email" name="email" value={formData.email} className="profile-input" readOnly disabled title={t('profileModal.emailReadOnly')}/>
+            <label className="profile-field">
+              <span className="profile-field-label">{t('profileModal.lastNameLabel')}</span>
+              <input
+                type="text"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleInputChange}
+                className="profile-input"
+              />
+            </label>
+            <label className="profile-field">
+              <span className="profile-field-label">{t('profileModal.emailLabel')}</span>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                className="profile-input is-readonly"
+                readOnly
+                disabled
+                title={t('profileModal.emailReadOnly')}
+              />
+              <span className="profile-field-hint">{t('profileModal.emailReadOnly')}</span>
+            </label>
           </div>
         ) : (
-          <div className="profile-details">
-            <div className="profile-info-card">
-              <div className="profile-info-row">
-                <strong>{t('profileModal.nameLabel')}:</strong>
-                <span>{teacherInfo.firstName} {teacherInfo.lastName}</span>
+          <div className="profile-info-card">
+            <div className="profile-info-row">
+              <span className="profile-info-icon" aria-hidden="true">
+                <FaUser />
+              </span>
+              <div className="profile-info-text">
+                <span className="profile-info-label">{t('profileModal.nameLabel')}</span>
+                <span className="profile-info-value">{fullName}</span>
               </div>
-              <div className="profile-info-divider"></div>
-              <div className="profile-info-row">
-                <strong>{t('profileModal.emailLabel')}:</strong>
-                <span>{teacherInfo.email}</span>
+            </div>
+            <div className="profile-info-row">
+              <span className="profile-info-icon" aria-hidden="true">
+                <FaEnvelope />
+              </span>
+              <div className="profile-info-text">
+                <span className="profile-info-label">{t('profileModal.emailLabel')}</span>
+                <span className="profile-info-value">{teacherInfo.email}</span>
               </div>
             </div>
           </div>

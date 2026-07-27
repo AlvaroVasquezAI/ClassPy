@@ -1,475 +1,885 @@
-.attendance-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+.attendance-page {
+  position: relative;
   width: 100%;
-}
-
-.attendance-header {
+  max-width: 960px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  background-color: var(--card-bg);
-  border-radius: 16px;
-  padding: 1.5rem;
-  border: 1px solid var(--card-border);
+  gap: 1.35rem;
+  flex-grow: 1;
 }
 
-.header-top-row {
+.attendance-atmosphere {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(
+      ellipse 50% 40% at 10% 0%,
+      color-mix(in srgb, var(--primary-color) 14%, transparent) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 40% 35% at 90% 18%,
+      color-mix(in srgb, var(--primary-color) 8%, transparent) 0%,
+      transparent 65%
+    );
+}
+
+.attendance-header-card,
+.attendance-groups-card,
+.attendance-calendar-card,
+.attendance-ready-card,
+.attendance-records-card {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--primary-color) 6%, var(--card-bg)) 0%,
+      var(--card-bg) 55%
+    );
+  border-radius: 20px;
+  border: 1px solid var(--card-border);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--text-color) 4%, transparent);
+  animation: attendance-card-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.attendance-header-card::before,
+.attendance-groups-card::before,
+.attendance-calendar-card::before,
+.attendance-ready-card::before,
+.attendance-records-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(
+    180deg,
+    var(--primary-color),
+    color-mix(in srgb, var(--primary-color) 20%, transparent)
+  );
+  pointer-events: none;
+}
+
+/* Header */
+.attendance-header-card {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-}
-
-.attendance-title {
-  display: flex;
-  align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.25rem;
 }
 
-.attendance-title h1 {
-  margin: 0;
-  font-size: 1.5rem;
-}
-
-.period-selector {
+.attendance-header-brand {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  min-width: 0;
 }
 
-.period-selector label {
-  font-weight: 600;
+.attendance-brand-icon {
+  font-size: 1.85rem;
+  color: var(--primary-color);
+  flex-shrink: 0;
 }
 
-.period-select {
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--input-border-color);
-  background: var(--input-bg);
+.attendance-header-brand h1 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   color: var(--text-color);
-  border-radius: 12px;
-  font-size: 1rem;
+  line-height: 1.2;
 }
 
-.group-filters {
+.attendance-header-controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
-  width: 100%;
+  align-items: center;
+  gap: 0.65rem 0.85rem;
+  padding-top: 0;
+  border-top: none;
+  margin-left: auto;
 }
 
-.group-filter-btn {
-  padding: 0.6rem 1.2rem;
-  border: 1px solid var(--input-border-color);
-  background-color: var(--input-bg);
-  color: var(--text-color);
+.attendance-period-block {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.attendance-control-label,
+.attendance-threshold label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-color-light);
+  white-space: nowrap;
+}
+
+.attendance-period-pills {
+  display: inline-flex;
+  gap: 0.3rem;
+  padding: 0.28rem;
   border-radius: 12px;
+  background: color-mix(in srgb, var(--primary-color) 6%, var(--input-bg));
+  border: 1px solid color-mix(in srgb, var(--primary-color) 12%, var(--card-border));
+}
+
+.attendance-period-pill {
+  min-width: 2.4rem;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text-color-light);
+  font-size: 0.88rem;
+  font-weight: 700;
   cursor: pointer;
-  font-weight: 600;
-  transition: all 0.2s;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.group-filter-btn:hover {
-  border-color: var(--primary-color);
+.attendance-period-pill:hover {
+  color: var(--text-color);
+  background: color-mix(in srgb, var(--text-color) 5%, transparent);
 }
 
-.group-filter-btn.active {
-  background-color: var(--primary-color);
-  color: white;
-  border-color: var(--primary-color);
+.attendance-period-pill.is-active {
+  background: var(--card-bg);
+  color: var(--primary-color);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--text-color) 8%, transparent);
 }
 
-.scan-grid-container {
-  display: grid;
-  grid-template-columns: 3fr 3fr 6fr;
-  gap: 1.5rem;
-  align-items: stretch;
-}
-
-.calendar-card {
-  background-color: var(--card-bg);
-  border-radius: 16px;
-  padding: 1.5rem;
-  border: 1px solid var(--card-border);
-  display: flex;
-  flex-direction: column;
+.attendance-strict-toggle {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 16%, var(--card-border));
+  background: color-mix(in srgb, var(--primary-color) 6%, var(--input-bg));
+  color: var(--text-color-light);
+  font-size: 0.84rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
-.react-datepicker {
-  font-family: var(--font-family) !important;
-  background-color: var(--input-bg) !important;
-  border: 1px solid var(--input-border-color) !important;
-  border-radius: 12px !important;
-}
-.react-datepicker__header {
-  background-color: var(--card-bg) !important;
-  border-bottom: 1px solid var(--input-border-color) !important;
-}
-.react-datepicker__current-month, .react-datepicker__day-name {
-  color: var(--text-color) !important;
-}
-.react-datepicker__day {
-  color: var(--text-color-light) !important;
-}
-.react-datepicker__day:hover {
-  background-color: var(--input-border-color) !important;
-}
-.react-datepicker__day--selected {
-  background-color: var(--primary-color) !important;
-  color: white !important;
-}
-.react-datepicker__day--disabled {
-  color: var(--input-border-color) !important;
-  cursor: not-allowed;
-}
-.react-datepicker__navigation-icon::before {
-  border-color: var(--text-color) !important;
+.attendance-strict-toggle:hover {
+  border-color: color-mix(in srgb, var(--primary-color) 36%, transparent);
+  color: var(--text-color);
 }
 
-.scan-status-card {
-  background-color: var(--card-bg);
-  border-radius: 16px;
-  padding: 1rem;
-  border: 1px solid var(--card-border);
-  display: flex;
-  flex-direction: column;
+.attendance-strict-toggle.is-active {
+  background: color-mix(in srgb, var(--primary-color) 14%, var(--input-bg));
+  border-color: color-mix(in srgb, var(--primary-color) 40%, transparent);
+  color: var(--primary-color);
+}
+
+.attendance-threshold {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 0.5rem;
+  animation: attendance-card-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.attendance-threshold-input {
+  width: 3.4rem;
+  padding: 0.5rem 0.4rem;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 16%, var(--input-border-color));
+  background: color-mix(in srgb, var(--primary-color) 5%, var(--input-bg));
+  color: var(--text-color);
+  font-size: 0.88rem;
+  font-weight: 650;
   text-align: center;
 }
 
-.scanner-icon {
-  font-size: 3rem;
-  color: var(--primary-color);
-  animation: pulse 2.5s infinite ease-in-out;
+.attendance-threshold-input:focus {
+  outline: none;
+  border-color: color-mix(in srgb, var(--primary-color) 50%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 14%, transparent);
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); opacity: 0.8; }
-  50% { transform: scale(1.1); opacity: 1; }
-  100% { transform: scale(1); opacity: 0.8; }
+/* Groups */
+.attendance-groups-card {
+  padding: 1.05rem 1.25rem 1.2rem;
+  animation-delay: 0.04s;
 }
 
-.scan-text-content {
+.attendance-groups-head {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+  color: var(--primary-color);
+}
+
+.attendance-groups-head h2 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 650;
+  color: var(--text-color);
+}
+
+.attendance-group-pills {
+  display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
 }
 
-.scan-prompt {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin: 0;
-}
-
-.scan-sub-prompt {
+.attendance-group-pill {
+  --pill-color: var(--primary-color);
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--pill-color) 18%, var(--card-border));
+  background: color-mix(in srgb, var(--pill-color) 7%, var(--input-bg));
   color: var(--text-color-light);
+  font-size: 0.8rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.attendance-group-pill:hover {
+  border-color: color-mix(in srgb, var(--pill-color) 40%, transparent);
+  color: var(--text-color);
+  transform: translateY(-1px);
+}
+
+.attendance-group-pill.is-active {
+  background: color-mix(in srgb, var(--pill-color) 18%, var(--input-bg));
+  border-color: color-mix(in srgb, var(--pill-color) 45%, transparent);
+  color: color-mix(in srgb, var(--pill-color) 72%, #101010);
+  box-shadow: 0 6px 14px color-mix(in srgb, var(--pill-color) 18%, transparent);
+}
+
+/* Scan grid */
+.attendance-scan-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(220px, 0.9fr) minmax(180px, 0.85fr) minmax(240px, 1.25fr);
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.attendance-calendar-card,
+.attendance-ready-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation-delay: 0.08s;
+}
+
+.attendance-ready-card {
+  text-align: center;
+  gap: 0.65rem;
+  animation-delay: 0.1s;
+}
+
+.attendance-ready-icon-wrap {
+  display: grid;
+  place-items: center;
+  width: 4.2rem;
+  height: 4.2rem;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--primary-color) 12%, var(--input-bg));
+  border: 1px solid color-mix(in srgb, var(--primary-color) 20%, transparent);
+}
+
+.attendance-ready-icon {
+  font-size: 1.85rem;
+  color: var(--primary-color);
+  animation: attendance-pulse 2.5s infinite ease-in-out;
+}
+
+@keyframes attendance-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+.attendance-ready-title {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-color);
 }
 
-.last-scan-card {
-  grid-column: 3 / 4;
-  background-color: transparent;
-  perspective: 1000px;
+.attendance-ready-subtitle {
+  margin: 0;
+  max-width: 18rem;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: var(--text-color-light);
 }
 
-.flip-card-inner {
+/* DatePicker theme */
+.attendance-calendar-card .react-datepicker {
+  font-family: var(--font-family) !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.attendance-calendar-card .react-datepicker__header {
+  background: color-mix(in srgb, var(--primary-color) 8%, var(--input-bg)) !important;
+  border-bottom: 1px solid color-mix(in srgb, var(--primary-color) 12%, var(--card-border)) !important;
+  border-radius: 12px 12px 0 0 !important;
+  padding-top: 0.65rem !important;
+}
+
+.attendance-calendar-card .react-datepicker__current-month,
+.attendance-calendar-card .react-datepicker__day-name {
+  color: var(--text-color) !important;
+  font-weight: 650 !important;
+}
+
+.attendance-calendar-card .react-datepicker__day-name {
+  color: var(--text-color-light) !important;
+  font-size: 0.72rem !important;
+}
+
+.attendance-calendar-card .react-datepicker__month-container {
+  background: color-mix(in srgb, var(--primary-color) 4%, var(--input-bg));
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 12%, var(--card-border));
+  overflow: hidden;
+}
+
+.attendance-calendar-card .react-datepicker__day {
+  color: var(--text-color) !important;
+  border-radius: 10px !important;
+  margin: 0.15rem !important;
+  line-height: 2rem !important;
+  width: 2rem !important;
+}
+
+.attendance-calendar-card .react-datepicker__day:hover {
+  background: color-mix(in srgb, var(--primary-color) 16%, transparent) !important;
+}
+
+.attendance-calendar-card .react-datepicker__day--selected,
+.attendance-calendar-card .react-datepicker__day--keyboard-selected {
+  background: var(--primary-color) !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 6px 14px color-mix(in srgb, var(--primary-color) 28%, transparent);
+}
+
+.attendance-calendar-card .react-datepicker__day--disabled {
+  color: color-mix(in srgb, var(--text-color-light) 40%, transparent) !important;
+  cursor: not-allowed;
+}
+
+.attendance-calendar-card .react-datepicker__day--today {
+  font-weight: 700;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--primary-color) 45%, transparent);
+}
+
+.attendance-calendar-card .react-datepicker__navigation-icon::before {
+  border-color: var(--text-color) !important;
+}
+
+/* Flip scan card */
+.attendance-scan-card {
+  position: relative;
+  z-index: 1;
+  min-height: 260px;
+  perspective: 1200px;
+  animation: attendance-card-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+}
+
+.attendance-flip-inner {
   position: relative;
   width: 100%;
   height: 100%;
+  min-height: 260px;
   transition: transform 0.6s;
   transform-style: preserve-3d;
 }
 
-.last-scan-card.flipped .flip-card-inner {
+.attendance-scan-card.is-flipped .attendance-flip-inner {
   transform: rotateY(180deg);
 }
 
-.flip-card-front, .flip-card-back {
+.attendance-flip-front,
+.attendance-flip-back {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  border-radius: 16px;
-  background-color: var(--card-bg);
-  border: 1px solid var(--card-border);
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  padding: 1.5rem;
+  gap: 0.85rem;
+  padding: 1.25rem;
   box-sizing: border-box;
+  border-radius: 20px;
+  border: 1px solid var(--card-border);
+  background:
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--primary-color) 8%, var(--card-bg)) 0%,
+      var(--card-bg) 55%
+    );
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--text-color) 4%, transparent);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
 }
 
-.flip-card-back {
+.attendance-flip-front::before,
+.attendance-flip-back::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(
+    180deg,
+    var(--primary-color),
+    color-mix(in srgb, var(--primary-color) 20%, transparent)
+  );
+}
+
+.attendance-flip-back {
   transform: rotateY(180deg);
 }
 
-.flip-card-back > * {
-  animation: fadeIn 0.5s ease-in-out forwards;
+.attendance-flip-back > * {
+  animation: attendance-fade-in 0.45s ease forwards;
   opacity: 0;
 }
 
-.scan-details-top { animation-delay: 0.2s; }
-.student-name { animation-delay: 0.4s; }
-.student-period { animation-delay: 0.6s; }
+.attendance-scan-details {
+  animation-delay: 0.15s;
+}
 
-@keyframes fadeIn {
+.attendance-student-name {
+  animation-delay: 0.3s;
+}
+
+@keyframes attendance-fade-in {
   to {
     opacity: 1;
   }
 }
 
-.scan-details-top {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-  width: 100%;
-}
-
-.student-qr-image {
+.attendance-scan-placeholder {
+  position: relative;
   width: 100px;
   height: 100px;
-  border-radius: 12px;
-  border: 1px solid var(--input-border-color);
-  background-color: white;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--primary-color) 8%, var(--input-bg));
+  border: 1px solid color-mix(in srgb, var(--primary-color) 16%, transparent);
+  overflow: hidden;
 }
 
-.student-qrid {
-  font-family: monospace;
-  background-color: var(--input-bg);
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  font-size: 1.3rem;
-  font-weight: 700;
+.attendance-placeholder-icon {
+  font-size: 4.2rem;
+  color: color-mix(in srgb, var(--text-color-light) 55%, transparent);
 }
 
-.student-name {
-  font-size: 1.5rem;
-  font-weight: 700;
+.attendance-scanline {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--primary-color);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--primary-color) 60%, transparent);
+  animation: attendance-scan 2.8s infinite cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+@keyframes attendance-scan {
+  0%,
+  100% {
+    top: 10%;
+  }
+  50% {
+    top: 88%;
+  }
+}
+
+.attendance-greeting {
   margin: 0;
+  min-height: 2.4rem;
+  max-width: 100%;
+  padding: 0 0.5rem;
+  font-size: clamp(1.05rem, 2.4vw, 1.3rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
   text-align: center;
-}
-
-.student-period {
-  font-size: 1rem;
-  font-weight: 500;
   color: var(--text-color-light);
-  margin-top: -0.5rem;
 }
 
-.scan-placeholder-content {
+.attendance-typing-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1.2rem;
+  margin-left: 4px;
+  vertical-align: text-bottom;
+  background: var(--text-color-light);
+  animation: attendance-blink 0.7s infinite;
+}
+
+@keyframes attendance-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.attendance-scan-details {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem;
-  position: relative;
-  width: 120px;
-  height: 120px;
-}
-
-.placeholder-icon {
-  font-size: 120px;
-  color: var(--input-border-color);
-}
-
-.scanline {
-  position: absolute;
-  top: 0;
-  left: 0;
+  gap: 1rem;
   width: 100%;
-  height: 3px;
-  background: var(--primary-color);
-  box-shadow: 0 0 10px var(--primary-color);
-  border-radius: 3px;
-  animation: scan-animation 3s infinite cubic-bezier(0.5, 0, 0.5, 1);
 }
 
-@keyframes scan-animation {
-  0% { top: 0%; }
-  50% { top: 98%; }
-  100% { top: 0%; }
+.attendance-student-qr {
+  width: 88px;
+  height: 88px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 16%, var(--card-border));
+  background: #fff;
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--text-color) 8%, transparent);
 }
 
-.greeting-text {
-  font-size: 1.8rem;
-  font-weight: 700;
+.attendance-student-id {
   margin: 0;
-  color: var(--text-color-light);
-  height: 2.2rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 10px;
+  border: 1px dashed color-mix(in srgb, var(--primary-color) 28%, var(--card-border));
+  background: color-mix(in srgb, var(--primary-color) 8%, var(--input-bg));
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text-color);
 }
 
-.typing-cursor {
-  display: inline-block;
-  width: 10px;
-  height: 2rem;
-  background-color: var(--text-color-light);
-  animation: blink 0.7s infinite;
-  margin-left: 5px;
+.attendance-student-name {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: var(--text-color);
 }
 
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-.qr-input {
+.attendance-qr-input {
   position: absolute;
   top: -9999px;
   left: -9999px;
   opacity: 0;
 }
 
-.scan-error-feedback {
-  padding: 0.75rem 1.25rem;
-  border-radius: 8px;
-  width: 100%;
-  font-weight: 600;
-  text-align: center;
-  background-color: rgba(255, 59, 48, 0.15);
-  color: var(--danger-color);
+.attendance-scan-error {
   grid-column: 1 / -1;
-}
-
-.attendance-table-container {
-  background-color: var(--card-bg);
-  border-radius: 16px;
-  padding: 1.5rem;
-  border: 1px solid var(--card-border);
-  display: flex;
-  flex-direction: column;
-  gap: 1rem; /* Reduced gap */
-}
-
-.table-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start; 
-}
-
-.table-title-section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.table-title-section h3 {
-  margin: 0;
-}
-
-.active-filters-display {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.filter-tag {
-  background-color: var(--input-bg);
-  color: var(--text-color-light);
-  padding: 0.4rem 0.8rem;
-  border-radius: 8px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.filter-tag strong {
-  color: var(--text-color);
-}
-
-
-.record-count-card {
-  background-color: var(--input-bg);
-  padding: 0.75rem 1.25rem;
-  border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.record-count-card .count {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--primary-color);
-}
-
-.record-count-card .label {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--text-color-light);
-}
-
-.controls-row {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--input-border-color);
-}
-
-.strict-mode-toggle {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  user-select: none;
-  font-weight: 600;
-}
-
-.toggle-checkbox {
-  width: 20px;
-  height: 20px;
-  accent-color: var(--primary-color);
-}
-
-.threshold-input-group {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  padding: 0.8rem 1rem;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--danger-color) 24%, transparent);
+  background: color-mix(in srgb, var(--danger-color) 10%, var(--card-bg));
+  color: var(--danger-color);
+  font-weight: 650;
+  text-align: center;
   font-size: 0.9rem;
 }
 
-.threshold-input {
-  width: 60px;
-  padding: 0.4rem;
-  border-radius: 8px;
-  border: 1px solid var(--input-border-color);
-  background: var(--input-bg);
+/* Records */
+.attendance-records-card {
+  padding: 1.1rem 1.15rem 1.15rem;
+  animation-delay: 0.14s;
+}
+
+.attendance-records-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.95rem;
+}
+
+.attendance-records-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.attendance-records-title-block h2 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
   color: var(--text-color);
-  text-align: center;
 }
 
-/* Late Attendance Styling */
-.row-late {
-  background-color: rgba(255, 59, 48, 0.1) !important;
-  color: var(--danger-color);
+.attendance-active-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
 }
-.late-badge {
-  background-color: var(--danger-color);
-  color: white;
-  padding: 0.1rem 0.4rem;
-  border-radius: 4px;
+
+.attendance-filter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--primary-color) 8%, var(--input-bg));
+  border: 1px solid color-mix(in srgb, var(--primary-color) 14%, var(--card-border));
+  color: var(--text-color-light);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.attendance-filter-tag strong {
+  color: var(--text-color);
+  font-weight: 700;
+}
+
+.attendance-record-stat {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  padding: 0.55rem 1rem;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--primary-color) 10%, var(--input-bg));
+  border: 1px solid color-mix(in srgb, var(--primary-color) 18%, var(--card-border));
+}
+
+.attendance-record-count {
+  font-size: 1.35rem;
+  font-weight: 750;
+  line-height: 1;
+  color: var(--primary-color);
+}
+
+.attendance-record-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-color-light);
+}
+
+.attendance-table-wrap {
+  overflow-x: auto;
+  border-radius: 14px;
+  overscroll-behavior-x: contain;
+}
+
+.attendance-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 720px;
+}
+
+.attendance-table th,
+.attendance-table td {
+  padding: 0.6rem 0.45rem;
+  text-align: left;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.attendance-table thead th {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-color-light);
+  background: color-mix(in srgb, var(--primary-color) 7%, var(--input-bg));
+  border-bottom: 1px solid color-mix(in srgb, var(--primary-color) 12%, var(--card-border));
+}
+
+.attendance-table thead th:first-child {
+  border-radius: 12px 0 0 12px;
+  padding-left: 0.7rem;
+}
+
+.attendance-table thead th:last-child {
+  border-radius: 0 12px 12px 0;
+  padding-right: 0.7rem;
+}
+
+.attendance-table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.attendance-table tbody tr:hover {
+  background: color-mix(in srgb, var(--primary-color) 6%, transparent);
+}
+
+.attendance-table tbody tr:not(:last-child) td {
+  border-bottom: 1px solid color-mix(in srgb, var(--primary-color) 8%, var(--card-border));
+}
+
+.attendance-table tbody td:first-child {
+  padding-left: 0.7rem;
+}
+
+.attendance-table tbody td:last-child {
+  padding-right: 0.7rem;
+}
+
+.attendance-table tbody tr.is-late {
+  background: color-mix(in srgb, var(--danger-color) 8%, transparent);
+}
+
+.attendance-table tbody tr.is-late:hover {
+  background: color-mix(in srgb, var(--danger-color) 12%, transparent);
+}
+
+.attendance-time-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.attendance-late-badge {
+  padding: 0.12rem 0.4rem;
+  border-radius: 999px;
+  background: var(--danger-color);
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+}
+
+.attendance-name-cell {
+  font-size: 0.84rem;
+  font-weight: 650;
+  color: var(--text-color);
+}
+
+.attendance-chip {
+  --chip-color: var(--primary-color);
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
   font-size: 0.7rem;
-  margin-left: 0.5rem;
+  font-weight: 700;
+  background: color-mix(in srgb, var(--chip-color) 16%, var(--input-bg));
+  border: 1px solid color-mix(in srgb, var(--chip-color) 28%, transparent);
+  color: color-mix(in srgb, var(--chip-color) 72%, #101010);
 }
 
-@media (max-width: 1200px) {
-  .scan-grid-container {
+.attendance-subject-cell {
+  font-size: 0.8rem;
+  color: var(--text-color-light);
+}
+
+.attendance-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.75rem;
+  color: var(--text-color-light);
+}
+
+.attendance-empty {
+  text-align: center;
+  padding: 2.5rem 1rem !important;
+  color: var(--text-color-light);
+  white-space: normal !important;
+}
+
+@keyframes attendance-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 900px) {
+  .attendance-scan-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .attendance-scan-card {
+    grid-column: 1 / -1;
+    min-height: 240px;
+  }
+
+  .attendance-flip-inner {
+    min-height: 240px;
+  }
+}
+
+@media (max-width: 768px) {
+  .attendance-header-card,
+  .attendance-groups-card,
+  .attendance-calendar-card,
+  .attendance-ready-card,
+  .attendance-records-card {
+    padding: 1rem;
+  }
+
+  .attendance-header-brand h1 {
+    font-size: 1.15rem;
+  }
+
+  .attendance-scan-grid {
     grid-template-columns: 1fr;
   }
-  .last-scan-card {
+
+  .attendance-scan-card {
     grid-column: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .attendance-header-card,
+  .attendance-groups-card,
+  .attendance-calendar-card,
+  .attendance-ready-card,
+  .attendance-scan-card,
+  .attendance-records-card,
+  .attendance-threshold,
+  .attendance-ready-icon,
+  .attendance-scanline,
+  .attendance-typing-cursor {
+    animation: none !important;
+  }
+
+  .attendance-flip-inner {
+    transition: none;
   }
 }

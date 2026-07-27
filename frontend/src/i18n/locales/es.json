@@ -95,6 +95,8 @@
   "profileModal": {
     "title": "Perfil",
     "nameLabel": "Nombre",
+    "firstNameLabel": "Nombre",
+    "lastNameLabel": "Apellidos",
     "emailLabel": "Correo",
     "editButton": "Editar perfil",
     "saveButton": "Guardar",
@@ -380,6 +382,8 @@
     "loading": "Cargando estudiantes..."
   },
   "attendancePage": {
+    "subtitle": "Escanea códigos QR y consulta los registros diarios de asistencia.",
+    "filtersTitle": "Grupos",
     "strictMode": "Modo Estricto",
     "strictModeTooltip": "Activar/Desactivar Modo Estricto",
     "lateThreshold": "Tolerancia (min):",
@@ -389,14 +393,29 @@
     "allGroups": "Todos",
     "recordsFor": "Registros de",
     "totalRecords": "Total de Registros",
-    "noRecords": "No hay registros de asistencia para este día.", 
+    "noRecords": "No hay registros de asistencia para este día.",
+    "loading": "Cargando registros...",
+    "greetings": [
+      "¡Listo para aprender!",
+      "¡La clase empieza contigo!",
+      "¡Qué bueno verte!",
+      "¡Concéntrate y crece!",
+      "¡La lección de hoy te espera!",
+      "¡Despierta tu curiosidad!",
+      "¡Tu esfuerzo cuenta!",
+      "¡Aprende algo nuevo!",
+      "¡Orgullosos de tenerte!",
+      "¡Estudia con propósito!",
+      "¡Sigue preguntando!",
+      "¡Eres parte de esta clase!"
+    ],
     "table": {
       "time": "Hora",
       "lastName": "Apellidos",
       "firstName": "Nombres",
       "group": "Grupo",
       "subject": "Asignatura",
-      "period": "Periodo", 
+      "period": "Periodo",
       "qrId": "ID QR"
     }
   },

@@ -95,6 +95,8 @@
   "profileModal": {
     "title": "Profile",
     "nameLabel": "Name",
+    "firstNameLabel": "First name",
+    "lastNameLabel": "Last name",
     "emailLabel": "Email",
     "editButton": "Edit Profile",
     "saveButton": "Save",
@@ -380,6 +382,8 @@
     "loading": "Loading students..."
   },
   "attendancePage": {
+    "subtitle": "Scan student QR codes and review daily attendance records.",
+    "filtersTitle": "Groups",
     "strictMode": "Strict Mode",
     "strictModeTooltip": "Toggle Strict Attendance Mode",
     "lateThreshold": "Late Tolerance (min):",
@@ -390,6 +394,21 @@
     "recordsFor": "Records for",
     "totalRecords": "Total Records",
     "noRecords": "No attendance records for this day.",
+    "loading": "Loading records...",
+    "greetings": [
+      "Ready to learn!",
+      "Class starts with you!",
+      "Great to see you!",
+      "Focus and grow!",
+      "Today's lesson awaits!",
+      "Be curious today!",
+      "Your effort matters!",
+      "Learn something new!",
+      "Proud to have you here!",
+      "Study with purpose!",
+      "Keep asking questions!",
+      "You're part of this class!"
+    ],
     "table": {
       "time": "Time",
       "lastName": "Last Name",
