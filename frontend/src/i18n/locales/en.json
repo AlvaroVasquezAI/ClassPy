@@ -1,6 +1,6 @@
 {
   "navbar": {
-    "dashboard": "Dashboard",
+    "dashboard": "Home",
     "workspace": "Workspace",
     "classroom": "Classroom",
     "students": "Students",
@@ -22,7 +22,16 @@
     "successAlert": "Profile created! App would now redirect."
   },
   "homePage": {
-    "welcome": "Welcome back, {{name}}."
+    "welcome": "Hi, {{name}}!",
+    "welcomeFallback": "Hi!",
+    "kicker": "Your classroom hub",
+    "cta": "Start",
+    "heroPhrases": {
+      "phrase1": "Every day is a chance to inspire",
+      "phrase2": "Your classroom starts here",
+      "phrase3": "Teaching shapes tomorrow",
+      "phrase4": "Ready when your students are"
+    }
   },
   "dashboard": {
     "studentCount_one": "{{count}} student",
@@ -32,6 +41,17 @@
     "emptySubtitle": "Once Classroom syncs your subjects and groups, they will show up here as quick links.",
     "emptyCta": "Go to Workspace",
     "unknownSubject": "Subject",
+    "heroLabel": "Teachers leading students with books and pointers",
+    "heroLabelMan": "Male teacher with short hair, blazer, book and pointer",
+    "heroLabelWoman": "Female teacher with long hair, dress, book and pointer",
+    "heroCaption": "Teaching on the go",
+    "heroPhrases": {
+      "phrase1": "Great teachers shape the future",
+      "phrase2": "Every lesson plants a seed",
+      "phrase3": "Teaching is the heart of learning",
+      "phrase4": "You inspire minds every day",
+      "phrase5": "Guiding students, changing lives"
+    },
     "datetimeLabel": "Date and time",
     "prevMonth": "Previous month",
     "nextMonth": "Next month",
@@ -89,13 +109,6 @@
       "saveChanges": "Save Changes",
       "typeToConfirm": "Please type the name to confirm.",
       "typeFullToConfirm": "Please type the full name to confirm."
-    },
-    "shortcuts": {
-      "title": "Shortcuts",
-      "viewExams": "View Exams",
-      "viewAssignments": "View Assignments",
-      "viewPlannings": "View Plannings",
-      "viewGrades": "View Grades"
     },
     "subjects": {
       "title": "Subjects",
@@ -257,6 +270,7 @@
     "qrCodeModal": {
       "title": "{{studentName}}",
       "alt": "QR Code for {{studentName}}",
+      "idLabel": "Student ID",
       "downloadButton": "Download PNG"
     },
     "deleteModal": {
@@ -281,22 +295,69 @@
     "created": "Created",
     "due": "Due",
     "acceptingSubmissions": "Accepting Submissions",
+    "acceptingLateSubmissions": "Accepting Late Submissions",
+    "assignmentCompleted": "Completed",
     "closed": "Closed",
+    "assignmentStatus": {
+      "accepting": "Accepting Submissions",
+      "acceptingLate": "Accepting Late Submissions",
+      "completed": "Completed"
+    },
+    "assignmentStatusHints": {
+      "accepting": "The due date has not passed yet. Students can still turn in this assignment on time.",
+      "acceptingLate": "The due date has passed, but the assignment is still open, so late work can still be turned in.",
+      "completed": "This assignment is closed in Classroom and is no longer accepting submissions."
+    },
     "returned": "Returned",
+    "returnedUngraded": "Returned with 0",
     "turnedIn": "Turned In",
     "assigned": "Assigned",
+    "noAccess": "Not opened",
+    "reclaimed": "Unsubmitted",
+    "flags": {
+      "late": "Late",
+      "pastDue": "Past due",
+      "resubmitted": "Resubmitted",
+      "draft": "Draft"
+    },
+    "statusHints": {
+      "returned": "The teacher returned the work to the student with a grade.",
+      "returnedUngraded": "The teacher returned the work with a grade of 0 (or with no score).",
+      "turnedIn": "The student submitted the work and it is waiting for review.",
+      "assigned": "The assignment was given to the student, but they have not submitted it yet.",
+      "noAccess": "The student has never opened this assignment. This includes students who joined the class after it was posted.",
+      "reclaimed": "The student turned the work in and then unsubmitted it, so it is back in their hands."
+    },
+    "flagHints": {
+      "late": "This submission was turned in after the due date.",
+      "pastDue": "The due date has already passed and nothing was submitted.",
+      "pastDueStillOpen": "The due date has passed and this student has not submitted. Late work may still be accepted because the assignment is still open.",
+      "pastDueClosed": "The due date has passed, nothing was submitted, and this assignment is no longer accepting work.",
+      "resubmitted": "The student edited their submission after turning it in.",
+      "draft": "The teacher has saved a draft grade that has not been assigned yet."
+    },
+    "filterAll": "All",
+    "filterAllHint": "Show every submission for this assignment.",
+    "filterByStatus": "Filter submissions by status",
+    "noSubmissionsInFilter": "No submissions match this filter.",
     "loading": "Loading...",
     "unknownStudent": "Unknown Student",
     "students": "Students"
   },
   "studentsPage": {
     "title": "Students",
+    "subtitle": "Browse and filter your full student roster.",
+    "showing": "Showing",
+    "resultCount": "{{count}} students match the current filters.",
+    "filtersTitle": "Filters",
+    "clearFilters": "Clear",
+    "openQr": "Open QR code",
     "filters": {
-      "group": "Filter by Group",
-      "subject": "Filter by Subject",
-      "firstName": "Filter by First Name",
-      "lastName": "Filter by Last Name",
-      "status": "Filter by Status",
+      "group": "Group",
+      "subject": "Subject",
+      "search": "Search",
+      "searchPlaceholder": "Search by name or ID…",
+      "status": "Status",
       "all": "All"
     },
     "table": {

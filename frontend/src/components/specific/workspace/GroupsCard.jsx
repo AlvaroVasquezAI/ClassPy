@@ -254,21 +254,21 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
           const displayText = getGroupDisplayText(group);
           if (isEditMode || isDeleteMode) {
             return (
-              <button key={group.id} className="item-chip" style={{ backgroundColor: group.color }} onClick={() => handleChipClick(group)}>
-                {displayText}
+              <button key={group.id} className="item-chip" style={{ '--chip-color': group.color }} onClick={() => handleChipClick(group)}>
+                <span className="item-chip-label">{displayText}</span>
               </button>
             );
           }
           if (isSchedulingMode) {
             return (
-              <div key={group.id} className="item-chip draggable" style={{ backgroundColor: group.color }} draggable="true" onDragStart={(e) => handleDragStart(e, group)}>
-                {displayText}
+              <div key={group.id} className="item-chip draggable" style={{ '--chip-color': group.color }} draggable="true" onDragStart={(e) => handleDragStart(e, group)}>
+                <span className="item-chip-label">{displayText}</span>
               </div>
             );
           }
           return (
-            <Link to={generateGroupUrl(group)} key={group.id} className="item-chip" style={{ backgroundColor: group.color, textDecoration: 'none' }}>
-              {displayText}
+            <Link to={generateGroupUrl(group)} key={group.id} className="item-chip" style={{ '--chip-color': group.color, textDecoration: 'none' }}>
+              <span className="item-chip-label">{displayText}</span>
             </Link>
           );
         })}
@@ -339,7 +339,9 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
           {isColorStepEnabled && (
             <div className="preview-chip-container">
               <label>{t('workspace.common.preview')}</label>
-              <div className="item-chip" style={{ backgroundColor: selectedColor }}>{previewText}</div>
+              <div className="item-chip" style={{ '--chip-color': selectedColor }}>
+                <span className="item-chip-label">{previewText}</span>
+              </div>
               <div>
                 <input type="checkbox" id="colorConfirm" checked={isColorConfirmed} onChange={(e) => setIsColorConfirmed(e.target.checked)} />
                 <label htmlFor="colorConfirm" style={{ marginLeft: '8px' }}>{t('workspace.groups.createModal.confirmColor')}</label>
@@ -396,8 +398,8 @@ const GroupsCard = ({ groups, subjects, onUpdate }) => {
           </div>
           <div className="preview-chip-container">
             <label>{t('workspace.common.preview')}</label>
-            <div className="item-chip" style={{ backgroundColor: newColorForEdit }}>
-              {getGroupDisplayText(groupToEdit)}
+            <div className="item-chip" style={{ '--chip-color': newColorForEdit }}>
+              <span className="item-chip-label">{getGroupDisplayText(groupToEdit)}</span>
             </div>
           </div>
         </div>

@@ -1,121 +1,642 @@
-.students-page-container {
+.students-page {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  width: 100%;
+  gap: 1.35rem;
+  flex-grow: 1;
 }
 
-.students-page-header {
+.students-atmosphere {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(
+      ellipse 50% 40% at 10% 0%,
+      color-mix(in srgb, var(--primary-color) 14%, transparent) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 40% 35% at 90% 18%,
+      color-mix(in srgb, var(--primary-color) 8%, transparent) 0%,
+      transparent 65%
+    );
+}
+
+.students-loading,
+.students-error {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
+  color: var(--text-color-light);
+  font-size: 1rem;
+}
+
+.students-error {
+  color: var(--danger-color);
+  padding: 1rem 1.25rem;
+  background: color-mix(in srgb, var(--danger-color) 10%, var(--card-bg));
+  border: 1px solid color-mix(in srgb, var(--danger-color) 22%, transparent);
+  border-radius: 14px;
+}
+
+.students-header-card,
+.students-filters-card,
+.students-table-card {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--primary-color) 6%, var(--card-bg)) 0%,
+      var(--card-bg) 55%
+    );
+  border-radius: 20px;
+  border: 1px solid var(--card-border);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--text-color) 4%, transparent);
+  animation: students-card-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.students-header-card::before,
+.students-filters-card::before,
+.students-table-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(
+    180deg,
+    var(--primary-color),
+    color-mix(in srgb, var(--primary-color) 20%, transparent)
+  );
+}
+
+.students-header-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1.15rem 1.35rem;
 }
 
-.students-page-header h1 {
+.students-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.students-brand-icon {
+  font-size: 2rem;
+  color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.students-header-brand h1 {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-color);
 }
 
-.filters-container {
+.students-header-subtitle {
+  margin: 0.2rem 0 0;
+  font-size: 0.88rem;
+  color: var(--text-color-light);
+}
+
+.students-header-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--primary-color) 10%, var(--input-bg));
+  border: 1px solid color-mix(in srgb, var(--primary-color) 18%, var(--card-border));
+  color: var(--text-color-light);
+  font-size: 0.84rem;
+}
+
+.students-stat-badge {
+  min-width: 1.55rem;
+  height: 1.55rem;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--primary-color);
+}
+
+.students-filters-card {
+  padding: 1.15rem 1.3rem 1.3rem;
+  animation-delay: 0.05s;
+}
+
+.students-filters-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.students-filters-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--primary-color);
+}
+
+.students-filters-title h2 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 650;
+  color: var(--text-color);
+}
+
+.students-clear-filters {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 22%, var(--card-border));
+  background: color-mix(in srgb, var(--primary-color) 8%, transparent);
+  color: var(--primary-color);
+  font-size: 0.78rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.students-clear-filters:hover {
+  background: color-mix(in srgb, var(--primary-color) 14%, transparent);
+  transform: translateY(-1px);
+}
+
+.students-filters-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.95rem;
+}
+
+.students-search-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.students-search-icon {
+  position: absolute;
+  left: 0.95rem;
+  color: var(--text-color-light);
+  font-size: 0.85rem;
+  pointer-events: none;
+}
+
+.students-search-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.85rem 2.5rem 0.85rem 2.55rem;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 16%, var(--input-border-color));
+  background: color-mix(in srgb, var(--primary-color) 5%, var(--input-bg));
+  color: var(--text-color);
+  font-size: 0.92rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.students-search-input::placeholder {
+  color: var(--text-color-light);
+}
+
+.students-search-input:hover {
+  border-color: color-mix(in srgb, var(--primary-color) 36%, transparent);
+}
+
+.students-search-input:focus {
+  outline: none;
+  border-color: color-mix(in srgb, var(--primary-color) 55%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 16%, transparent);
+  background: color-mix(in srgb, var(--primary-color) 8%, var(--input-bg));
+}
+
+.students-search-input::-webkit-search-cancel-button,
+.students-search-input::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.students-search-clear {
+  position: absolute;
+  right: 0.65rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border: none;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text-color) 8%, transparent);
+  color: var(--text-color-light);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.students-search-clear:hover {
+  background: color-mix(in srgb, var(--text-color) 14%, transparent);
+  color: var(--text-color);
+}
+
+.students-filters-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1rem;
-  padding: 1.5rem;
-  background-color: var(--card-bg);
-  border-radius: 16px;
-  border: 1px solid var(--card-border);
+  grid-template-columns: minmax(140px, 0.9fr) minmax(160px, 1.1fr) minmax(240px, 1.4fr);
+  gap: 0.85rem 1rem;
+  align-items: end;
 }
 
 .filter-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
+  min-width: 0;
 }
 
-.filter-group label {
-  font-size: 0.9rem;
-  font-weight: 500;
+.filter-group label,
+.filter-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--text-color-light);
-  padding-left: 0.5rem;
+}
+
+.filter-select-wrap {
+  position: relative;
+}
+
+.filter-select-wrap::after {
+  content: '';
+  position: absolute;
+  right: 0.95rem;
+  top: 50%;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-right: 2px solid var(--text-color-light);
+  border-bottom: 2px solid var(--text-color-light);
+  transform: translateY(-65%) rotate(45deg);
+  pointer-events: none;
 }
 
 .filter-select {
+  appearance: none;
+  -webkit-appearance: none;
   width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--input-border-color);
-  background: var(--input-bg);
+  padding: 0.78rem 2.2rem 0.78rem 0.9rem;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 14%, var(--input-border-color));
+  background: color-mix(in srgb, var(--primary-color) 4%, var(--input-bg));
   color: var(--text-color);
   border-radius: 12px;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
+  font-weight: 600;
   box-sizing: border-box;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.filter-select.is-active {
+  border-color: color-mix(in srgb, var(--primary-color) 42%, transparent);
+  background: color-mix(in srgb, var(--primary-color) 12%, var(--input-bg));
+  color: color-mix(in srgb, var(--primary-color) 70%, #101010);
+  font-weight: 650;
+}
+
+.filter-select:hover,
+.filter-select:focus {
+  border-color: color-mix(in srgb, var(--primary-color) 40%, transparent);
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 14%, transparent);
+}
+
+.students-status-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0.3rem;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--primary-color) 6%, var(--input-bg));
+  border: 1px solid color-mix(in srgb, var(--primary-color) 12%, var(--card-border));
+}
+
+.students-status-pill {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.55rem 0.7rem;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-color-light);
+  font-size: 0.8rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.students-status-pill:hover {
+  color: var(--text-color);
+  background: color-mix(in srgb, var(--text-color) 5%, transparent);
+}
+
+.students-status-pill.is-active {
+  background: var(--card-bg);
+  color: var(--text-color);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--text-color) 8%, transparent);
+}
+
+.students-status-pill--active.is-active {
+  color: var(--success-color);
+  background: color-mix(in srgb, var(--success-color) 12%, var(--card-bg));
+}
+
+.students-status-pill--inactive.is-active {
+  color: var(--danger-color);
+  background: color-mix(in srgb, var(--danger-color) 12%, var(--card-bg));
+}
+
+.students-status-pill--transferred.is-active {
+  color: #1d4ed8;
+  background: color-mix(in srgb, #3b82f6 12%, var(--card-bg));
+}
+
+.students-table-card {
+  padding: 0.7rem 0.7rem 0.85rem;
+  animation-delay: 0.1s;
 }
 
 .students-table-container {
-  overflow-x: auto;
-  background-color: var(--card-bg);
-  padding: 1.5rem;
-  border-radius: 16px;
-  border: 1px solid var(--card-border);
+  overflow-x: visible;
+  border-radius: 14px;
 }
 
 .students-table {
   width: 100%;
-  border-collapse: collapse;
-  min-width: 800px;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 0;
 }
 
 .students-table th,
 .students-table td {
-  padding: 1rem;
+  padding: 0.55rem 0.35rem;
   text-align: left;
   white-space: nowrap;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.students-table thead {
-  border-bottom: 2px solid var(--nav-border);
+.students-table th:nth-child(1),
+.students-table td:nth-child(1) {
+  width: 44px;
+  padding-left: 0.45rem;
 }
 
-.students-table tbody tr:not(:last-child) {
-  border-bottom: 1px solid var(--input-border-color);
+.students-table th:nth-child(2),
+.students-table td:nth-child(2) {
+  width: 15%;
+}
+
+.students-table th:nth-child(3),
+.students-table td:nth-child(3) {
+  width: 13%;
+}
+
+.students-table th:nth-child(4),
+.students-table td:nth-child(4) {
+  width: 7%;
+}
+
+.students-table th:nth-child(5),
+.students-table td:nth-child(5) {
+  width: 12%;
+}
+
+.students-table th:nth-child(6),
+.students-table td:nth-child(6) {
+  width: 12%;
+}
+
+.students-table th:nth-child(7),
+.students-table td:nth-child(7) {
+  width: 10%;
+}
+
+.students-table th:nth-child(8),
+.students-table td:nth-child(8) {
+  width: 12%;
+}
+
+.students-table th:nth-child(9),
+.students-table td:nth-child(9) {
+  width: 9%;
+  padding-right: 0.45rem;
+}
+
+.students-table thead th {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-color-light);
+  background: color-mix(in srgb, var(--primary-color) 7%, var(--input-bg));
+  border-bottom: 1px solid color-mix(in srgb, var(--primary-color) 12%, var(--card-border));
+}
+
+.students-table thead th:first-child {
+  border-radius: 12px 0 0 12px;
+}
+
+.students-table thead th:last-child {
+  border-radius: 0 12px 12px 0;
+}
+
+.students-table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.students-table tbody tr:hover {
+  background: color-mix(in srgb, var(--primary-color) 6%, transparent);
+}
+
+.students-table tbody tr:not(:last-child) td {
+  border-bottom: 1px solid color-mix(in srgb, var(--primary-color) 8%, var(--card-border));
+}
+
+.student-name-cell {
+  font-weight: 650;
+  font-size: 0.82rem;
+  color: var(--text-color);
+}
+
+.students-chip {
+  --chip-color: var(--primary-color);
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 0.2rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: color-mix(in srgb, var(--chip-color) 16%, var(--input-bg));
+  border: 1px solid color-mix(in srgb, var(--chip-color) 28%, transparent);
+  color: color-mix(in srgb, var(--chip-color) 72%, #101010);
+}
+
+.students-mono,
+.students-contact {
+  font-size: 0.72rem;
+  color: var(--text-color-light);
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.students-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.classroom-id {
+  max-width: 100%;
+}
+
+.student-qr-button {
+  display: inline-flex;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 8px;
 }
 
 .student-qr-code {
-  width: 50px;
-  height: 50px;
+  width: 34px;
+  height: 34px;
   border-radius: 8px;
-  cursor: pointer;
-  border: 1px solid var(--input-border-color);
-  transition: transform 0.2s;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 16%, var(--card-border));
+  background: #fff;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  display: block;
 }
 
-.student-qr-code:hover {
-  transform: scale(1.1);
+.student-qr-button:hover .student-qr-code {
+  transform: scale(1.06);
+  box-shadow: 0 6px 14px color-mix(in srgb, var(--primary-color) 16%, transparent);
 }
 
 .status-badge {
-  padding: 0.3rem 0.7rem;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 0.8rem;
-  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  padding: 0.22rem 0.5rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .status-active {
-  background-color: rgba(52, 199, 89, 0.15);
+  background-color: color-mix(in srgb, var(--success-color) 14%, transparent);
   color: var(--success-color);
 }
+
 .status-inactive {
-  background-color: rgba(255, 59, 48, 0.15);
+  background-color: color-mix(in srgb, var(--danger-color) 14%, transparent);
   color: var(--danger-color);
 }
+
 .status-transferred {
-  background-color: rgba(59, 130, 246, 0.15);
-  color: #3B82F6;
+  background-color: color-mix(in srgb, #3b82f6 14%, transparent);
+  color: #1d4ed8;
 }
 
 .no-students-message {
   text-align: center;
-  padding: 3rem;
+  padding: 2.75rem 1rem;
   color: var(--text-color-light);
+  white-space: normal;
+}
+
+@keyframes students-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .students-header-card {
+    padding: 1rem;
+  }
+
+  .students-header-brand h1 {
+    font-size: 1.15rem;
+  }
+
+  .students-filters-card,
+  .students-table-card {
+    padding: 1rem;
+  }
+
+  .students-filters-row {
+    grid-template-columns: 1fr;
+  }
+
+  .students-status-pills {
+    width: 100%;
+  }
+
+  .students-table-container {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+
+  .students-table {
+    table-layout: auto;
+    min-width: 720px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .students-header-card,
+  .students-filters-card,
+  .students-table-card {
+    animation: none !important;
+  }
 }

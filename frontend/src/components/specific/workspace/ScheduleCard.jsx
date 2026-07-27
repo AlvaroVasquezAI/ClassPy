@@ -138,10 +138,10 @@ const ScheduleCard = ({ groups, subjects, schedule, onUpdate }) => {
         <div className="add-group-modal-body" onDragLeave={() => setIsAddModalOpen(false)}>
           {groups.map(group => (
             <div key={group.id} className="item-chip draggable"
-              style={{ backgroundColor: group.color }}
+              style={{ '--chip-color': group.color }}
               draggable="true"
               onDragStart={(e) => handleDragStart(e, { groupId: group.id })}>
-              {getGroupDisplayText(group)}
+              <span className="item-chip-label">{getGroupDisplayText(group)}</span>
             </div>
           ))}
         </div>

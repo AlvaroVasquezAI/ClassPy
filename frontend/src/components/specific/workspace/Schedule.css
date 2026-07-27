@@ -5,87 +5,121 @@
   overflow-x: auto;
 }
 
-.schedule-grid {
-  display: grid;
-  grid-template-columns: 100px repeat(5, 1fr);
-  flex-grow: 1;
-  gap: 4px;
-  min-width: 700px;
-}
-
 .schedule-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
-  flex-wrap: nowrap; 
-  gap: 1rem;      
+  margin-bottom: 1.35rem;
+  flex-wrap: nowrap;
+  gap: 1rem;
 }
 
-.schedule-header .header-left{
+.schedule-header .header-left {
   display: flex;
   align-items: center;
-  gap:0.75rem;
+  gap: 0.7rem;
+}
+
+.schedule-header .header-left > svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.schedule-header h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
 }
 
 .header-actions {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.35rem;
 }
 
-.time-column, .day-column {
+.schedule-grid {
   display: grid;
-  grid-template-rows: 40px repeat(8, 1fr);
-  gap: 4px;
+  grid-template-columns: 108px repeat(5, 1fr);
+  flex-grow: 1;
+  gap: 6px;
+  min-width: 720px;
+  padding: 0.35rem;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--primary-color) 4%, transparent);
+}
+
+.time-column,
+.day-column {
+  display: grid;
+  grid-template-rows: 42px repeat(8, 1fr);
+  gap: 6px;
 }
 
 .grid-header {
-  font-weight: 600;
+  font-weight: 650;
+  font-size: 0.92rem;
+  letter-spacing: 0.02em;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--text-color);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--card-bg) 80%, var(--primary-color));
+  border: 1px solid color-mix(in srgb, var(--primary-color) 12%, var(--card-border));
+}
+
+.time-column .grid-header {
+  background: transparent;
+  border-color: transparent;
 }
 
 .time-slot-label {
   display: flex;
-  direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 0.8rem;
-  text-align: right;
-  font-weight: bold;
+  font-size: 0.78rem;
+  text-align: center;
+  font-weight: 600;
   color: var(--text-color-light);
   white-space: nowrap;
+  padding: 0 0.25rem;
 }
 
 .recess-label {
-  font-weight: bold;
+  font-weight: 700;
   color: var(--primary-color);
 }
 
 .grid-cell {
-  background-color: var(--input-bg);
-  border-radius: 8px;
-  transition: background-color 0.2s;
-  min-height: 60px;
+  background-color: color-mix(in srgb, var(--card-bg) 88%, var(--input-bg));
+  border: 1px solid color-mix(in srgb, var(--primary-color) 8%, var(--card-border));
+  border-radius: 11px;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  min-height: 58px;
   display: flex;
   align-items: center;
+  overflow: hidden;
 }
 
 .grid-cell.droppable:hover {
-  background-color: var(--input-border-color);
+  background-color: color-mix(in srgb, var(--primary-color) 10%, var(--input-bg));
+  border-color: color-mix(in srgb, var(--primary-color) 35%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--primary-color) 18%, transparent);
 }
 
 .grid-cell.recess {
   background-image: repeating-linear-gradient(
     -45deg,
-    var(--input-border-color),
-    var(--input-border-color) 5px,
+    color-mix(in srgb, var(--primary-color) 12%, transparent),
+    color-mix(in srgb, var(--primary-color) 12%, transparent) 5px,
     transparent 5px,
     transparent 10px
   );
-  opacity: 0.5;
+  border-style: dashed;
+  opacity: 0.55;
 }
 
 .grid-cell .item-chip {
@@ -95,22 +129,25 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  font-size: 0.9rem;
+  font-size: 0.84rem;
   border-radius: inherit;
+  border: none;
+  padding: 0.4rem 0.5rem;
 }
 
 .schedule-item.deletable {
   cursor: pointer;
-  border: 2px solid var(--danger-color);
+  outline: 2px solid var(--danger-color);
+  outline-offset: -2px;
 }
 
 .time-slot-label-mobile {
   display: none;
 }
+
 .schedule-row {
   display: contents;
 }
-
 
 @media (max-width: 768px) {
   .schedule-container {
@@ -120,8 +157,10 @@
   .schedule-grid {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.25rem;
     min-width: unset;
+    padding: 0;
+    background: transparent;
   }
 
   .time-column {
@@ -131,17 +170,16 @@
   .day-column {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 5px;
   }
 
   .grid-header {
     justify-content: flex-start;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--nav-border);
+    padding: 0.55rem 0.75rem;
   }
 
   .schedule-row {
-    display: flex; 
+    display: flex;
     gap: 8px;
     align-items: stretch;
   }
@@ -159,7 +197,7 @@
   }
 
   .grid-cell {
-    flex-grow: 1; 
+    flex-grow: 1;
     min-height: 50px;
   }
 }
@@ -175,8 +213,9 @@
 
 .add-group-modal-body .item-chip {
   flex-direction: row;
-  padding: 0.7rem 1.2rem;
+  align-items: center;
+  padding: 0.65rem 1rem 0.65rem 1.05rem;
   font-size: 0.9rem;
-  border-radius: 20px;
-  gap: 0;
+  border-radius: 12px;
+  gap: 0.4rem;
 }

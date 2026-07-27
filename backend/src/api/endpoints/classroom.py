@@ -36,11 +36,19 @@ def get_classroom_service(db: Session = Depends(get_db)):
 @router.get("/classroom/courses", tags=["classroom"])
 def get_courses(service=Depends(get_classroom_service)):
     try:
-        results = service.courses().list(
-            pageSize=20,
-            fields='courses(id,name,enrollmentCode,courseState)'
-        ).execute()
-        active_courses = [c for c in results.get('courses', []) if c.get('courseState') == 'ACTIVE']
+        courses = []
+        page_token = None
+        while True:
+            results = service.courses().list(
+                pageSize=100,
+                pageToken=page_token,
+                fields='courses(id,name,enrollmentCode,courseState),nextPageToken'
+            ).execute()
+            courses.extend(results.get('courses', []))
+            page_token = results.get('nextPageToken')
+            if not page_token:
+                break
+        active_courses = [c for c in courses if c.get('courseState') == 'ACTIVE']
         return active_courses
     except HttpError as error:
         raise HTTPException(status_code=error.resp.status, detail=f"An error occurred: {error}")
@@ -48,19 +56,39 @@ def get_courses(service=Depends(get_classroom_service)):
 @router.get("/classroom/courses/{course_id}/coursework", tags=["classroom"])
 def get_coursework(course_id: str, service=Depends(get_classroom_service)):
     try:
-        results = service.courses().courseWork().list(courseId=course_id).execute()
-        return results.get('courseWork', [])
+        coursework = []
+        page_token = None
+        while True:
+            results = service.courses().courseWork().list(
+                courseId=course_id,
+                pageSize=100,
+                pageToken=page_token
+            ).execute()
+            coursework.extend(results.get('courseWork', []))
+            page_token = results.get('nextPageToken')
+            if not page_token:
+                break
+        return coursework
     except HttpError as error:
         raise HTTPException(status_code=error.resp.status, detail=f"An error occurred: {error}")
 
 @router.get("/classroom/courses/{course_id}/coursework/{coursework_id}/submissions", tags=["classroom"])
 def get_submissions(course_id: str, coursework_id: str, service=Depends(get_classroom_service)):
     try:
-        results = service.courses().courseWork().studentSubmissions().list(
-            courseId=course_id,
-            courseWorkId=coursework_id
-        ).execute()
-        return results.get('studentSubmissions', [])
+        submissions = []
+        page_token = None
+        while True:
+            results = service.courses().courseWork().studentSubmissions().list(
+                courseId=course_id,
+                courseWorkId=coursework_id,
+                pageSize=100,
+                pageToken=page_token
+            ).execute()
+            submissions.extend(results.get('studentSubmissions', []))
+            page_token = results.get('nextPageToken')
+            if not page_token:
+                break
+        return submissions
     except HttpError as error:
         raise HTTPException(status_code=error.resp.status, detail=f"An error occurred: {error}")
     

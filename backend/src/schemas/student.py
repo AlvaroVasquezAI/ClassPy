@@ -37,10 +37,12 @@ class StudentGroup(CamelCaseModel):
     id: int
     name: str
     grade: int
+    color: Optional[str] = None
 
 class StudentSubject(CamelCaseModel):
     id: int
     name: str
+    color: Optional[str] = None
 
 class StudentDetails(Student):
     group: StudentGroup

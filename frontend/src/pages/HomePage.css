@@ -1,42 +1,67 @@
 .homepage-container {
-  flex-grow: 1; 
+  position: relative;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
+  padding: 2rem 1.25rem 3rem;
+  overflow: hidden;
 }
 
-.welcome-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.homepage-atmosphere {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(
+      ellipse 55% 45% at 50% 0%,
+      color-mix(in srgb, var(--primary-color) 16%, transparent) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 40% 35% at 12% 80%,
+      color-mix(in srgb, var(--primary-color) 10%, transparent) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 35% 30% at 88% 70%,
+      color-mix(in srgb, var(--primary-color) 8%, transparent) 0%,
+      transparent 70%
+    );
+  animation: homepage-atmosphere-drift 18s ease-in-out infinite alternate;
 }
 
-.homepage-title,
-.welcome-message {
+/* Kicker lives outside the animation card */
+.homepage-kicker {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 1.25rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--primary-color) 72%, var(--text-color-light));
+  opacity: 0;
+  animation: homepage-fade-up 0.55s ease 0.15s both;
+}
+
+/* ClassPy title (inside the animation card) */
+.homepage-title {
   margin: 0;
-  padding: 0;
+  font-size: clamp(2.4rem, 6vw, 3.6rem);
+  font-weight: 300;
+  letter-spacing: 0.55rem;
+  line-height: 1.1;
+  color: var(--text-color);
+  padding-right: 0.4rem;
+  margin-right: -0.55rem;
   white-space: nowrap;
   overflow: hidden;
   border-right: 4px solid transparent;
-}
-
-.homepage-title {
-  font-size: 4rem;
-  font-weight: 300;
-  letter-spacing: 0.8rem;
-  color: var(--text-color);
-  padding-right: 0.5rem;
-  margin-right: -0.8rem; 
-}
-
-.welcome-message {
-  font-size: 1.5rem;
-  color: var(--text-color-light);
-  margin-top: 1.5rem;
-  max-width: 500px;
-  line-height: 1.6;
+  text-shadow: 0 1px 10px color-mix(in srgb, var(--card-bg) 60%, transparent);
 }
 
 .typing {
@@ -44,18 +69,105 @@
   animation: blink-cursor 0.75s step-end infinite;
 }
 
+/* Simple Start button */
+.homepage-start-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.6rem;
+  border: none;
+  border-radius: 999px;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--primary-color);
+  cursor: pointer;
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--primary-color) 35%, transparent);
+  transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+  opacity: 0;
+  animation: homepage-fade-up 0.6s ease 0.55s both;
+}
+
+.homepage-start-btn svg {
+  transition: transform 0.2s ease;
+}
+
+.homepage-start-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+  box-shadow: 0 12px 26px color-mix(in srgb, var(--primary-color) 42%, transparent);
+}
+
+.homepage-start-btn:hover svg {
+  transform: translateX(3px);
+}
+
+.homepage-start-btn:active {
+  transform: translateY(0);
+}
+
+.homepage-start-btn:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 3px;
+}
+
 @keyframes blink-cursor {
-  from, to { border-color: transparent }
-  50% { border-color: var(--text-color) }
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: var(--text-color);
+  }
+}
+
+@keyframes homepage-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes homepage-atmosphere-drift {
+  from {
+    transform: scale(1) translateY(0);
+  }
+  to {
+    transform: scale(1.04) translateY(-8px);
+  }
 }
 
 @media (max-width: 768px) {
-  .homepage-title {
-    font-size: 3rem;
-    letter-spacing: 0.5rem;
-    margin-right: -0.5rem;
+  .homepage-container {
+    padding: 1.5rem 1rem 2.5rem;
   }
-  .welcome-message {
-    font-size: 1rem;
+
+  .homepage-title {
+    letter-spacing: 0.4rem;
+    margin-right: -0.4rem;
+  }
+
+  .homepage-start-btn {
+    width: 100%;
+    max-width: 260px;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .homepage-atmosphere,
+  .homepage-kicker,
+  .homepage-start-btn,
+  .typing {
+    animation: none !important;
+  }
+
+  .homepage-kicker,
+  .homepage-start-btn {
+    opacity: 1;
   }
 }

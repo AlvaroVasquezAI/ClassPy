@@ -183,17 +183,17 @@ const SubjectsCard = ({ subjects, groups, onUpdate }) => {
             <div
               key={subject.id}
               className="item-chip"
-              style={{ backgroundColor: subject.color, cursor: 'pointer' }}
+              style={{ '--chip-color': subject.color, cursor: 'pointer' }}
               onClick={() => handleChipClick(subject)}
               onKeyDown={(e) => handleKeyDown(e, subject)}
               role="button"
               tabIndex="0"
             >
-              <span>{subject.name}</span>
+              <span className="item-chip-label">{subject.name}</span>
               {subjectGroups.length > 0 && (
                 <div className="sub-group-container">
                   {subjectGroups.map(g => (
-                    <div key={g.id} className="sub-group-chip" style={{ backgroundColor: g.color }}>
+                    <div key={g.id} className="sub-group-chip" style={{ '--chip-color': g.color }}>
                       {g.grade}{g.name}
                     </div>
                   ))}
@@ -233,8 +233,8 @@ const SubjectsCard = ({ subjects, groups, onUpdate }) => {
           {newSubjectName && (
             <div className="preview-chip-container">
               <label>{t('workspace.common.preview')}</label>
-              <div className="item-chip" style={{ backgroundColor: newSubjectColor }}>
-                <span>{newSubjectName}</span>
+              <div className="item-chip" style={{ '--chip-color': newSubjectColor }}>
+                <span className="item-chip-label">{newSubjectName}</span>
               </div>
             </div>
           )}
@@ -267,8 +267,8 @@ const SubjectsCard = ({ subjects, groups, onUpdate }) => {
           {editSubjectName && (
             <div className="preview-chip-container">
               <label>{t('workspace.common.preview')}</label>
-              <div className="item-chip" style={{ backgroundColor: editSubjectColor }}>
-                <span>{editSubjectName}</span>
+              <div className="item-chip" style={{ '--chip-color': editSubjectColor }}>
+                <span className="item-chip-label">{editSubjectName}</span>
               </div>
             </div>
           )}
@@ -309,10 +309,10 @@ const SubjectsCard = ({ subjects, groups, onUpdate }) => {
               key={group.id}
               to={generateGroupUrl(group)}
               className="item-chip"
-              style={{ backgroundColor: group.color, textDecoration: 'none' }}
+              style={{ '--chip-color': group.color, textDecoration: 'none' }}
               onClick={() => setIsViewGroupsModalOpen(false)}
             >
-              {getGroupDisplayText(group)}
+              <span className="item-chip-label">{getGroupDisplayText(group)}</span>
             </Link>
           ))}
         </div>

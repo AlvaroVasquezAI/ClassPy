@@ -1,6 +1,6 @@
 {
   "navbar": {
-    "dashboard": "Tablero",
+    "dashboard": "Inicio",
     "workspace": "Espacio de trabajo",
     "classroom": "Classroom",
     "students": "Estudiantes",
@@ -22,7 +22,16 @@
     "successAlert": "¡Perfil creado! La aplicación ahora se redirigiría."
   },
   "homePage": {
-    "welcome": "Bienvenido de nuevo, {{name}}."
+    "welcome": "¡Hola, {{name}}!",
+    "welcomeFallback": "¡Hola!",
+    "kicker": "Tu centro de aula",
+    "cta": "Empezar",
+    "heroPhrases": {
+      "phrase1": "Cada día es una oportunidad de inspirar",
+      "phrase2": "Tu aula comienza aquí",
+      "phrase3": "Enseñar da forma al mañana",
+      "phrase4": "Listo cuando tus estudiantes lo estén"
+    }
   },
   "dashboard": {
     "studentCount_one": "{{count}} estudiante",
@@ -32,6 +41,17 @@
     "emptySubtitle": "Cuando Classroom sincronice tus materias y grupos, aparecerán aquí como accesos rápidos.",
     "emptyCta": "Ir al espacio de trabajo",
     "unknownSubject": "Materia",
+    "heroLabel": "Docentes guiando a sus estudiantes con libros y apuntadores",
+    "heroLabelMan": "Maestro con cabello corto, saco, libro y apuntador",
+    "heroLabelWoman": "Maestra con cabello largo, vestido, libro y apuntador",
+    "heroCaption": "Enseñando en movimiento",
+    "heroPhrases": {
+      "phrase1": "Enseñar es sembrar el futuro",
+      "phrase2": "Cada clase deja una huella",
+      "phrase3": "Enseñar es el corazón del aprendizaje",
+      "phrase4": "Inspiras mentes cada día",
+      "phrase5": "Guiar estudiantes transforma vidas"
+    },
     "datetimeLabel": "Fecha y hora",
     "prevMonth": "Mes anterior",
     "nextMonth": "Mes siguiente",
@@ -89,13 +109,6 @@
       "saveChanges": "Guardar cambios",
       "typeToConfirm": "Por favor escribe el nombre para confirmar.",
       "typeFullToConfirm": "Por favor escribe el nombre completo para confirmar."
-    },
-    "shortcuts": {
-      "title": "Atajos",
-      "viewExams": "Ver exámenes",
-      "viewAssignments": "Ver tareas",
-      "viewPlannings": "Ver planificaciones",
-      "viewGrades": "Ver calificaciones"
     },
     "subjects": {
       "title": "Asignaturas",
@@ -257,6 +270,7 @@
     "qrCodeModal": {
       "title": "{{studentName}}",
       "alt": "Código QR para {{studentName}}",
+      "idLabel": "ID del estudiante",
       "downloadButton": "Descargar PNG"
     },
     "deleteModal": {
@@ -281,22 +295,69 @@
     "created": "Creado",
     "due": "Fecha de entrega",
     "acceptingSubmissions": "Aceptando entregas",
+    "acceptingLateSubmissions": "Aceptando entregas tardías",
+    "assignmentCompleted": "Completada",
     "closed": "Cerrado",
+    "assignmentStatus": {
+      "accepting": "Aceptando entregas",
+      "acceptingLate": "Aceptando entregas tardías",
+      "completed": "Completada"
+    },
+    "assignmentStatusHints": {
+      "accepting": "La fecha límite aún no pasa. Los estudiantes todavía pueden entregar a tiempo.",
+      "acceptingLate": "La fecha límite ya pasó, pero la tarea sigue abierta, así que aún se pueden recibir entregas tardías.",
+      "completed": "Esta tarea está cerrada en Classroom y ya no acepta entregas."
+    },
     "returned": "Devueltas",
+    "returnedUngraded": "Devuelta con 0",
     "turnedIn": "Entregadas",
     "assigned": "Asignadas",
+    "noAccess": "Sin abrir",
+    "reclaimed": "Entrega anulada",
+    "flags": {
+      "late": "Entrega fuera de plazo",
+      "pastDue": "Plazo vencido",
+      "resubmitted": "Se volvió a entregar",
+      "draft": "Borrador"
+    },
+    "statusHints": {
+      "returned": "El docente devolvió el trabajo al estudiante con una calificación.",
+      "returnedUngraded": "El docente devolvió el trabajo con calificación 0 (o sin nota).",
+      "turnedIn": "El estudiante entregó el trabajo y está en espera de revisión.",
+      "assigned": "La tarea fue asignada al estudiante, pero aún no la ha entregado.",
+      "noAccess": "El estudiante nunca ha abierto esta tarea. Incluye a estudiantes que se unieron a la clase después de publicarla.",
+      "reclaimed": "El estudiante entregó el trabajo y luego anuló la entrega, así que vuelve a estar en sus manos."
+    },
+    "flagHints": {
+      "late": "Esta entrega se realizó después de la fecha límite.",
+      "pastDue": "La fecha límite ya pasó y no se entregó nada.",
+      "pastDueStillOpen": "La fecha límite ya pasó y este estudiante no entregó. Aún pueden aceptarse entregas tardías porque la tarea sigue abierta.",
+      "pastDueClosed": "La fecha límite ya pasó, no se entregó nada, y esta tarea ya no acepta trabajos.",
+      "resubmitted": "El estudiante editó su entrega después de enviarla.",
+      "draft": "El docente guardó una calificación en borrador que aún no se ha asignado."
+    },
+    "filterAll": "Todas",
+    "filterAllHint": "Mostrar todas las entregas de esta tarea.",
+    "filterByStatus": "Filtrar entregas por estado",
+    "noSubmissionsInFilter": "Ninguna entrega coincide con este filtro.",
     "loading": "Cargando...",
     "unknownStudent": "Estudiante desconocido",
     "students": "Estudiantes"
   },
   "studentsPage": {
     "title": "Estudiantes",
+    "subtitle": "Consulta y filtra tu lista completa de estudiantes.",
+    "showing": "Mostrando",
+    "resultCount": "{{count}} estudiantes coinciden con los filtros actuales.",
+    "filtersTitle": "Filtros",
+    "clearFilters": "Limpiar",
+    "openQr": "Abrir código QR",
     "filters": {
-      "group": "Filtrar por Grupo",
-      "subject": "Filtrar por Asignatura",
-      "firstName": "Filtrar por Nombre",
-      "lastName": "Filtrar por Apellido",
-      "status": "Filtrar por Estado",
+      "group": "Grupo",
+      "subject": "Asignatura",
+      "search": "Buscar",
+      "searchPlaceholder": "Buscar por nombre o ID…",
+      "status": "Estado",
       "all": "Todos"
     },
     "table": {

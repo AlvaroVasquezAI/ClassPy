@@ -1,0 +1,871 @@
+.dashboard-hero {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  min-height: 148px;
+  border-radius: 24px;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--primary-color) 12%, var(--card-bg)) 0%,
+      var(--card-bg) 68%
+    );
+  border: 1px solid var(--card-border);
+  animation: dashboard-hero-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.dashboard-hero-sky {
+  position: absolute;
+  inset: 0 0 42% 0;
+  pointer-events: none;
+}
+
+.dashboard-hero-cloud {
+  position: absolute;
+  height: 14px;
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--text-color) 8%, transparent);
+  opacity: 0.55;
+}
+
+.dashboard-hero-cloud::before,
+.dashboard-hero-cloud::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: inherit;
+}
+
+.dashboard-hero-cloud::before {
+  width: 18px;
+  height: 18px;
+  top: -10px;
+  left: 10px;
+}
+
+.dashboard-hero-cloud::after {
+  width: 24px;
+  height: 24px;
+  top: -14px;
+  left: 24px;
+}
+
+.dashboard-hero-cloud-a {
+  width: 54px;
+  top: 18%;
+  left: -12%;
+  animation: dashboard-hero-cloud-drift 26s linear infinite;
+}
+
+.dashboard-hero-cloud-b {
+  width: 70px;
+  top: 28%;
+  left: -18%;
+  opacity: 0.35;
+  animation: dashboard-hero-cloud-drift 34s linear 5s infinite;
+}
+
+.dashboard-hero-cloud-c {
+  width: 42px;
+  top: 14%;
+  left: -14%;
+  opacity: 0.4;
+  animation: dashboard-hero-cloud-drift 30s linear 11s infinite;
+}
+
+.dashboard-hero-floaters {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.dashboard-hero-book {
+  position: absolute;
+  width: 22px;
+  height: 16px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--primary-color) 55%, #fff);
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.08);
+  opacity: 0.75;
+}
+
+.dashboard-hero-book::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 3px;
+  bottom: 3px;
+  width: 2px;
+  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.dashboard-hero-book-a {
+  top: 22%;
+  right: 18%;
+  --book-rot: -12deg;
+  animation: dashboard-hero-float 5.5s ease-in-out infinite;
+}
+
+.dashboard-hero-book-b {
+  top: 36%;
+  right: 8%;
+  width: 18px;
+  height: 13px;
+  --book-rot: 16deg;
+  background: color-mix(in srgb, var(--primary-color) 35%, #d6b56a);
+  animation: dashboard-hero-float 6.8s ease-in-out 1s infinite reverse;
+}
+
+.dashboard-hero-book-c {
+  top: 18%;
+  left: 7%;
+  width: 20px;
+  height: 15px;
+  --book-rot: 10deg;
+  background: color-mix(in srgb, var(--primary-color) 45%, #5cb8a0);
+  animation: dashboard-hero-float 6.2s ease-in-out 0.4s infinite;
+}
+
+.dashboard-hero-book-d {
+  top: 40%;
+  left: 21%;
+  width: 16px;
+  height: 12px;
+  --book-rot: -18deg;
+  background: color-mix(in srgb, var(--primary-color) 40%, #d96b8a);
+  animation: dashboard-hero-float 7.4s ease-in-out 1.6s infinite;
+}
+
+.dashboard-hero-book-e {
+  top: 30%;
+  right: 30%;
+  width: 17px;
+  height: 13px;
+  --book-rot: 22deg;
+  background: color-mix(in srgb, var(--primary-color) 50%, #7a6fd4);
+  animation: dashboard-hero-float 5.9s ease-in-out 2.2s infinite reverse;
+}
+
+.dashboard-hero-pencil {
+  position: absolute;
+  top: 22%;
+  right: 40%;
+  width: 3px;
+  height: 22px;
+  border-radius: 1.5px;
+  background: color-mix(in srgb, var(--primary-color) 30%, #e8b04b);
+  opacity: 0.75;
+  animation: dashboard-hero-float-plain 6.5s ease-in-out 1.2s infinite;
+}
+
+.dashboard-hero-pencil::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 5px;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  background: color-mix(in srgb, var(--text-color) 60%, #c48a6a);
+}
+
+/* Classroom scenery: chalkboard + desk (walkers pass in front) */
+.dashboard-hero-props {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dashboard-hero-board {
+  position: absolute;
+  left: 5%;
+  bottom: 28px;
+  width: 58px;
+  height: 38px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--primary-color) 22%, #2f4a40);
+  border: 2px solid color-mix(in srgb, var(--primary-color) 30%, #a9843f);
+  opacity: 0.85;
+  animation: dashboard-hero-prop-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
+
+/* chalk tray */
+.dashboard-hero-board::after {
+  content: '';
+  position: absolute;
+  left: -3px;
+  right: -3px;
+  bottom: -5px;
+  height: 3px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--primary-color) 30%, #a9843f);
+}
+
+.dashboard-hero-board-chalkline {
+  position: absolute;
+  left: 6px;
+  height: 2px;
+  border-radius: 1px;
+  background: color-mix(in srgb, #ffffff 70%, transparent);
+  opacity: 0.7;
+  transform-origin: left center;
+  animation: dashboard-hero-chalk-write 6s ease-in-out infinite;
+}
+
+.dashboard-hero-board-chalkline-1 {
+  top: 8px;
+  width: 34px;
+}
+
+.dashboard-hero-board-chalkline-2 {
+  top: 16px;
+  width: 42px;
+  animation-delay: 0.6s;
+}
+
+.dashboard-hero-board-chalkline-3 {
+  top: 24px;
+  width: 24px;
+  animation-delay: 1.2s;
+}
+
+.dashboard-hero-board-leg {
+  position: absolute;
+  bottom: -28px;
+  width: 3px;
+  height: 26px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--primary-color) 28%, #a9843f);
+  opacity: 0.8;
+}
+
+.dashboard-hero-board-leg-l {
+  left: 8px;
+  transform: rotate(6deg);
+}
+
+.dashboard-hero-board-leg-r {
+  right: 8px;
+  transform: rotate(-6deg);
+}
+
+.dashboard-hero-desk {
+  position: absolute;
+  right: 7%;
+  bottom: 28px;
+  width: 50px;
+  height: 22px;
+  animation: dashboard-hero-prop-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+}
+
+.dashboard-hero-desk-top {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  height: 4px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--primary-color) 32%, #b08050);
+  opacity: 0.9;
+}
+
+.dashboard-hero-desk-leg {
+  position: absolute;
+  bottom: -4px;
+  width: 3px;
+  height: 24px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--primary-color) 26%, #8d6540);
+  opacity: 0.85;
+}
+
+.dashboard-hero-desk-leg-l {
+  left: 6px;
+}
+
+.dashboard-hero-desk-leg-r {
+  right: 6px;
+}
+
+.dashboard-hero-desk-stack {
+  position: absolute;
+  border-radius: 2px;
+  opacity: 0.9;
+}
+
+.dashboard-hero-desk-stack-bottom {
+  left: 8px;
+  bottom: 24px;
+  width: 26px;
+  height: 4px;
+  background: color-mix(in srgb, var(--primary-color) 45%, #6c8fd6);
+}
+
+.dashboard-hero-desk-stack-mid {
+  left: 11px;
+  bottom: 28px;
+  width: 22px;
+  height: 4px;
+  background: color-mix(in srgb, var(--primary-color) 40%, #e8b04b);
+}
+
+.dashboard-hero-desk-stack-top {
+  left: 9px;
+  bottom: 32px;
+  width: 19px;
+  height: 4px;
+  background: color-mix(in srgb, var(--primary-color) 50%, #d96b8a);
+}
+
+.dashboard-hero-ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 42%;
+  background:
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      color-mix(in srgb, var(--primary-color) 10%, transparent) 100%
+    );
+}
+
+.dashboard-hero-path {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: 28px;
+  height: 3px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--primary-color) 28%, transparent);
+}
+
+/* Two teachers leading, five students following */
+.dashboard-hero-procession {
+  position: absolute;
+  bottom: 18px;
+  left: -300px;
+  width: 300px;
+  height: 96px;
+  z-index: 1;
+  animation: dashboard-hero-walk 22s linear infinite;
+}
+
+.dashboard-hero-shadow {
+  position: absolute;
+  bottom: 4px;
+  height: 7px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--text-color) 16%, transparent);
+  filter: blur(2px);
+}
+
+.dashboard-hero-shadow-man {
+  right: 6px;
+  width: 38px;
+}
+
+.dashboard-hero-shadow-woman {
+  right: 54px;
+  width: 38px;
+  opacity: 0.85;
+}
+
+.dashboard-hero-shadow-s1 {
+  right: 108px;
+  width: 24px;
+  opacity: 0.7;
+}
+
+.dashboard-hero-shadow-s2 {
+  right: 142px;
+  width: 22px;
+  opacity: 0.65;
+}
+
+.dashboard-hero-shadow-s3 {
+  right: 174px;
+  width: 22px;
+  opacity: 0.6;
+}
+
+.dashboard-hero-shadow-s4 {
+  right: 206px;
+  width: 20px;
+  opacity: 0.55;
+}
+
+.dashboard-hero-shadow-s5 {
+  right: 236px;
+  width: 20px;
+  opacity: 0.5;
+}
+
+.dashboard-hero-teacher {
+  position: absolute;
+  bottom: 2px;
+  width: 64px;
+  height: 67px;
+  overflow: visible;
+}
+
+.dashboard-hero-teacher-man {
+  right: 0;
+}
+
+.dashboard-hero-teacher-woman {
+  right: 48px;
+}
+
+.dashboard-hero-teacher-woman .dashboard-hero-figure {
+  animation: dashboard-hero-bob 0.55s ease-in-out 0.08s infinite;
+}
+
+.dashboard-hero-student {
+  position: absolute;
+  bottom: 2px;
+  overflow: visible;
+}
+
+.dashboard-hero-student-1 {
+  right: 100px;
+  width: 42px;
+  height: 70px;
+}
+
+.dashboard-hero-student-2 {
+  right: 134px;
+  width: 38px;
+  height: 64px;
+}
+
+.dashboard-hero-student-3 {
+  right: 166px;
+  width: 40px;
+  height: 66px;
+}
+
+.dashboard-hero-student-4 {
+  right: 198px;
+  width: 36px;
+  height: 60px;
+}
+
+.dashboard-hero-student-5 {
+  right: 228px;
+  width: 38px;
+  height: 62px;
+}
+
+.dashboard-hero-figure {
+  transform-origin: 40px 92px;
+  animation: dashboard-hero-bob 0.55s ease-in-out infinite;
+}
+
+.dashboard-hero-student-figure {
+  transform-origin: 24px 70px;
+}
+
+.dashboard-hero-student-1 .dashboard-hero-student-figure {
+  animation: dashboard-hero-bob 0.5s ease-in-out 0.1s infinite;
+}
+
+.dashboard-hero-student-2 .dashboard-hero-student-figure {
+  animation: dashboard-hero-bob 0.5s ease-in-out 0.18s infinite;
+}
+
+.dashboard-hero-student-3 .dashboard-hero-student-figure {
+  animation: dashboard-hero-bob 0.5s ease-in-out 0.26s infinite;
+}
+
+.dashboard-hero-student-4 .dashboard-hero-student-figure {
+  animation: dashboard-hero-bob 0.5s ease-in-out 0.34s infinite;
+}
+
+.dashboard-hero-student-5 .dashboard-hero-student-figure {
+  animation: dashboard-hero-bob 0.5s ease-in-out 0.42s infinite;
+}
+
+.dashboard-hero-backpack {
+  opacity: 0.95;
+}
+
+.dashboard-hero-student-arm {
+  transform-origin: 32px 30px;
+  animation: dashboard-hero-arm-swing 0.5s ease-in-out infinite;
+}
+
+.dashboard-hero-student-leg-back rect:not(.dashboard-hero-shoe),
+.dashboard-hero-student-leg-front rect:not(.dashboard-hero-shoe) {
+  fill: color-mix(in srgb, var(--text-color) 55%, #3d4a55);
+}
+
+.dashboard-hero-student-1 .dashboard-hero-student-leg-back,
+.dashboard-hero-student-2 .dashboard-hero-student-leg-back,
+.dashboard-hero-student-3 .dashboard-hero-student-leg-back,
+.dashboard-hero-student-4 .dashboard-hero-student-leg-back,
+.dashboard-hero-student-5 .dashboard-hero-student-leg-back {
+  transform-origin: 28px 50px;
+}
+
+.dashboard-hero-student-1 .dashboard-hero-student-leg-front,
+.dashboard-hero-student-2 .dashboard-hero-student-leg-front,
+.dashboard-hero-student-3 .dashboard-hero-student-leg-front,
+.dashboard-hero-student-4 .dashboard-hero-student-leg-front,
+.dashboard-hero-student-5 .dashboard-hero-student-leg-front {
+  transform-origin: 20px 50px;
+}
+
+.dashboard-hero-student-1 .dashboard-hero-student-leg-back {
+  animation: dashboard-hero-leg-swing 0.5s ease-in-out 0.1s infinite;
+}
+
+.dashboard-hero-student-1 .dashboard-hero-student-leg-front {
+  animation: dashboard-hero-leg-swing 0.5s ease-in-out 0.1s infinite reverse;
+}
+
+.dashboard-hero-student-2 .dashboard-hero-student-leg-back {
+  animation: dashboard-hero-leg-swing 0.5s ease-in-out 0.18s infinite;
+}
+
+.dashboard-hero-student-2 .dashboard-hero-student-leg-front {
+  animation: dashboard-hero-leg-swing 0.5s ease-in-out 0.18s infinite reverse;
+}
+
+.dashboard-hero-student-3 .dashboard-hero-student-leg-back {
+  animation: dashboard-hero-leg-swing 0.5s ease-in-out 0.26s infinite;
+}
+
+.dashboard-hero-student-3 .dashboard-hero-student-leg-front {
+  animation: dashboard-hero-leg-swing 0.5s ease-in-out 0.26s infinite reverse;
+}
+
+.dashboard-hero-student-4 .dashboard-hero-student-leg-back {
+  animation: dashboard-hero-leg-swing 0.5s ease-in-out 0.34s infinite;
+}
+
+.dashboard-hero-student-4 .dashboard-hero-student-leg-front {
+  animation: dashboard-hero-leg-swing 0.5s ease-in-out 0.34s infinite reverse;
+}
+
+.dashboard-hero-student-5 .dashboard-hero-student-leg-back {
+  animation: dashboard-hero-leg-swing 0.5s ease-in-out 0.42s infinite;
+}
+
+.dashboard-hero-student-5 .dashboard-hero-student-leg-front {
+  animation: dashboard-hero-leg-swing 0.5s ease-in-out 0.42s infinite reverse;
+}
+
+.dashboard-hero-hair-short,
+.dashboard-hero-hair-long {
+  fill: color-mix(in srgb, var(--text-color) 72%, #3a2a1a);
+}
+
+.dashboard-hero-hair-long[stroke] {
+  stroke: color-mix(in srgb, var(--text-color) 72%, #3a2a1a);
+  fill: none;
+}
+
+.dashboard-hero-head {
+  fill: color-mix(in srgb, var(--primary-color) 18%, #e8c7a8);
+}
+
+.dashboard-hero-glasses circle,
+.dashboard-hero-glasses path {
+  stroke: color-mix(in srgb, var(--text-color) 75%, transparent);
+}
+
+.dashboard-hero-blazer {
+  fill: color-mix(in srgb, var(--primary-color) 82%, #1c1c1e);
+}
+
+.dashboard-hero-dress,
+.dashboard-hero-dress-arm {
+  fill: color-mix(in srgb, var(--primary-color) 55%, #c45b7a);
+}
+
+.dashboard-hero-collar {
+  stroke: color-mix(in srgb, #ffffff 70%, var(--primary-color));
+}
+
+.dashboard-hero-teacher-man .dashboard-hero-arm-teach rect:not(.dashboard-hero-pointer),
+.dashboard-hero-teacher-man .dashboard-hero-arm-book > rect {
+  fill: color-mix(in srgb, var(--primary-color) 82%, #1c1c1e);
+}
+
+.dashboard-hero-pointer {
+  fill: color-mix(in srgb, var(--text-color) 55%, #c4a35a);
+}
+
+.dashboard-hero-pointer-tip {
+  fill: color-mix(in srgb, var(--primary-color) 50%, #c4a35a);
+}
+
+.dashboard-hero-open-book path:not(.dashboard-hero-book-spine):not(.dashboard-hero-book-lines) {
+  fill: color-mix(in srgb, #f4efe6 88%, var(--primary-color));
+}
+
+.dashboard-hero-book-spine,
+.dashboard-hero-book-lines {
+  stroke: color-mix(in srgb, var(--text-color) 28%, transparent);
+}
+
+.dashboard-hero-leg-back rect:not(.dashboard-hero-shoe),
+.dashboard-hero-leg-front rect:not(.dashboard-hero-shoe) {
+  fill: color-mix(in srgb, var(--text-color) 55%, #3d4a55);
+}
+
+.dashboard-hero-shoe {
+  fill: color-mix(in srgb, var(--text-color) 78%, transparent);
+}
+
+.dashboard-hero-arm-teach {
+  transform-origin: 53px 36px;
+  animation: dashboard-hero-teach-swing 1.8s ease-in-out infinite;
+}
+
+.dashboard-hero-arm-book {
+  transform-origin: 30px 36px;
+  animation: dashboard-hero-book-hold 0.55s ease-in-out infinite;
+}
+
+.dashboard-hero-open-book {
+  transform-origin: 30px 54px;
+  animation: dashboard-hero-book-tilt 2.4s ease-in-out infinite;
+}
+
+.dashboard-hero-leg-back {
+  transform-origin: 46px 62px;
+  animation: dashboard-hero-leg-swing 0.55s ease-in-out infinite;
+}
+
+.dashboard-hero-leg-front {
+  transform-origin: 34px 62px;
+  animation: dashboard-hero-leg-swing 0.55s ease-in-out infinite reverse;
+}
+
+.dashboard-hero-teacher-woman .dashboard-hero-leg-back {
+  transform-origin: 45px 80px;
+}
+
+.dashboard-hero-teacher-woman .dashboard-hero-leg-front {
+  transform-origin: 34px 80px;
+}
+
+.dashboard-hero-caption {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--text-color);
+  opacity: 0.85;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+@keyframes dashboard-hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dashboard-hero-walk {
+  0% {
+    left: -300px;
+  }
+  100% {
+    left: calc(100% + 8px);
+  }
+}
+
+@keyframes dashboard-hero-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes dashboard-hero-arm-swing {
+  0%,
+  100% {
+    transform: rotate(18deg);
+  }
+  50% {
+    transform: rotate(-22deg);
+  }
+}
+
+@keyframes dashboard-hero-teach-swing {
+  0%,
+  100% {
+    transform: rotate(-8deg);
+  }
+  50% {
+    transform: rotate(-38deg);
+  }
+}
+
+@keyframes dashboard-hero-book-hold {
+  0%,
+  100% {
+    transform: rotate(4deg);
+  }
+  50% {
+    transform: rotate(-2deg);
+  }
+}
+
+@keyframes dashboard-hero-book-tilt {
+  0%,
+  100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes dashboard-hero-leg-swing {
+  0%,
+  100% {
+    transform: rotate(-20deg);
+  }
+  50% {
+    transform: rotate(22deg);
+  }
+}
+
+@keyframes dashboard-hero-cloud-drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(130%);
+  }
+}
+
+@keyframes dashboard-hero-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--book-rot, -12deg));
+  }
+  50% {
+    transform: translateY(-8px) rotate(calc(var(--book-rot, -12deg) + 4deg));
+  }
+}
+
+@keyframes dashboard-hero-prop-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 0.85;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dashboard-hero-chalk-write {
+  0%,
+  12% {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  30%,
+  70% {
+    transform: scaleX(1);
+    opacity: 0.7;
+  }
+  88%,
+  100% {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+}
+
+@keyframes dashboard-hero-float-plain {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+.dashboard-hero-caption {
+  animation: dashboard-hero-caption-in 0.6s ease both;
+}
+
+@keyframes dashboard-hero-caption-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(6px);
+  }
+  to {
+    opacity: 0.85;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-hero {
+    min-height: 136px;
+  }
+
+  .dashboard-hero-caption {
+    font-size: 0.9rem;
+    white-space: normal;
+    text-align: center;
+    max-width: 80%;
+  }
+
+  .dashboard-hero-procession {
+    transform: scale(0.72);
+    transform-origin: bottom right;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-hero,
+  .dashboard-hero-cloud,
+  .dashboard-hero-book,
+  .dashboard-hero-pencil,
+  .dashboard-hero-board,
+  .dashboard-hero-board-chalkline,
+  .dashboard-hero-desk,
+  .dashboard-hero-procession,
+  .dashboard-hero-shadow,
+  .dashboard-hero-figure,
+  .dashboard-hero-student-figure,
+  .dashboard-hero-student-arm,
+  .dashboard-hero-student-leg-back,
+  .dashboard-hero-student-leg-front,
+  .dashboard-hero-arm-teach,
+  .dashboard-hero-arm-book,
+  .dashboard-hero-open-book,
+  .dashboard-hero-leg-back,
+  .dashboard-hero-leg-front,
+  .dashboard-hero-caption {
+    animation: none !important;
+  }
+
+  .dashboard-hero-procession {
+    left: 38%;
+  }
+}

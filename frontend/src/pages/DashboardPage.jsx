@@ -7,6 +7,7 @@ import { useAppContext } from '../context/AppContext';
 import { apiClient } from '../services/apiClient';
 import DashboardDatetimeCard from '../components/specific/dashboard/DashboardDatetimeCard';
 import DashboardScheduleCard from '../components/specific/dashboard/DashboardScheduleCard';
+import DashboardHeroScene from '../components/specific/dashboard/DashboardHeroScene';
 import './DashboardPage.css';
 
 const DashboardPage = () => {
@@ -73,6 +74,8 @@ const DashboardPage = () => {
   return (
     <div className="dashboard-page">
       <div className="dashboard-atmosphere" aria-hidden="true" />
+
+      <DashboardHeroScene />
 
       {sections.length === 0 ? (
         <div className="dashboard-empty">
